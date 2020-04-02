@@ -2,6 +2,7 @@ package oeg.eventExtractor;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -144,7 +145,10 @@ public class annotateDoc extends HttpServlet {
             System.out.println(output);
             String out2 = createHighlights(output);
             System.out.println(stylestring + out2);
-            return stylestring + out2; 
+            return stylestring + out2;
+//NO            return stylestring + new String(out2.getBytes(Charset.forName("UTF-8")), Charset.forName("Windows-1252"));
+//            return stylestring + new String(out2.getBytes("ISO-8859-1"),"UTF-8");
+ 
         } catch (Exception ex) {
             System.err.print(ex.toString());
             return "";
