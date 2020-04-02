@@ -1,0 +1,270 @@
+/* TIMELINE CIRCLE COLORS*/
+.showBelowFixedTop {
+  margin-top: 600px;
+}
+
+#topContentContainer #svg, #topContentContainer nav, #topContentContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+#topContentContainer #flex2ColHeader {
+  display: flex;
+  flex-direction: column;
+}
+
+/*Top div style [WORKS]*/
+#topContentContainer {
+  background-color: #094f92;
+  max-height: 600px;
+  min-height: 50px;
+  width: 100%;
+  margin: 0;
+  padding: 5px 0px;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  /* Navigation menu */
+  /*SVG DIV*/
+}
+#topContentContainer #flex2ColHeader {
+  flex-basis: 100%;
+}
+#topContentContainer nav {
+  flex-basis: 100%;
+}
+#topContentContainer nav a {
+  font-size: 9px;
+  flex: 1 1 5%;
+  margin: 10px;
+}
+#topContentContainer nav a img {
+  width: 20px;
+  height: 20px;
+}
+#topContentContainer nav #lynxLogoTop {
+  flex: 0 0 10%;
+  max-height: 50px;
+}
+#topContentContainer nav #lynxLogoTop img {
+  margin: 3px;
+  width: 90%;
+  height: 90%;
+  max-width: 100%;
+  max-height: 100%;
+}
+#topContentContainer #svg {
+  flex-basis: 100%;
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+#topContentContainer #svg svg {
+  width: 100%;
+  height: 300px;
+}
+#topContentContainer #svg div {
+  flex-basis: 100%;
+  text-align: center;
+  background-color: #9a9457;
+}
+
+#mainContent {
+  padding-top: 50px;
+  line-height: 1.8;
+  /*display:flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 0% 5%;*/
+}
+
+.mainNodeText {
+  text-anchor: middle;
+  text-weight: bold;
+  fill: #FFFFFF;
+  font-size: 6px;
+}
+
+.outerNodeTextLabel {
+  text-anchor: middle;
+  text-weight: bold;
+  fill: white;
+  text-decoration: underline;
+}
+
+.outerNodeTextDesc {
+  text-anchor: middle;
+  fill: #FFFFFF;
+}
+
+[class^=circle]:hover {
+  cursor: pointer;
+}
+
+.centerLineColor {
+  stroke: #FFFFFF;
+}
+
+.circleProcedural {
+  fill: #4d6ba7;
+}
+
+.circleBackProcedural {
+  fill: #9a9457;
+}
+
+.circleUnderJudg {
+  fill: #82b69b;
+}
+
+.outerNodeGraph {
+  fill: #9DC4D2;
+  stroke: white;
+  -webkit-transition: r 2s;
+  /* For Safari 3.1 to 6.0 */
+  transition: r 2s;
+}
+
+/*OUTER NODES ON HOVER */
+.outerNodeGraph:hover {
+  fill: #962f3e;
+  stroke: white;
+  /*.outerNodeTextLabel{
+  	text-anchor:middle;
+  	text-weight:bold;
+  	fill: white;
+  	font-size: 5px;
+  	text-decoration: underline;
+  }
+
+  .outerNodeTextDesc{
+  	text-anchor:middle;
+  	fill: #FFFFFF;
+  	font-size: 6px;
+  }*/
+}
+
+/*.zoomOuterNode{
+	r:30;
+}*/
+.flexbox-container {
+  display: flex;
+}
+
+.outerNodeLabel {
+  fill: #1B3D50;
+  font-weight: bold;
+}
+
+.interNodeLine {
+  stroke: darkslategrey;
+  stroke-width: 2;
+}
+
+.timelineBackground {
+  background-color: #CBCBCB;
+}
+
+.innerMarkerCircle {
+  fill: white;
+}
+
+.outerCircleZoomProcedural {
+  /*fill:#3F3F3F; */
+  fill: darkslategrey;
+}
+
+.highlighter_def {
+  padding: 6px;
+  border-radius: 3px;
+  background-color: #009AA7;
+  color: #FFFFFF;
+}
+
+.highlighter_time{
+	padding: 6px;
+	
+	border-radius: 3px;
+	background-color: #a700a0;
+	color:#FFFFFF;
+	
+}
+
+.matchingEvTag {
+  margin-left: 3px;
+  padding: 3px;
+  border-radius: 2px;
+  background-color: #FFF;
+  color: black;
+  font-weight: bold;
+}
+
+body {
+  height: 100%;
+}
+
+.fillParentBlock {
+  height: 100%;
+}
+
+.takeFullHeight {
+  height: 100%;
+}
+
+.fillParentBlock {
+  width: 100%;
+}
+
+.takeFullWidth {
+  width: 100%;
+}
+
+.fillParentBlock {
+  display: block;
+}
+
+.fixedToTop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  clear: both;
+}
+
+.display-hide {
+  display: none;
+}
+
+.hide {
+  visibility: hidden;
+}
+
+.legendRect {
+  fill: #FFE060;
+}
+
+.textLegend {
+  font-size: 9;
+  fill: black;
+}
+
+/*Prev style */
+.metadatos div {
+  border: dotted;
+  width: 100%;
+  background-color: aliceblue;
+}
+
+h3 {
+  display: block;
+  font-size: 1.17em;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+}
+
+/*# sourceMappingURL=lynxStyle.css.map */
