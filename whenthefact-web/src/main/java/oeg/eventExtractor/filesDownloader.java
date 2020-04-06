@@ -45,9 +45,43 @@ public class filesDownloader {
             }
             return f;
     }
+    
+    
+    
+    
+    
+    
+    
+    static public File htmlDownloader(String id) {
+
+        File f = new File(id + ".html");
+        
+            InputStream in = null;
+            try {
+                System.out.println("opening connection");
+                URL url = new URL("https://hudoc.echr.coe.int/app/conversion/docx/html/body?library=ECHR&id=" + id);
+                in = url.openStream();
+                FileOutputStream fos = new FileOutputStream(f);
+                System.out.println("reading file...");
+                int length = -1;
+                byte[] buffer = new byte[1024];// buffer for portion of data from
+                // connection
+                while ((length = in.read(buffer)) > -1) {
+                    fos.write(buffer, 0, length);
+                }       fos.close();
+                in.close();
+                System.out.println("file was downloaded in:");
+                System.out.println(f.getAbsolutePath());
+            } catch (Exception ex) {
+                Logger.getLogger(filesDownloader.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            return f;
+    }
+    
+    
 
     
-    static public String htmlDownloader(String id) {
+    static public String htmlDownloader2(String id) {
 
         try {
             System.out.println("opening connection");

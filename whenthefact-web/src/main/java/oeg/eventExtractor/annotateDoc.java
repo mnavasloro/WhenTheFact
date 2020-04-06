@@ -1,12 +1,16 @@
 package oeg.eventExtractor;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.servlet.ServletContext;
@@ -62,13 +66,23 @@ public class annotateDoc extends HttpServlet {
 
         String jsonString = IOUtils.toString(request.getInputStream());
 
+        String testhtmlout = jsonString;
+        
+        
         JSONObject json = new JSONObject(jsonString);
         String inputID = (String) json.get("id");
-        String inputHTML = (String) json.get("htmltext");
+//        String inputHTML = (String) json.get("htmltext");
         String inputURL = (String) json.get("wordfile");
 
+        
+//        testhtmlout = testhtmlout + "\n\n" + inputHTML;
+//        
+//        if (!writeFile(testhtmlout, "r.html")) {
+//            System.out.println("ERROR WHILE SAVING IN" + "r.html");
+//        }
+        
         response.setStatus(200);
-        response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("charset=UTF-8");
 
         ServletContext context = getServletContext();
 
@@ -78,26 +92,38 @@ public class annotateDoc extends HttpServlet {
 //        String inputHTML = filesDownloader.htmlDownloader(inputID);
 
         // We call the tagger and return its output
-        System.out.println("----------\n" + inputHTML);
-        String salida = parseAndTag(inputHTML, inputID, inputURL);
+//        System.out.println("----------\n" + inputHTML);
+        String salida = parseAndTag("", inputID, inputURL);
+//        String salida = parseAndTag(inputHTML, inputID, inputURL);
         response.setContentType("text/plain");
         response.getWriter().println(salida);
 
     }
 
-    public static String parseAndTag(String inputHTML2, String inputID, String inputURL) {
+    public static String parseAndTag(String s, String inputID, String inputURL) {
+//    public static String parseAndTag(String inputHTML2, String inputID, String inputURL) {
  
         File ev1 = new File("pretimex1.txt");
         File ev2 = new File("pretimex2.txt");
         File ev3 = new File("pretimex3.txt");
         File ev4 = new File("postimex.txt");
         
-        System.out.println("Saving files in: " + ev1.getAbsolutePath());
+        File fh = filesDownloader.htmlDownloader(inputID);
         
-        if (!writeFile(inputHTML2, ev1.getAbsolutePath())) {
-            System.out.println("ERROR WHILE SAVING IN" + ev1.getAbsolutePath());
+        String inputHTML2 = "";
+        
+        try {
+            inputHTML2 = IOUtils.toString(new FileInputStream(fh), "UTF-8");
+        } catch (Exception ex) {
+            Logger.getLogger(annotateDoc.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+            
+//        System.out.println("Saving files in: " + ev1.getAbsolutePath());
+//        
+//        if (!writeFile(inputHTML2, ev1.getAbsolutePath())) {
+//            System.out.println("ERROR WHILE SAVING IN" + ev1.getAbsolutePath());
+//        }
+//        
         
          String stylestring = "";
                 String pattern = "<(style|script)>[\\s\\S]*<\\/(style|script)>";
@@ -113,8 +139,10 @@ public class annotateDoc extends HttpServlet {
             
             
             
-            String txt = inputHTML.replaceAll("<[^>]*>", ""); 
-            txt = txt.replaceAll("&nbsp;", "\t");
+            String txt = inputHTML.replaceAll("<\\/p>", "\t"); 
+            txt = txt.replaceAll("<[^>]*>", ""); 
+//            txt = txt.replaceAll("&nbsp;", "\t");
+            txt = txt.replaceAll("&[^;]+;", "\t");
 //String txt = Jsoup.parse(inputHTML).text();
 
         if (!writeFile(inputHTML, ev2.getAbsolutePath())) {
