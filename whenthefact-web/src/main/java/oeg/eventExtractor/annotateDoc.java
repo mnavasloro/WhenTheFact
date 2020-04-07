@@ -82,7 +82,6 @@ public class annotateDoc extends HttpServlet {
 //        }
         
         response.setStatus(200);
-        response.setContentType("charset=UTF-8");
 
         ServletContext context = getServletContext();
 
@@ -95,7 +94,7 @@ public class annotateDoc extends HttpServlet {
 //        System.out.println("----------\n" + inputHTML);
         String salida = parseAndTag("", inputID, inputURL);
 //        String salida = parseAndTag(inputHTML, inputID, inputURL);
-        response.setContentType("text/plain");
+        response.setContentType("text/html;charset=UTF-8");
         response.getWriter().println(salida);
 
     }
@@ -187,13 +186,12 @@ public class annotateDoc extends HttpServlet {
 //        input2 = input2.replaceFirst(Pattern.quote("<?xml version=\"1.0\"?>\n" + "<!DOCTYPE TimeML SYSTEM \"TimeML.dtd\">\n" + "<TimeML>"), "");
         String input2 = input.replaceFirst(Pattern.quote("</TimeML>"), "");
 
-        input2 = input2.replaceAll("<Event_core", "<span class=\"highlighter_def\" ");
-        input2 = input2.replaceAll("<Event_what", "<span class=\"highlighter_def\" ");
-        input2 = input2.replaceAll("<Event_when", "<span style=\"padding: 6px;border-radius: 3px;background-color: #3364b7;color:#FFFFFF;\" ");
-        input2 = input2.replaceAll("<TIMEX3", "<span style=\"padding: 6px;border-radius: 3px;background-color: #3364b7;color:#FFFFFF;\" ");
-//        input2 = input2.replaceAll("<Event_when", "<span class=\"highlighter_time\" ");
-//        input2 = input2.replaceAll("<TIMEX3", "<span class=\"highlighter_time\" ");
-        input2 = input2.replaceAll("<Event", "<span class=\"highlighter_def\" ");
+//        input2 = input2.replaceAll("<Event_core", "<span class=\"highlighter_def\" ");
+//        input2 = input2.replaceAll("<Event_what", "<span class=\"highlighter_def\" ");
+//        input2 = input2.replaceAll("<Event_when", "<span style=\"padding: 6px;border-radius: 3px;background-color: #3364b7;color:#FFFFFF;\" ");
+//        input2 = input2.replaceAll("<TIMEX3", "<span style=\"padding: 6px;border-radius: 3px;background-color: #3364b7;color:#FFFFFF;\" ");
+//
+//        input2 = input2.replaceAll("<Event", "<span class=\"highlighter_def\" ");
         input2 = input2.replaceAll("</Event_core>", "</span>");
         input2 = input2.replaceAll("</Event_what>", "</span>");
         input2 = input2.replaceAll("</Event_when>", "</span>");
@@ -201,39 +199,30 @@ public class annotateDoc extends HttpServlet {
         input2 = input2.replaceAll("</Event>", "</span>");
         input2 = input2.replaceAll("\\r?\\n", "<br>");
 
-//        String pattern = "(<TIMEX3 ([^>]*)>)";
-//        Pattern r = Pattern.compile(pattern);
-//        Matcher m = r.matcher(input2);
-//        StringBuffer sb = new StringBuffer();
-//        while (m.find()) {
-//            String color = "#7fa2ff";//"Orange";
-////            String color = "rgba(255, 165, 0, 0.5)";//"Orange";
-//            String contetRegex = m.group(2);
-//            contetRegex = contetRegex.replaceAll("\"", "");
-//            contetRegex = contetRegex.replaceAll(" ", "\n");
-//            if (contetRegex.contains("SET")) {
-//                color = "#ccb3ff";//DodgerBlue";
-////                color = "rgba(135, 206, 235, 0.5)";//DodgerBlue";
-//            } else if (contetRegex.contains("DURATION")) {
-//                color = "#99ffeb"; //Tomato
-////                color = "hsla(9, 100%, 64%, 0.5)"; //Tomato
-//            } else if (contetRegex.contains("TIME")) {
-//                color = "#ffbb99";//"MediumSeaGreen";
-////                color = "rgba(102, 205, 170, 0.5)";//"MediumSeaGreen";
-//            }
+String pattern = "(<(TIMEX3|Event_when|Event_what|Event_core|Event) ([^>]*)>)";
+        Pattern r = Pattern.compile(pattern);
+        Matcher m = r.matcher(input2);
+        StringBuffer sb = new StringBuffer();
+        while (m.find()) {
+            String color = "class=\"highlighter_def\"";
+            String contetRegex = m.group(3);
+            contetRegex = contetRegex.replaceAll("\"", "");
+            contetRegex = contetRegex.replaceAll(" ", "\n");
+            if (m.group(2).contains("when") || m.group(2).contains("TIMEX3")) {
+                color = "style=\"padding: 6px;border-radius: 3px;background-color: #3364b7;color:#FFFFFF;\"";//DodgerBlue";
+            }
+            String aux2 = m.group(0);
+            aux2 = aux2.replace(">", "");
+
+            m.appendReplacement(sb, aux2.replaceFirst(Pattern.quote(aux2), "<span "
+                    + color + "\" title=\"" + contetRegex + "\">"));
+        }
+        m.appendTail(sb); // append the rest of the contents
+        
+        String saux = sb.toString();
 //
-//            String aux2 = m.group(0);
-//            aux2 = aux2.replace(">", "");
-//
-//            m.appendReplacement(sb, aux2.replaceFirst(Pattern.quote(aux2), "<span style=\"background-color:"
-//                    + color + "\" title=\"" + contetRegex + "\">"));
-//        }
-//        m.appendTail(sb); // append the rest of the contents
-//        
-//        String saux = sb.toString();
-//
-//        return saux;
-        return input2;
+        return saux;
+//        return input2;
     }
 
     /**
