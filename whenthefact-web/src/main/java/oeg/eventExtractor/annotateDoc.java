@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Level;
@@ -25,7 +26,9 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.json.*;
-import org.jsoup.Jsoup;
+import oeg.eventExtractor.Annotation2JSON;
+import static oeg.eventExtractor.timelineGeneration.generateTimeline;
+import oeg.eventRepresentation.Event;
 
 /**
  * Servlet that returns the javascript needed for the BRAT visualization of the
@@ -67,20 +70,17 @@ public class annotateDoc extends HttpServlet {
         String jsonString = IOUtils.toString(request.getInputStream());
 
         String testhtmlout = jsonString;
-        
-        
+
         JSONObject json = new JSONObject(jsonString);
         String inputID = (String) json.get("id");
 //        String inputHTML = (String) json.get("htmltext");
         String inputURL = (String) json.get("wordfile");
 
-        
 //        testhtmlout = testhtmlout + "\n\n" + inputHTML;
 //        
 //        if (!writeFile(testhtmlout, "r.html")) {
 //            System.out.println("ERROR WHILE SAVING IN" + "r.html");
 //        }
-        
         response.setStatus(200);
 
         ServletContext context = getServletContext();
@@ -101,71 +101,73 @@ public class annotateDoc extends HttpServlet {
 
     public static String parseAndTag(String s, String inputID, String inputURL) {
 //    public static String parseAndTag(String inputHTML2, String inputID, String inputURL) {
- 
+
         File ev1 = new File("pretimex1.txt");
         File ev2 = new File("pretimex2.txt");
         File ev3 = new File("pretimex3.txt");
         File ev4 = new File("postimex.txt");
-        
+
         File fh = filesDownloader.htmlDownloader(inputID);
-        
+
         String inputHTML2 = "";
-        
+
         try {
             inputHTML2 = IOUtils.toString(new FileInputStream(fh), "UTF-8");
         } catch (Exception ex) {
             Logger.getLogger(annotateDoc.class.getName()).log(Level.SEVERE, null, ex);
         }
-            
+
 //        System.out.println("Saving files in: " + ev1.getAbsolutePath());
 //        
 //        if (!writeFile(inputHTML2, ev1.getAbsolutePath())) {
 //            System.out.println("ERROR WHILE SAVING IN" + ev1.getAbsolutePath());
 //        }
 //        
-        
-         String stylestring = "";
-                String pattern = "<(style|script)>[\\s\\S]*<\\/(style|script)>";
-                Pattern r = Pattern.compile(pattern);
-                Matcher m = r.matcher(inputHTML2);
-                while (m.find()) {
-                    stylestring = stylestring + m.group();
-                    
-                }
-           
-            String inputHTML = inputHTML2.replaceAll(pattern, "");
-            
-            
-            
-            
-            String txt = inputHTML.replaceAll("<\\/p>", "\t"); 
-            txt = txt.replaceAll("<[^>]*>", ""); 
+        String stylestring = "";
+        String pattern = "<(style|script)>[\\s\\S]*<\\/(style|script)>";
+        Pattern r = Pattern.compile(pattern);
+        Matcher m = r.matcher(inputHTML2);
+        while (m.find()) {
+            stylestring = stylestring + m.group();
+
+        }
+
+        String inputHTML = inputHTML2.replaceAll(pattern, "");
+
+        String txt = inputHTML.replaceAll("<\\/p>", "\t");
+        txt = txt.replaceAll("<[^>]*>", "");
 //            txt = txt.replaceAll("&nbsp;", "\t");
-            txt = txt.replaceAll("&[^;]+;", "\t");
+        txt = txt.replaceAll("&[^;]+;", "\t");
 //String txt = Jsoup.parse(inputHTML).text();
 
         if (!writeFile(inputHTML, ev2.getAbsolutePath())) {
             System.out.println("ERROR WHILE SAVING IN" + ev2.getAbsolutePath());
         }
 
-
-            File word = filesDownloader.wordDownloader(inputURL, inputID);
+        File word = filesDownloader.wordDownloader(inputURL, inputID);
         Date dct = null;
         try {
             if (etkb == null) {
                 etkb = new ExtractorTIMEXKeywordBased(null, null, pathrules, "EN"); // We innitialize the tagger in Spanish
             }
-            
+
 //            String inputURL = "https://cors-anywhere.herokuapp.com/https://hudoc.echr.coe.int/app/conversion/docx/html/body?library=ECHR&id=" + inputID;
 //
 //            String txt = inputHTML.replaceAll("<[^>]*>", "");
 //
 //            File word = filesDownloader.wordDownloader(inputURL, inputID);
             String output = etkb.annotate(txt, "2012-02-20", word, word.getName());
+
+            // We add the json for the timeline
+            Annotation2JSON t2j = new Annotation2JSON();
+            ArrayList<Event> events = t2j.getEvents(output);
+            String finaltimeline = generateTimeline(events);
             
-        if (!writeFile(output, ev4.getAbsolutePath())) {
-            System.out.println("ERROR WHILE SAVING IN" + ev4.getAbsolutePath());
-        }
+            // We just maintain the events that can be converted to a timeline
+
+            if (!writeFile(output, ev4.getAbsolutePath())) {
+                System.out.println("ERROR WHILE SAVING IN" + ev4.getAbsolutePath());
+            }
             System.out.println(output);
 
             output = HTMLMerger.mergeHTML(inputHTML, output);
@@ -175,7 +177,7 @@ public class annotateDoc extends HttpServlet {
             return stylestring + out2;
 //NO            return stylestring + new String(out2.getBytes(Charset.forName("UTF-8")), Charset.forName("Windows-1252"));
 //            return stylestring + new String(out2.getBytes("ISO-8859-1"),"UTF-8");
- 
+
         } catch (Exception ex) {
             System.err.print(ex.toString());
             return "";
@@ -199,17 +201,17 @@ public class annotateDoc extends HttpServlet {
         input2 = input2.replaceAll("</Event>", "</span>");
         input2 = input2.replaceAll("\\r?\\n", "<br>");
 
-String pattern = "(<(TIMEX3|Event_when|Event_what|Event_core|Event) ([^>]*)>)";
+        String pattern = "(<(TIMEX3|Event_when|Event_what|Event_core|Event) ([^>]*)tid=\"([^\"]*)\"([^>]*)>)";
         Pattern r = Pattern.compile(pattern);
         Matcher m = r.matcher(input2);
         StringBuffer sb = new StringBuffer();
         while (m.find()) {
             String color = "class=\"highlighter_def\"";
-            String contetRegex = m.group(3);
+            String contetRegex = m.group(4);
             contetRegex = contetRegex.replaceAll("\"", "");
             contetRegex = contetRegex.replaceAll(" ", "\n");
             if (m.group(2).contains("when") || m.group(2).contains("TIMEX3")) {
-                color = "style=\"padding: 6px;border-radius: 3px;background-color: #3364b7;color:#FFFFFF;\"";//DodgerBlue";
+                color = "id=\"annotate_" + m.group(3) + "\" style=\"padding: 6px;border-radius: 3px;background-color: #3364b7;color:#FFFFFF;\"";//DodgerBlue";
             }
             String aux2 = m.group(0);
             aux2 = aux2.replace(">", "");
@@ -218,7 +220,7 @@ String pattern = "(<(TIMEX3|Event_when|Event_what|Event_core|Event) ([^>]*)>)";
                     + color + "\" title=\"" + contetRegex + "\">"));
         }
         m.appendTail(sb); // append the rest of the contents
-        
+
         String saux = sb.toString();
 //
         return saux;
