@@ -13,8 +13,8 @@ public class CoreElement {
     
     
     public String anchor;
-    public String Begin;
-    public String End;
+    public float Begin;
+    public float End;
     
     @Override
     public String toString(){

@@ -12,16 +12,17 @@ package oeg.eventRepresentation;
 public class When {
     
     
-    public String year;
-    public String month;
-    public String day;
+    public int year;
+    public int month;
+    public int day;
     public String value;
-    public String begin;
-    public String end;
+    public String anchor;
+    public float begin;
+    public float end;
     
     @Override
     public String toString(){
-        return "year: " + year + "\nType: " + month + "\nmonth: " + month +  "\nday: " + day +  "\nvalue: " + value +  "\nBegin: " + begin +  "\nEnd: " + end + "\n";
+        return "year: " + year + "\nType: " + month + "\nmonth: " + month +  "\nday: " + day +  "\nvalue: " + value +  "\nanchor: " + anchor +  "\nBegin: " + begin +  "\nEnd: " + end + "\n";
     }
     
 }

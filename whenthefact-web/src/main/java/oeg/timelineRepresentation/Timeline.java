@@ -31,6 +31,6 @@ public class Timeline {
             
             res = res + "                    </div>\n";
         }
-        return res;
+        return res + "                    </div>\n";
     }
 }

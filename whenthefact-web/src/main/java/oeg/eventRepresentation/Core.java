@@ -17,8 +17,8 @@ public class Core {
     
     public List<CoreElement> elements = new ArrayList<CoreElement>();
     public List<String> arrayEl = new ArrayList<String>();
-    public String Begin;
-    public String End;
+    public float Begin;
+    public float End;
     
     @Override
     public String toString(){

@@ -11,47 +11,51 @@ package oeg.timelineRepresentation;
  */
 public class DateP {
     
-    public String day;
-    public String month;
+    public int day;
+    public int month;
     
     @Override
     public String toString(){
-        String res = "";
-        res = "<div class=\"timeline__date\">\n" +
-"                                    <span class=\"timeline__day\">" + day + "</span>\n" +
+        String dayS = "X";
+        if(day!=0){
+           dayS = Integer.toString(day); 
+        }
+        String res = "<div class=\"timeline__date\">\n" +
+"                                    <span class=\"timeline__day\">" + dayS + "</span>\n" +
 "                                    <span class=\"timeline__month\">" + getmonthS(month) + "</span>\n" +
 "                                </div>\n";
+        
         return res;
     }
     
-    public String getmonthS(String input){
+    public String getmonthS(int input){
         switch(input){
-            case "01":
+            case 1:
                 return "Jan";
-            case "02":
+            case 2:
                 return "Feb";
-            case "03":
+            case 3:
                 return "Mar";
-            case "04":
+            case 4:
                 return "Apr";
-            case "05":
+            case 5:
                 return "May";
-            case "06":
+            case 6:
                 return "Jun";
-            case "07":
+            case 7:
                 return "Jul";
-            case "08":
+            case 8:
                 return "Aug";
-            case "09":
+            case 9:
                 return "Sep";
-            case "10":
+            case 10:
                 return "Oct";
-            case "11":
+            case 11:
                 return "Nov";
-            case "12":
+            case 12:
                 return "Dec";
             default:
-                return "X";
+                return "?";
         }
     }
 }

@@ -174,7 +174,7 @@ public class annotateDoc extends HttpServlet {
             System.out.println(output);
             String out2 = createHighlights(output);
             System.out.println(stylestring + out2);
-            return stylestring + out2;
+            return stylestring + out2 + finaltimeline;
 //NO            return stylestring + new String(out2.getBytes(Charset.forName("UTF-8")), Charset.forName("Windows-1252"));
 //            return stylestring + new String(out2.getBytes("ISO-8859-1"),"UTF-8");
 
@@ -201,23 +201,26 @@ public class annotateDoc extends HttpServlet {
         input2 = input2.replaceAll("</Event>", "</span>");
         input2 = input2.replaceAll("\\r?\\n", "<br>");
 
-        String pattern = "(<(TIMEX3|Event_when|Event_what|Event_core|Event) ([^>]*)tid=\"([^\"]*)\"([^>]*)>)";
+        String pattern = "(<(TIMEX3|Event_when|Event_what|Event_core|Event) ([^>]*tid=\"([^\"]*)\"([^>]*))>)";
         Pattern r = Pattern.compile(pattern);
         Matcher m = r.matcher(input2);
         StringBuffer sb = new StringBuffer();
+        
         while (m.find()) {
+            String auxwhen="";
             String color = "class=\"highlighter_def\"";
-            String contetRegex = m.group(4);
+            String contetRegex = m.group(3);
             contetRegex = contetRegex.replaceAll("\"", "");
             contetRegex = contetRegex.replaceAll(" ", "\n");
             if (m.group(2).contains("when") || m.group(2).contains("TIMEX3")) {
-                color = "id=\"annotate_" + m.group(3) + "\" style=\"padding: 6px;border-radius: 3px;background-color: #3364b7;color:#FFFFFF;\"";//DodgerBlue";
+                color = "id=\"annotate_" + m.group(4) + "\" style=\"padding: 6px;border-radius: 3px;background-color: #3364b7;color:#FFFFFF;\"";//DodgerBlue";
+                auxwhen="<span class=\"hash_link_tag\" id=\"annotate_" + m.group(4) + "\"></span> ";
             }
             String aux2 = m.group(0);
             aux2 = aux2.replace(">", "");
 
-            m.appendReplacement(sb, aux2.replaceFirst(Pattern.quote(aux2), "<span "
-                    + color + "\" title=\"" + contetRegex + "\">"));
+            m.appendReplacement(sb, aux2.replaceFirst(Pattern.quote(aux2), auxwhen + "<span "
+                    + color + " title=\"" + contetRegex + "\">"));
         }
         m.appendTail(sb); // append the rest of the contents
 

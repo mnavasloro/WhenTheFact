@@ -105,23 +105,23 @@ public class Annotation2JSON {
             JSONArray array = new JSONArray();
             
             while (!inp2.isEmpty()) {
-                String pattern = "<Event.* tid=\"([^\"]+)\"[^>]*>([^<]*)<\\/Event.*>";
+                String pattern = "<Event[^>]* tid=\\\"([^\\\"]+)\\\"[^>]*>([^<]*)<\\/Event[^>]*>";
                 Pattern p = Pattern.compile(pattern);
                 Matcher m = p.matcher(inp2);
                 StringBuffer sb = new StringBuffer(inp2.length());
                 if (m.find()) {
                     JSONObject item = new JSONObject();
-                    int end = (m.start() + m.group(4).length());
+                    int end = (m.start() + m.group(2).length());
                     item.put("beginIndex", m.start());
                     item.put("endIndex", end);
-                    item.put("anchorOf", m.group(4) );
+                    item.put("anchorOf", m.group(2) );
                     item.put("tid", m.group(1) );
 //                    item.put("type", m.group(2) );
 //                    item.put("value", m.group(3) );
                     
                     array.add(item);
                                        
-                    m.appendReplacement(sb, m.group(4));
+                    m.appendReplacement(sb, m.group(2));
                     m.appendTail(sb);
                     inp2 = sb.toString();
                 } 
@@ -178,15 +178,23 @@ public class Annotation2JSON {
                 JSONObject item = (JSONObject) a;
                 Event ev = new Event();
                 When wh = new When();
-                item.get("beginIndex");
-                wh.end = (String) item.get("endIndex");
-                wh.begin = (String) item.get("beginIndex");
-                wh.value = (String) item.get("anchorOf");     
+                wh.end = ((Integer) item.get("endIndex")).floatValue();
+                wh.begin = ((Integer) item.get("beginIndex")).floatValue();
+                wh.value = (String) item.get("value");     
+                wh.anchor = (String) item.get("anchorOf");     
                 //TODO: divide value more sofisticated
                 if(wh.value.matches("\\d\\d\\d\\d-\\d\\d-\\d\\d")){
-                    wh.year = wh.value.substring(0, 4);
-                    wh.month = wh.value.substring(5, 7);
-                    wh.day = wh.value.substring(8, 10);
+                    wh.year = Integer.valueOf(wh.value.substring(0, 4));
+                    wh.month = Integer.valueOf(wh.value.substring(5, 7));
+                    wh.day = Integer.valueOf(wh.value.substring(8, 10));
+                } else if(wh.value.matches("\\d\\d\\d\\d-\\d\\d")){
+                    wh.year = Integer.valueOf(wh.value.substring(0, 4));
+                    wh.month = Integer.valueOf(wh.value.substring(5, 7));
+                    wh.day = 0;
+                }  else if(wh.value.matches("\\d\\d\\d\\d(-.)*")){
+                    wh.year = Integer.valueOf(wh.value.substring(0, 4));
+                    wh.month = 0;
+                    wh.day = 0;
                 }                
                 
                 ev.EventId = (String) item.get("tid");
@@ -205,8 +213,8 @@ public class Annotation2JSON {
                             core = ev.Core;
                         }
                         CoreElement ce = new CoreElement();
-                        ce.End = (String) item.get("endIndex");
-                        ce.Begin = (String) item.get("beginIndex");
+                        ce.End = ((Integer) item.get("endIndex")).floatValue();
+                        ce.Begin = ((Integer) item.get("beginIndex")).floatValue();
                         ce.anchor = (String) item.get("anchorOf");
                         
                         core.elements.add(ce);

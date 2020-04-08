@@ -14,7 +14,7 @@ import oeg.eventRepresentation.Event;
 public class Box {
     
     
-    public DateP date;
+    public DateP date = new DateP();
     public String content;
     public String link;
     

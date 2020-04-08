@@ -36,8 +36,7 @@
 
 
         <script>
-            var id;
-            var x2;
+            var id = "001-173800";
             function getECHRDoc() {
                 var x = document.getElementById("searchDoc").value;
                 id = getIDviaRegex(x);
@@ -60,8 +59,6 @@
 
 
                 var request2 = makeHttpObject();
-                x2 = "https://hudoc.echr.coe.int/app/conversion/docx/?library=ECHR&id=" + id + "&filename=" + id + ".docx";
-
                 //console.log("https://cors-anywhere.herokuapp.com/" + x2)
                 //request2.open("GET", "https://cors-anywhere.herokuapp.com/" + x2, true);
 
@@ -112,7 +109,7 @@
 
         <script>
             function annotateTIME() {
-                var wf = x2;
+                var wf = "https://hudoc.echr.coe.int/app/conversion/docx/?library=ECHR&id=" + id + "&filename=" + id + ".docx";
                 var xhttp;
                 var auxvarn = document.getElementById("texto").innerHTML
                 auxvarn = auxvarn.replace('\r\n', '');
@@ -129,7 +126,6 @@
 
                     var data = {
                         "id": id,
-                        "htmltext": auxvarn,
                         "wordfile": wf
                     };
 
@@ -144,7 +140,11 @@
                     xhttp.send(jsonreq);
                     xhttp.onreadystatechange = function () {
                         if (this.readyState == 4 && this.status == 200) {
-                            document.getElementById("texto").innerHTML = "<html>" + xhttp.responseText + "</html>";
+						
+						//We divide the response: new text and timeline
+						var res = xhttp.responseText.split("<div class=\"timeline\">");
+                            document.getElementById("texto").innerHTML = "<html>" + res[0] + "</html>";
+							document.getElementById("svg").innerHTML = "<div class=\"timeline\">" + res[1];
                             // MARIA: todo annadir timeline a su panel y cambiar html
                             // Typical action to be performed when the document is ready:
                             //document.getElementById("embedding").innerHTML = xhttp.responseText;
@@ -247,6 +247,7 @@
 
             .timeline__post {
                 padding: 1.5rem 2rem;
+				margin: 2rem;
                 border-radius: 2px;
                 border-left: 3px solid var(--uiTimelineMainColor);
                 box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 1px 2px 0 rgba(0, 0, 0, .24);
@@ -447,8 +448,8 @@ LinkedIn
                 padding: 8px 8px 8px 32px;
                 text-decoration: none;
 
-                font-size: 25px;
-                color: #818181;
+                //font-size: 25px;
+                //color: #818181;
                 display: block;
                 transition: 0.3s;
             }
@@ -487,7 +488,11 @@ LinkedIn
                 }
             }
         </style>
+		
+<style> <!--To reach the annotation from the timeline without being covered by the topbar-->
+.hash_link_tag{margin-top: -100px; position: absolute;}
 
+</style>
 
 
 
@@ -598,73 +603,163 @@ LinkedIn
                 <a class="w3-bar-item w3-button w3-large" onclick="w3_close()">Close</a>
 
                 <div id="svg">
-
-                    <div class="timeline">
-                        <div class="timeline__group">
+				                    <div class="timeline">
+<div class="timeline__group">
+                            <span class="timeline__year">1990</span>
+                            <div class="timeline__box">
+<div class="timeline__date">
+                                    <span class="timeline__day">6</span>
+                                    <span class="timeline__month">Oct</span>
+                                </div>
+<div class="timeline__post">
+                                    <div class="timeline__content"><a href="#annotate_t3">
+                                        <p>married</p>
+                                    </a></div>
+                                </div>
+                            </div>
+                    </div>
+<div class="timeline__group">
+                            <span class="timeline__year">2006</span>
+                            <div class="timeline__box">
+<div class="timeline__date">
+                                    <span class="timeline__day">27</span>
+                                    <span class="timeline__month">Dec</span>
+                                </div>
+<div class="timeline__post">
+                                    <div class="timeline__content"><a href="#annotate_t15">
+                                        <p>proceedings</p>
+                                    </a></div>
+                                </div>
+                            </div>
+                    </div>
+<div class="timeline__group">
+                            <span class="timeline__year">2007</span>
+                            <div class="timeline__box">
+<div class="timeline__date">
+                                    <span class="timeline__day">X</span>
+                                    <span class="timeline__month">?</span>
+                                </div>
+<div class="timeline__post">
+                                    <div class="timeline__content"><a href="#annotate_t18">
+                                        <p>action</p>
+                                    </a></div>
+                                </div>
+                            </div>
+                    </div>
+<div class="timeline__group">
                             <span class="timeline__year">2008</span>
                             <div class="timeline__box">
-                                <div class="timeline__date">
-                                    <span class="timeline__day">2</span>
-                                    <span class="timeline__month">Feb</span>
+<div class="timeline__date">
+                                    <span class="timeline__day">10</span>
+                                    <span class="timeline__month">Nov</span>
                                 </div>
-                                <div class="timeline__post">
-                                    <div class="timeline__content">
-                                        <p>sadstant.</p>
-                                    </div>
+<div class="timeline__post">
+                                    <div class="timeline__content"><a href="#annotate_t17">
+                                        <p>file</p>
+                                    </a></div>
                                 </div>
                             </div>
+                    </div>
+<div class="timeline__group">
+                            <span class="timeline__year">2009</span>
                             <div class="timeline__box">
-                                <div class="timeline__date">
+<div class="timeline__date">
                                     <span class="timeline__day">1</span>
-                                    <span class="timeline__month">Sept</span>
+                                    <span class="timeline__month">Jun</span>
                                 </div>
-                                <div class="timeline__post">
-                                    <div class="timeline__content">
-                                        <p>Started from University of Pennsylvania. This is an important stage of my career. Here I worked in the local magazine. The experience greatly affected me</p>
-                                    </div>
+<div class="timeline__post">
+                                    <div class="timeline__content"><a href="#annotate_t26">
+                                        <p>upheld amended visits</p>
+                                    </a></div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="timeline__group">
-                            <span class="timeline__year">2014</span>
+                    </div>
+<div class="timeline__group">
+                            <span class="timeline__year">2010</span>
                             <div class="timeline__box">
-                                <div class="timeline__date">
-                                    <span class="timeline__day">14</span>
-                                    <span class="timeline__month">Jul</span>
+<div class="timeline__date">
+                                    <span class="timeline__day">X</span>
+                                    <span class="timeline__month">Jan</span>
                                 </div>
-                                <div class="timeline__post">
-                                    <div class="timeline__content">
-                                        <p>Travels to France, Italy, Spain, and Peru. After completing fashion editorial in Lima, prolongs stay to make portraits of local people in a daylight studio</p>
-                                    </div>
+<div class="timeline__post">
+                                    <div class="timeline__content"><a href="#annotate_t39">
+                                        <p>proceedings enforcement enforcement requests</p>
+                                    </a></div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="timeline__group">
+                            <div class="timeline__box">
+<div class="timeline__date">
+                                    <span class="timeline__day">29</span>
+                                    <span class="timeline__month">Jan</span>
+                                </div>
+<div class="timeline__post">
+                                    <div class="timeline__content"><a href="#annotate_t29">
+                                        <p>action</p>
+                                    </a></div>
+                                </div>
+                            </div>
+                    </div>
+<div class="timeline__group">
+                            <span class="timeline__year">2011</span>
+                            <div class="timeline__box">
+<div class="timeline__date">
+                                    <span class="timeline__day">X</span>
+                                    <span class="timeline__month">?</span>
+                                </div>
+<div class="timeline__post">
+                                    <div class="timeline__content"><a href="#annotate_t37">
+                                        <p>requested proceedings</p>
+                                    </a></div>
+                                </div>
+                            </div>
+                    </div>
+<div class="timeline__group">
+                            <span class="timeline__year">2013</span>
+                            <div class="timeline__box">
+<div class="timeline__date">
+                                    <span class="timeline__day">3</span>
+                                    <span class="timeline__month">Sep</span>
+                                </div>
+<div class="timeline__post">
+                                    <div class="timeline__content"><a href="#annotate_t41">
+                                        <p>lodged requests accepted appeal</p>
+                                    </a></div>
+                                </div>
+                            </div>
+                    </div>
+<div class="timeline__group">
                             <span class="timeline__year">2016</span>
                             <div class="timeline__box">
-                                <div class="timeline__date">
-                                    <span class="timeline__day">28</span>
-                                    <span class="timeline__month">Aug</span>
+<div class="timeline__date">
+                                    <span class="timeline__day">14</span>
+                                    <span class="timeline__month">Mar</span>
                                 </div>
-                                <div class="timeline__post">
-                                    <div class="timeline__content">
-                                        <p>Upon moving to Brooklyn that summer, I began photographing weddings in Chicago</p>
-                                    </div>
+<div class="timeline__post">
+                                    <div class="timeline__content"><a href="#annotate_t1">
+                                        <p>complaint application declared</p>
+                                    </a></div>
                                 </div>
                             </div>
-                        </div>
                     </div>
-
-
-
-
-
-
-                </div>
-
+<div class="timeline__group">
+                            <span class="timeline__year">2017</span>
+                            <div class="timeline__box">
+<div class="timeline__date">
+                                    <span class="timeline__day">30</span>
+                                    <span class="timeline__month">May</span>
+                                </div>
+<div class="timeline__post">
+                                    <div class="timeline__content"><a href="#annotate_t44">
+                                        <p>notified</p>
+                                    </a></div>
+                                </div>
+                            </div>
+                    </div>
+                    </div
+                    </div>
             </div>
 
-
+</div>
             <!--
                     <div style="float:right;">
                                     <form id="signin" class="navbar-form navbar-right" role="form" style="display: none;">

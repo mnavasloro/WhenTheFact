@@ -28,7 +28,7 @@ public class timelineGeneration {
         // We look for the years
         for(Event ev : events){
             if(!ev.Core.elements.isEmpty()){ //If the event is empty, we do not care about it                
-                int year = Integer.parseInt(ev.When.year);
+                int year = ev.When.year;
                     ArrayList<Event> auxarr = new ArrayList<Event>();
                 if(map.containsKey(year)){
                     auxarr = map.get(year);
@@ -57,7 +57,7 @@ public class timelineGeneration {
     public static TreeMap<Integer, Box> orderBoxes(ArrayList<Event> evs){
         TreeMap<Integer, Box> res = new TreeMap<Integer, Box>();
         for(Event ev : evs){
-            res.put(Integer.parseInt(ev.When.month)*100 + Integer.parseInt(ev.When.day), new Box(ev));
+            res.put(ev.When.month*100 + ev.When.day, new Box(ev));
         }
         
         return res;        
