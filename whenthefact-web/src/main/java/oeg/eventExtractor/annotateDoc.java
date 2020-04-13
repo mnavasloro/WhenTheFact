@@ -213,8 +213,9 @@ public class annotateDoc extends HttpServlet {
             contetRegex = contetRegex.replaceAll("\"", "");
             contetRegex = contetRegex.replaceAll(" ", "\n");
             if (m.group(2).contains("when") || m.group(2).contains("TIMEX3")) {
-                color = "id=\"annotate_" + m.group(4) + "\" style=\"padding: 6px;border-radius: 3px;background-color: #3364b7;color:#FFFFFF;\"";//DodgerBlue";
-                auxwhen="<span class=\"hash_link_tag\" id=\"annotate_" + m.group(4) + "\"></span> ";
+                color = "style=\"padding: 6px;border-radius: 3px;background-color: #3364b7;color:#FFFFFF;\"";//DodgerBlue";
+//                color = "id=\"annotate_" + m.group(4) + "\" style=\"padding: 6px;border-radius: 3px;background-color: #3364b7;color:#FFFFFF;\"";//DodgerBlue";
+                auxwhen="<span class= \"hash_link_tag\" id=\"annotate_" + m.group(4) + "\" style=\"visibility:hidden; overflow:hidden; margin-top: -100px; position: absolute;\"></span> ";
             }
             String aux2 = m.group(0);
             aux2 = aux2.replace(">", "");
