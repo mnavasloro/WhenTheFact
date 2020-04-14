@@ -2,54 +2,61 @@
 <!-- saved from url=(0047)http://lkg.lynx-project.eu/res/BOE-A-2011-16175 -->
 <html class="gr__lkg_lynx-project_eu">
 
-    <head>
-        <meta http-equiv="Content-Type" content="charset=utf-8">
-        <title>EventFinder</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+    <meta http-equiv="Content-Type" content="charset=utf-8">
+    <title>WhenTheFact</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <!-- CSS (Stylesheets) @coredamnwork -->
-        <link href="style/css/lynxStyle.css" rel="stylesheet" />
+    <!-- CSS (Stylesheets) @coredamnwork -->
+    <link href="style/css/lynxStyle.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- CSS Pre-existent -->
+    <link href="./files/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+    <link rel="stylesheet" href="./help/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
 
-        <!-- CSS Pre-existent -->
-        <link href="./files/bootstrap.min.css" rel="stylesheet">
-        <!-- flatly, journal, cerulean -->
-        <!--<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.css" /> -->
-        <link rel="stylesheet" href="./files/ladda-themeless.min.css">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- CSS Help -->
+    <link href="./help/style.css" rel="stylesheet">
 
-        <!-- SCRIPTS  -->
-        <!--script type="text/javascript" src="https://ff.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js" charset="UTF-8"></script-->
-        <!--script src="./files/popper.min.js.descarga"></script-->
-        <script src="./files/jquery.min.js.descarga"></script>
-        <script src="./files/bootstrap.min.js.descarga"></script>
-        <script src="./files/leaflet.js.descarga"></script>
-        <script src="./files/bootbox.min.js.descarga"></script>
-        <script src="./files/spin.min.js.descarga"></script>
-        <script type="text/javascript" src="./files/cookieconsent.min.js.descarga"></script>
+    <!-- flatly, journal, cerulean -->
+    <!--<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.css" /> -->
+    <link rel="stylesheet" href="./files/ladda-themeless.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
-        <script src="./files/ladda.min.js.descarga"></script>
+    <!-- SCRIPTS  -->
+    <!--script type="text/javascript" src="https://ff.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js" charset="UTF-8"></script-->
+    <!--script src="./files/popper.min.js.descarga"></script-->
+    <script src="./files/jquery.min.js.descarga"></script>
+    <script src="./files/bootstrap.min.js.descarga"></script>
+    <script src="./files/leaflet.js.descarga"></script>
+    <script src="./files/bootbox.min.js.descarga"></script>
+    <script src="./files/spin.min.js.descarga"></script>
+    <script type="text/javascript" src="./files/cookieconsent.min.js.descarga"></script>
 
-        <!-- My Scripts @coredamnwork -->
-        <script src="./js/timeline.js"></script>
+    <script src="./files/ladda.min.js.descarga"></script>
 
-        <!-- Buttons functionlities -->
+    <!-- My Scripts @coredamnwork -->
+    <script src="./js/timeline.js"></script>
+
+    <!-- Buttons functionlities -->
 
 
-        <script>
-            var id = "001-173800";
-            function getECHRDoc() {
-                var x = document.getElementById("searchDoc").value;
-                id = getIDviaRegex(x);
-                console.log('id: ' + id)
+    <script>
+        var id = "001-173800";
+        function getECHRDoc() {
+            var x = document.getElementById("searchDoc").value;
+            id = getIDviaRegex(x);
+            console.log('id: ' + id)
 
-                x = encodeURI(x);
-                console.log(x)
-                var request = makeHttpObject();
-                console.log("https://cors-anywhere.herokuapp.com/https://hudoc.echr.coe.int/app/conversion/docx/html/body?library=ECHR&id=" + id)
-                request.open("GET", "https://cors-anywhere.herokuapp.com/https://hudoc.echr.coe.int/app/conversion/docx/html/body?library=ECHR&id=" + id, true);
+            x = encodeURI(x);
+            console.log(x)
+            var request = makeHttpObject();
+            console.log("https://cors-anywhere.herokuapp.com/https://hudoc.echr.coe.int/app/conversion/docx/html/body?library=ECHR&id=" + id)
+            request.open("GET", "https://cors-anywhere.herokuapp.com/https://hudoc.echr.coe.int/app/conversion/docx/html/body?library=ECHR&id=" + id, true);
 
-                request.send(null);
-                request.onreadystatechange = function () {
+            request.send(null);
+            request.onreadystatechange = function () {
                     //alert(request.responseText);
                     if (request.readyState == 4) {
                         console.log(request.responseText)
@@ -135,16 +142,16 @@
 
 //var params = "inputID=" + encodeURIComponent(id);// + "&inputURL=" + encodeURIComponent(x2);
 
-                    xhttp.open('POST', 'annotate2', true);
-                    xhttp.setRequestHeader("Content-type", "application/json;charset=utf-8");
-                    xhttp.send(jsonreq);
-                    xhttp.onreadystatechange = function () {
-                        if (this.readyState == 4 && this.status == 200) {
-						
-						//We divide the response: new text and timeline
-						var res = xhttp.responseText.split("<div class=\"timeline\">");
+xhttp.open('POST', 'annotate2', true);
+xhttp.setRequestHeader("Content-type", "application/json;charset=utf-8");
+xhttp.send(jsonreq);
+xhttp.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+
+                            //We divide the response: new text and timeline
+                            var res = xhttp.responseText.split("<div class=\"timeline\">");
                             document.getElementById("texto").innerHTML = "<html>" + res[0] + "</html>";
-							document.getElementById("svg").innerHTML = "<div class=\"timeline\">" + res[1];
+                            document.getElementById("svg").innerHTML = "<div class=\"timeline\">" + res[1];
                             // MARIA: todo annadir timeline a su panel y cambiar html
                             // Typical action to be performed when the document is ready:
                             //document.getElementById("embedding").innerHTML = xhttp.responseText;
@@ -247,7 +254,7 @@
 
             .timeline__post {
                 padding: 1.5rem 2rem;
-				margin: 2rem;
+                margin: 2rem;
                 border-radius: 2px;
                 border-left: 3px solid var(--uiTimelineMainColor);
                 box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 1px 2px 0 rgba(0, 0, 0, .24);
@@ -312,64 +319,64 @@
 =====
 DEMO
 =====
-            */
+*/
 
-            @media (min-width: 768px) {
+@media (min-width: 768px) {
 
-                html {
-                    font-size: 62.5%;
-                }
-            }
+    html {
+        font-size: 62.5%;
+    }
+}
 
-            @media (max-width: 767px) {
+@media (max-width: 767px) {
 
-                html {
-                    font-size: 55%;
-                }
-            }
+    html {
+        font-size: 55%;
+    }
+}
 
-            body {
-                font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Open Sans, Ubuntu, Fira Sans, Helvetica Neue, sans-serif;
-                font-size: 1.6rem;
-                color: #222;
+body {
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Open Sans, Ubuntu, Fira Sans, Helvetica Neue, sans-serif;
+    font-size: 1.6rem;
+    color: #222;
 
-                background-color: #f0f0f0;
-                margin: 0;
-                -webkit-overflow-scrolling: touch;
-                overflow-y: scroll;
+    background-color: #f0f0f0;
+    margin: 0;
+    -webkit-overflow-scrolling: touch;
+    overflow-y: scroll;
 
-                display: flex;
-                flex-direction: column;
-            }
+    display: flex;
+    flex-direction: column;
+}
 
-            p {
-                margin-top: 0;
-                margin-bottom: 1.5rem;
-                line-height: 1.5;
-            }
+p {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+}
 
-            p:last-child {
-                margin-bottom: 0;
-            }
+p:last-child {
+    margin-bottom: 0;
+}
 
-            .page {
-                max-width: 800px;
-                padding: 10rem 2rem 3rem;
-                margin-left: auto;
-                margin-right: auto;
-                order: 1;
-            }
+.page {
+    max-width: 800px;
+    padding: 10rem 2rem 3rem;
+    margin-left: auto;
+    margin-right: auto;
+    order: 1;
+}
 
             /*
 =====
 LinkedIn
 =====
-            */
+*/
 
-            .linkedin {
-                background-color: #fff;
-                text-align: center;
-            }
+.linkedin {
+    background-color: #fff;
+    text-align: center;
+}
 
 
 
@@ -383,21 +390,21 @@ LinkedIn
 
 
 
-            .linkedin__container {
-                max-width: 1000px;
-                padding: 10px;
-                margin-left: auto;
-                margin-right: auto;
-            }
+.linkedin__container {
+    max-width: 1000px;
+    padding: 10px;
+    margin-left: auto;
+    margin-right: auto;
+}
 
-            .linkedin__text {
-                margin-top: 0;
-                margin-bottom: 0;
-            }
+.linkedin__text {
+    margin-top: 0;
+    margin-bottom: 0;
+}
 
-            .linkedin__link {
-                color: #ff5c5c;
-            }
+.linkedin__link {
+    color: #ff5c5c;
+}
 
 
 
@@ -422,89 +429,75 @@ LinkedIn
 
 
 
-            body {
-                font-family: "Lato", sans-serif;
+body {
+    font-family: "Lato", sans-serif;
 
 
 
 
 
-            }
+}
 
-            .sidebar {
-                height: 100%;
-                width: 0;
-                position: fixed;
-                z-index: 1;
-                top: 0;
-                left: 0;
-                background-color: #111;
-                overflow-x: hidden;
-                transition: 0.5s;
-                padding-top: 60px;
-            }
+.sidebar {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+}
 
-            .sidebar a {
-                padding: 8px 8px 8px 32px;
-                text-decoration: none;
+.sidebar a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    display: block;
+    transition: 0.3s;
+}
 
-                //font-size: 25px;
-                //color: #818181;
-                display: block;
-                transition: 0.3s;
-            }
+.sidebar a:hover {
 
-            .sidebar a:hover {
 
+    color: #f1f1f1;
 
-                color: #f1f1f1;
 
 
+}
 
-            }
-
-            .sidebar .closebtn {
-                position: absolute;
-                top: 0;
-                right: 25px;
-                font-size: 36px;
-                margin-left: 50px;
-            }
-
-            #main {
-                transition: margin-left .5s;
-                padding: 16px;
-            }
-
-            /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
-            @media screen and (max-height: 450px) {
-                .sidebar {
-                    padding-top: 15px;
-                }
-
-
-                .sidebar a {
-                    font-size: 18px;
-                }
-            }
-        </style>
-		
-<!--<style> <!--To reach the annotation from the timeline without being covered by the topbar
-.hash_link_tag{margin-top: -100px; position: absolute;}
-
-</style>-->
-
-
-
-
-
-
-
-
-
-        <script>
-            function w3_open() {
-                document.getElementById("mainshrinker").style.marginLeft = "22%";
+.sidebar .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+    color: #337ab7!important;
+}
+
+#main {
+    transition: margin-left .5s;
+    padding: 16px;
+}
+
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+    .sidebar {
+        padding-top: 15px;
+    }
+
+
+    .sidebar a {
+        font-size: 18px;
+    }
+}
+</style>
+
+<script>
+    function w3_open() {
+        if(document.getElementById("mySidebar").style.display == "none"){
+        document.getElementById("mainshrinker").style.marginLeft = "22%";
                 //	document.getElementById("topContentContainer").style.display = "inherit";
                 //document.getElementById("topContentContainer").style.marginLeft = "25%";
                 //document.getElementById("topContentContainer").width = "75%";
@@ -513,6 +506,9 @@ LinkedIn
                 document.getElementById("mySidebar").style.display = "block";
                 document.getElementById("mainshrinker").className = "col-md-11";
                 document.getElementById("mySidebar").style.resize = "horizontal";
+            } else{
+                w3_close();
+            }
 
             }
 
@@ -547,13 +543,70 @@ LinkedIn
                 }
             }
         </script>
+
+        <style>
+            .modal {
+                background: none!important;
+                text-align: center;
+                padding: 0!important;
+                top: 50%!important;
+                left: 50%!important;
+                width: 110%;
+            }
+
+            .modal:before {
+                content: '';
+                display: inline-block;
+                height: 100%;
+                vertical-align: middle;
+                margin-right: -4px; /* Adjusts for spacing */
+            }
+
+            .modal-dialog {
+                display: inline-block;
+                text-align: center;
+                vertical-align: middle;
+            }
+
+            .modal-content {
+                    width: 100%;
+            }
+
+            .modal-header, h4, .close {
+                width: 80%;
+                color: gray!important;
+                text-align: center;
+                padding: 0px;
+                    padding: 1rem 1rem;
+    margin: -1rem 0rem 0rem auto;
+            }
+            .modal-footer {
+                background-color: #f9f9f9;
+            }
+
+            .autoModal.modal .modal-body{
+                height: 80%;
+                width: 80%;
+                padding: 0!important;
+            }
+        </style>
+        <script>
+            $(document).ready(function () {
+                $("#myBtn").click(function () {
+                    $("#myModal").modal();
+                });
+            });
+        </script>
     </head>
 
-    <body onload="onPageLoad()" data-gr-c-s-loaded="true">
+
+    <body data-gr-c-s-loaded="true">
         <div id="main">
 
+
+
             <!-- https://stackoverflow.com/questions/17054381/placing-4-html-elements-in-every-corner-of-a-div-->
-            <div id="topContentContainer" class="rounded navbar-fixed-top" style="vertical-align:middle z-index: 10000;	  position: fixed;">
+            <div id="topContentContainer" class="rounded navbar-fixed-top" style="vertical-align:middle; z-index: 10000; position: fixed;">
                 <!-- Button holder (Includes all the buttons) -->
                 <div id="flex2ColHeader">
                     <nav>
@@ -567,304 +620,215 @@ LinkedIn
 
 
                         <div class="col-sm-4 btn-sm input-group"><span class="icon glyphicon input-group-addon glyphicon-search" style="vertical-align:middle; position:unset" onclick="getECHRDoc()"></span> <input id="searchDoc" type="text" value="http://hudoc.echr.coe.int/eng?i=001-173800" class="search-field form-control"
-                                                                                                                                                                                                        placeholder="Search" style="vertical-align:middle; position:none"></div>
+                            placeholder="Search" style="vertical-align:middle; position:none"></div>
 
 
-                        <script>
-                            var input = document.getElementById("searchDoc");
-                            input.addEventListener("keyup", function (event) {
-                                if (event.keyCode === 13) {
-                                    event.preventDefault();
-                                    getECHRDoc();
-                                }
-                            });
-                        </script>
+                            <script>
+                                var input = document.getElementById("searchDoc");
+                                input.addEventListener("keyup", function (event) {
+                                    if (event.keyCode === 13) {
+                                        event.preventDefault();
+                                        getECHRDoc();
+                                    }
+                                });
+                            </script>
 
-                        <div class="horizontalgap" style="width:20%"></div>
-                        <!-- Timeline functionality button -->
+                            <div class="horizontalgap" style="width:20%"></div>
+                            <!-- Timeline functionality button -->
 
-                        <a id="btntimex" class="col-sm-2 btn btn-primary btn-sm ladda-button buttonsCustomColor" role="button" onclick="annotateTIME()">
-                            <!--Prev functionality onclick="testtimex();" -->
-                            <span class="ladda-label icon_h">
-                                <img src="img/Time.png" alt="timeIcon" />&nbsp;&nbsp;&nbsp;Events
-                            </span>
-                        </a>
 
-                        <!-- Terminology functionality button -->
-                        <a class="col-sm-2 btn btn-primary btn-sm ladda-button buttonsCustomColor" onclick="w3_open()"><span class="ladda-label icon_h"><img src="img/timeline-icon.png" alt="timelineIcon" style="width:1;height:1;" />&nbsp;&nbsp;&nbsp;Timeline</span></a>
+                            <a id="helpbutton" class="col-sm-2 btn btn-primary btn-sm ladda-button buttonsCustomColor" role="button" data-toggle="modal" data-target="#myModal">
+                                <!--Prev functionality onclick="testtimex();" -->
+                                <span class="ladda-label icon_h" style="color: white;">
+                                    <img src="img/help.png" alt="helpIcon" />&nbsp;&nbsp;&nbsp;Help
+                                </span>
+                            </a>
 
-                    </nav>
+                            <a id="btntimex" class="col-sm-2 btn btn-primary btn-sm ladda-button buttonsCustomColor" role="button" onclick="annotateTIME()">
+                                <!--Prev functionality onclick="testtimex();" -->
+                                <span class="ladda-label icon_h" style="color: white;">
+                                    <img src="img/Time.png" alt="timeIcon" />&nbsp;&nbsp;&nbsp;Events
+                                </span>
+                            </a>
+
+                            <!-- Terminology functionality button -->
+                            <a class="col-sm-2 btn btn-primary btn-sm ladda-button buttonsCustomColor" onclick="w3_open()" style="color: white;"><span class="ladda-label icon_h"><img src="img/timeline-icon.png" alt="timelineIcon" style="width:1;height:1;" />&nbsp;&nbsp;&nbsp;Timeline</span></a>
+
+                        </nav>
+
+                    </div>
+                </div>
+
+                <div id="mySidebar" class="sidebar" style="display:none;">
+                    <a class="w3-bar-item w3-button w3-large" onclick="w3_close()" style="color: #337ab7!important;">Close</a>
+
+                    <div id="svg">
+                        <div style="color:gray;margin:15px;"><p>Please search for a document and annotate it in order to get a timeline. Click below for more information. <a data-toggle="modal" data-target="#myModal" style="font-weight: bold;color: #337ab7!important;">How to annotate a document?</a></p></div>
+                    </div>
 
                 </div>
-            </div>
 
+                <div class="container" id="idcontenedor">
+                    <div> <p style="margin-bottom:40px;"></p>  </div>
+                    <div id="mainshrinker" class="col-md-12">
+                        <div id="mainContent">
+                            <div class="panel panel-info" style="padding: 25px; padding-top: 50px; padding-top: 40px;">
 
-            <div id="mySidebar" class="sidebar">
-                <a class="w3-bar-item w3-button w3-large" onclick="w3_close()">Close</a>
-
-                <div id="svg">
-				                    <div class="timeline">
-<div class="timeline__group">
-                            <span class="timeline__year">1990</span>
-                            <div class="timeline__box">
-<div class="timeline__date">
-                                    <span class="timeline__day">6</span>
-                                    <span class="timeline__month">Oct</span>
-                                </div>
-<div class="timeline__post">
-                                    <div class="timeline__content"><a href="#annotate_t3">
-                                        <p>married</p>
-                                    </a></div>
-                                </div>
+                                <div id="texto">
+                                    <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br>
                             </div>
-                    </div>
-<div class="timeline__group">
-                            <span class="timeline__year">2006</span>
-                            <div class="timeline__box">
-<div class="timeline__date">
-                                    <span class="timeline__day">27</span>
-                                    <span class="timeline__month">Dec</span>
-                                </div>
-<div class="timeline__post">
-                                    <div class="timeline__content"><a href="#annotate_t15">
-                                        <p>proceedings</p>
-                                    </a></div>
-                                </div>
-                            </div>
-                    </div>
-<div class="timeline__group">
-                            <span class="timeline__year">2007</span>
-                            <div class="timeline__box">
-<div class="timeline__date">
-                                    <span class="timeline__day">X</span>
-                                    <span class="timeline__month">?</span>
-                                </div>
-<div class="timeline__post">
-                                    <div class="timeline__content"><a href="#annotate_t18">
-                                        <p>action</p>
-                                    </a></div>
-                                </div>
-                            </div>
-                    </div>
-<div class="timeline__group">
-                            <span class="timeline__year">2008</span>
-                            <div class="timeline__box">
-<div class="timeline__date">
-                                    <span class="timeline__day">10</span>
-                                    <span class="timeline__month">Nov</span>
-                                </div>
-<div class="timeline__post">
-                                    <div class="timeline__content"><a href="#annotate_t17">
-                                        <p>file</p>
-                                    </a></div>
-                                </div>
-                            </div>
-                    </div>
-<div class="timeline__group">
-                            <span class="timeline__year">2009</span>
-                            <div class="timeline__box">
-<div class="timeline__date">
-                                    <span class="timeline__day">1</span>
-                                    <span class="timeline__month">Jun</span>
-                                </div>
-<div class="timeline__post">
-                                    <div class="timeline__content"><a href="#annotate_t26">
-                                        <p>upheld amended visits</p>
-                                    </a></div>
-                                </div>
-                            </div>
-                    </div>
-<div class="timeline__group">
-                            <span class="timeline__year">2010</span>
-                            <div class="timeline__box">
-<div class="timeline__date">
-                                    <span class="timeline__day">X</span>
-                                    <span class="timeline__month">Jan</span>
-                                </div>
-<div class="timeline__post">
-                                    <div class="timeline__content"><a href="#annotate_t39">
-                                        <p>proceedings enforcement enforcement requests</p>
-                                    </a></div>
-                                </div>
-                            </div>
-                            <div class="timeline__box">
-<div class="timeline__date">
-                                    <span class="timeline__day">29</span>
-                                    <span class="timeline__month">Jan</span>
-                                </div>
-<div class="timeline__post">
-                                    <div class="timeline__content"><a href="#annotate_t29">
-                                        <p>action</p>
-                                    </a></div>
-                                </div>
-                            </div>
-                    </div>
-<div class="timeline__group">
-                            <span class="timeline__year">2011</span>
-                            <div class="timeline__box">
-<div class="timeline__date">
-                                    <span class="timeline__day">X</span>
-                                    <span class="timeline__month">?</span>
-                                </div>
-<div class="timeline__post">
-                                    <div class="timeline__content"><a href="#annotate_t37">
-                                        <p>requested proceedings</p>
-                                    </a></div>
-                                </div>
-                            </div>
-                    </div>
-<div class="timeline__group">
-                            <span class="timeline__year">2013</span>
-                            <div class="timeline__box">
-<div class="timeline__date">
-                                    <span class="timeline__day">3</span>
-                                    <span class="timeline__month">Sep</span>
-                                </div>
-<div class="timeline__post">
-                                    <div class="timeline__content"><a href="#annotate_t41">
-                                        <p>lodged requests accepted appeal</p>
-                                    </a></div>
-                                </div>
-                            </div>
-                    </div>
-<div class="timeline__group">
-                            <span class="timeline__year">2016</span>
-                            <div class="timeline__box">
-<div class="timeline__date">
-                                    <span class="timeline__day">14</span>
-                                    <span class="timeline__month">Mar</span>
-                                </div>
-<div class="timeline__post">
-                                    <div class="timeline__content"><a href="#annotate_t1">
-                                        <p>complaint application declared</p>
-                                    </a></div>
-                                </div>
-                            </div>
-                    </div>
-<div class="timeline__group">
-                            <span class="timeline__year">2017</span>
-                            <div class="timeline__box">
-<div class="timeline__date">
-                                    <span class="timeline__day">30</span>
-                                    <span class="timeline__month">May</span>
-                                </div>
-<div class="timeline__post">
-                                    <div class="timeline__content"><a href="#annotate_t44">
-                                        <p>notified</p>
-                                    </a></div>
-                                </div>
-                            </div>
-                    </div>
-                    </div
-                    </div>
-            </div>
-
-</div>
-            <!--
-                    <div style="float:right;">
-                                    <form id="signin" class="navbar-form navbar-right" role="form" style="display: none;">
-                                            <div class="input-group input-group-sm col-xs-3">
-                                                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                                    <input id="email" class="form-control" name="username" value="" placeholder="User">
-                                            </div>
-                                            <div class="input-group input-group-sm col-xs-3">
-                                                    <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                                                    <input id="password" type="password" class="form-control" name="userpass" value="" placeholder="Password">
-                                            </div>
-                                       <button type="submit" class="btn btn-primary btn-sm">login</button>
-                                            <a onclick="testlogin();" class="btn btn-primary btn-sm" role="button" style="margin: 8px;"><span class="glyphicon glyphicon-log-in"></span> login</a>
-                                    </form>
-                       </div>
-            -->
-
-
-
-            <div class="container" id="idcontenedor">
-                <div>
-                    <p style="margin-bottom:40px;"></p>
-                </div>
-                <div id="mainshrinker" class="col-md-12">
-                    <div id="mainContent">
-                        <div class="panel panel-info" style="padding: 25px; padding-top: 50px;; padding-top: 40px;">
-
-
-
-
-
-
-
-
-
-
-                            <div id="texto"><style>
-                                    .s32B251D { margin:0pt; text-align:center }
-                                    .sB8D990E2 { font-family:Arial; font-size:12pt }
-                                    .s7D2086B4 { font-family:Arial; font-size:12pt; font-weight:bold }
-                                    .s6B621B36 { font-family:Arial; font-size:12pt; font-style:italic }
-                                    .s15A9198A { color:#ff0000; font-family:Arial; font-size:14pt; font-weight:bold; text-decoration:underline }
-                                    .s556A1DE3 { color:#ff0000; font-family:Arial; font-size:14pt }
-                                    .s6E50BD9A { margin:0pt }
-                                    .s2359E37B { font-family:Arial; font-size:11pt; font-style:italic }
-                                    .sDCD70A49 { clear:both; mso-break-type:section-break; page-break-before:always }
-                                    .s30EEC3F8 { margin:0pt; text-align:justify; text-indent:14.2pt }
-                                    .s783FD90F { width:28.35pt; text-indent:0pt; display:inline-block }
-                                    .s30CCF494 { margin:36pt 0pt 12pt; page-break-after:avoid; page-break-inside:avoid; text-align:justify }
-                                    .s32A37344 { font-family:Arial; font-size:14pt }
-                                    .s1BD70772 { margin:18pt 0pt 12pt; padding-left:17.85pt; page-break-after:avoid; page-break-inside:avoid; text-align:justify; text-indent:-17.85pt }
-                                    .sFA83D483 { margin:12pt 0pt 0pt; page-break-after:avoid; page-break-inside:avoid; text-align:justify; text-indent:14.2pt }
-                                    .s19630BCC { margin:12pt 0pt 6pt; page-break-after:avoid; page-break-inside:avoid; text-align:center }
-                                    .sDFC50A6A { font-family:Arial; font-size:10pt; font-weight:bold }
-                                    .s9E9B0CD7 { margin:6pt 0pt 6pt 21.25pt; text-align:justify; text-indent:7.1pt }
-                                    .sFBBFEE58 { font-family:Arial; font-size:10pt }
-                                    .sD5B7D322 { margin:18pt 0pt 12pt 11.6pt; padding-left:17.6pt; page-break-after:avoid; page-break-inside:avoid; text-align:justify; text-indent:-17.6pt }
-                                    .sCC3BCF28 { margin:12pt 0pt 6pt 21.55pt; padding-left:15.05pt; page-break-after:avoid; page-break-inside:avoid; text-align:justify; text-indent:-15.05pt }
-                                    .sC9A68B25 { margin:12pt 0pt 6pt 31.75pt; padding-left:17pt; page-break-after:avoid; page-break-inside:avoid; text-align:justify; text-indent:-17pt }
-                                    .sBD4B43CB { margin:6pt 0pt 6pt 21.25pt; page-break-after:avoid; page-break-inside:avoid; text-align:justify; text-indent:7.1pt }
-                                    .s52B9FB1C { margin:0pt; padding-left:17pt; text-align:justify; text-indent:-17pt }
-                                    .s746C8714 { margin:0pt; text-align:justify }
-                                    .s6C21291F { margin:0pt 0pt 0pt 17.3pt; text-align:justify }
-                                    .s21D618BF { margin:0pt 0pt 0pt 39.7pt; text-align:justify }
-                                    .s63F375A7 { margin:36pt 0pt 0pt }
-                                    .sB2565A59 { width:0.2pt; text-indent:0pt; display:inline-block }
-                                    .sED80D76A { width:188.42pt; text-indent:0pt; display:inline-block }
-                                    .sC9562A37 { width:21.87pt; text-indent:0pt; display:inline-block }
-                                    .s4B98E8F4 { width:183.09pt; text-indent:0pt; display:inline-block }
-                                </style>
-                                <div><p class="s32B251D"><span class="sB8D990E2">&nbsp;</span></p><p class="s32B251D"><span class="sB8D990E2">&nbsp;</span></p><p class="s32B251D"><span class="sB8D990E2">&nbsp;</span></p><p class="s32B251D"><span class="sB8D990E2">FOURTH SECTION</span></p><p class="s32B251D"><span class="sB8D990E2">&nbsp;</span></p><p class="s32B251D"><span class="sB8D990E2">&nbsp;</span></p><p class="s32B251D"><span class="sB8D990E2">&nbsp;</span></p><p class="s32B251D"><span class="sB8D990E2">&nbsp;</span></p><p class="s32B251D"><span class="sB8D990E2">&nbsp;</span></p><p class="s32B251D"><span class="sB8D990E2">&nbsp;</span></p><p class="s32B251D"><a name="To"><span class="s7D2086B4">CASE OF </span></a><span class="s7D2086B4">Ã“NODI v. HUNGARY</span></p><p class="s32B251D"><span class="sB8D990E2">&nbsp;</span></p><p class="s32B251D"><span class="s6B621B36">(</span><span class="s6B621B36">Application no. 38647/09</span><span class="s6B621B36">)</span></p><p class="s32B251D"><span class="sB8D990E2">&nbsp;</span></p><p class="s32B251D"><span class="sB8D990E2">&nbsp;</span></p><p class="s32B251D"><span class="sB8D990E2">&nbsp;</span></p><p class="s32B251D"><span class="sB8D990E2">&nbsp;</span></p><p class="s32B251D"><span class="sB8D990E2">&nbsp;</span></p><p class="s32B251D"><span class="sB8D990E2">&nbsp;</span></p><p class="s32B251D"><span class="sB8D990E2">&nbsp;</span></p><p class="s32B251D"><span class="sB8D990E2">&nbsp;</span></p><p class="s32B251D"><span class="sB8D990E2">JUDGMENT</span></p><p class="s32B251D"><span class="sB8D990E2">&nbsp;</span></p><p class="s32B251D"><span class="sB8D990E2">&nbsp;</span></p><p class="s32B251D"><span class="sB8D990E2">STRASBOURG</span></p><p class="s32B251D"><span class="sB8D990E2">&nbsp;</span></p><p class="s32B251D"><span class="sB8D990E2">30 May 2017</span></p><p class="s32B251D"><span class="sB8D990E2">&nbsp;</span></p><p class="s32B251D"><span class="sB8D990E2">&nbsp;</span></p><p class="s32B251D"><span class="sB8D990E2">&nbsp;</span></p><p class="s32B251D"><span class="s15A9198A">FINAL</span></p><p class="s32B251D"><span class="s556A1DE3">&nbsp;</span></p><p class="s32B251D"><span class="s556A1DE3">30/08/2017</span></p><p class="s32B251D"><span class="sB8D990E2">&nbsp;</span></p><p class="s32B251D"><span class="sB8D990E2">&nbsp;</span></p><p class="s6E50BD9A"><span class="s2359E37B">This judgment has become final under Article 44 Â§ 2 of the Convention. It may be subject to editorial revision.</span></p><p class="s6E50BD9A"><span class="s6B621B36">&nbsp;</span></p></div><br class="sDCD70A49"><div><p class="s30EEC3F8"><span class="s7D2086B4">In the case of </span><span class="s7D2086B4">Ã“nodi v. Hungary</span><span class="s7D2086B4">,</span></p><p class="s30EEC3F8"><span class="sB8D990E2">The European Court of Human Rights (</span><span class="sB8D990E2">Fourth Section</span><span class="sB8D990E2">), sitting as a </span><span class="sB8D990E2">Chamber</span><span class="sB8D990E2"> composed of:</span></p><p class="s6E50BD9A"><span class="s783FD90F"></span><span class="sB8D990E2">Ganna Yudkivska,</span><span class="s6B621B36"> President,</span><br><span class="s783FD90F"></span><span class="sB8D990E2">Vincent A. De Gaetano,</span><br><span class="s783FD90F"></span><span class="sB8D990E2">Faris Vehabovic,</span><br><span class="s783FD90F"></span><span class="sB8D990E2">Egidijus Kuris,</span><br><span class="s783FD90F"></span><span class="sB8D990E2">Iulia Motoc,</span><br><span class="s783FD90F"></span><span class="sB8D990E2">Georges Ravarani,</span><br><span class="s783FD90F"></span><span class="sB8D990E2">PÃ©ter Paczolay,</span><span class="s6B621B36"> judges,</span><br><span class="s783FD90F"></span><span class="sB8D990E2">and </span><span class="sB8D990E2">Andrea Tamietti, </span><span class="s6B621B36">Deputy </span><span class="s6B621B36">Section </span><span class="s6B621B36">Registrar</span><span class="s6B621B36">,</span></p><p class="s30EEC3F8"><span class="sB8D990E2">Having deliberated in private on </span><span class="sB8D990E2">9 May 2017</span><span class="sB8D990E2">,</span></p><p class="s30EEC3F8"><span class="sB8D990E2">Delivers the following judgment, which was adopted on that date:</span></p><p class="s30CCF494"><span class="s32A37344">PROCEDURE</span></p><p class="s30EEC3F8"><span class="sB8D990E2">1</span><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">The case originated in </span><span class="sB8D990E2">an application (no. 38647/09)</span><span class="sB8D990E2"> against </span><span class="sB8D990E2">Hungary</span><span class="sB8D990E2"> lodged with the </span><span class="sB8D990E2">Court under Article 34</span><span class="sB8D990E2"> of the Convention for the Protection of Human Rights and Fundamental Freedoms (â€œthe Conventionâ€�) by </span><span class="sB8D990E2">a</span><span class="sB8D990E2"> </span><span class="sB8D990E2">Hungarian national, Mr GÃ¡bor Ã“nodi (â€œthe applicantâ€�), on 16 July 2009</span><span class="sB8D990E2">.</span></p><p class="s30EEC3F8"><span class="sB8D990E2">2</span><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">The applicant was represented by Ms </span><span class="sB8D990E2">M.</span><span class="sB8D990E2"> RegÃ¡sz, a lawyer practising in Budapest. </span><span class="sB8D990E2">The Hungarian Government (â€œthe Governmentâ€�) were represented by Mr Z. TallÃ³di, Agent, Ministry of Justice.</span></p><p class="s30EEC3F8"><span class="sB8D990E2">3</span><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">The applicant alleged, in particular, that the Hungarian authorities had failed to take effective steps to enforce his right </span><span class="sB8D990E2">to </span><span class="sB8D990E2">contact with his daughter</span><span class="sB8D990E2">, in breach of Article 8 of the Convention</span><span class="sB8D990E2">.</span></p><p class="s30EEC3F8"><span class="sB8D990E2">4</span><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">On </span><span class="sB8D990E2">14 March 2016</span><span class="sB8D990E2"> th</span><span class="sB8D990E2">is</span><span class="sB8D990E2"> </span><span class="sB8D990E2">complaint</span><span class="sB8D990E2"> </span><span class="sB8D990E2">was communicated to the Government and the remainder of the application was declared inadmissible</span><span class="sB8D990E2"> </span><span class="sB8D990E2">pursuant to Rule 54 Â§ 3 of the Rules of Court</span><span class="sB8D990E2">.</span></p><p class="s30CCF494"><span class="s32A37344">THE FACTS</span></p><p class="s1BD70772"><span class="sB8D990E2">I.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">THE CIRCUMSTANCES OF THE CASE</span></p><p class="s30EEC3F8"><span class="sB8D990E2">5</span><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">The </span><span class="sB8D990E2">applicant was born in 1965 and lives</span><span class="sB8D990E2"> in </span><span class="sB8D990E2">Szajol</span><span class="sB8D990E2">.</span></p><p class="s30EEC3F8"><span class="sB8D990E2">6</span><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">On </span><span class="sB8D990E2">6 October 1990 </span><span class="sB8D990E2">he</span><span class="sB8D990E2"> married Ms N.R. The couple had one daughter, R.Ã“, born on 23 March 1994.</span></p><p class="s30EEC3F8"><a name="originalagreement"><span class="sB8D990E2">7</span></a><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">On 24 March 2006 the couple divorced and agreed on custody </span><span class="sB8D990E2">of the child </span><span class="sB8D990E2">and other parental rights. </span><span class="sB8D990E2">Their </span><span class="sB8D990E2">agreement</span><span class="sB8D990E2">, which</span><span class="sB8D990E2"> was </span><span class="sB8D990E2">approved </span><span class="sB8D990E2">by the Szolnok District Court, placed the daughter with her mother and granted the applicant </span><span class="sB8D990E2">contact </span><span class="sB8D990E2">every </span><span class="sB8D990E2">other </span><span class="sB8D990E2">weekend, during </span><span class="sB8D990E2">the </span><span class="sB8D990E2">school holidays, Easter Sunday, Whit Monday, the first holiday following Christmas Eve and three weeks during the summer holiday</span><span class="sB8D990E2">s</span><span class="sB8D990E2">. The applicant was also to pay child allowance, amounting to 20% of his salary, but at least 20,000 Hungarian forints (HUF</span><span class="sB8D990E2"> </span><span class="sB8D990E2">?</span><span class="sB8D990E2"> </span><span class="sB8D990E2">approximately 66 euros (EUR)) per month.</span></p><p class="s30EEC3F8"><span class="sB8D990E2">8</span><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">Ms N.R. moved out </span><span class="sB8D990E2">of </span><span class="sB8D990E2">the </span><span class="sB8D990E2">former family home</span><span class="sB8D990E2"> and took up residence in Budapest.</span></p><p class="s30EEC3F8"><span class="sB8D990E2">9</span><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">The applicant could exercise </span><span class="sB8D990E2">contact </span><span class="sB8D990E2">on 25</span><span class="sB8D990E2"> and </span><span class="sB8D990E2">26 June and 24</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">July</span><span class="sB8D990E2"> </span><span class="sB8D990E2">2006. However, </span><span class="sB8D990E2">his</span><span class="sB8D990E2"> daughter was reluctant to stay with </span><span class="sB8D990E2">him</span><span class="sB8D990E2"> during the summer holiday</span><span class="sB8D990E2">s</span><span class="sB8D990E2"> and preferred to spend her holiday</span><span class="sB8D990E2">s</span><span class="sB8D990E2"> with her grandparents.</span></p><p class="s30EEC3F8"><a name="mothersnoncompliance"><span class="sB8D990E2">10</span></a><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">The applicant</span><span class="sB8D990E2">â€™</span><span class="sB8D990E2">s further attempts to exercise </span><span class="sB8D990E2">contact</span><span class="sB8D990E2"> failed, </span><span class="sB8D990E2">seemingly because</span><span class="sB8D990E2"> in the mother</span><span class="sB8D990E2">â€™</span><span class="sB8D990E2">s view it was up to the child to decide whether she wanted to see her father. The applicant </span><span class="sB8D990E2">applied to</span><span class="sB8D990E2"> t</span><span class="sB8D990E2">he Szolnok County G</span><span class="sB8D990E2">uardianship </span><span class="sB8D990E2">A</span><span class="sB8D990E2">uthority</span><span class="sB8D990E2"> to have the contact agreement enforced</span><span class="sB8D990E2">. </span><span class="sB8D990E2">In </span><span class="sB8D990E2">a </span><span class="sB8D990E2">decision of 11 September 2006 </span><span class="sB8D990E2">it</span><span class="sB8D990E2"> ordered Ms N.R. to </span><span class="sB8D990E2">comply with </span><span class="sB8D990E2">the agreement</span><span class="sB8D990E2">,</span><span class="sB8D990E2"> warn</span><span class="sB8D990E2">ing</span><span class="sB8D990E2"> her that</span><span class="sB8D990E2"> failure to</span><span class="sB8D990E2"> do so</span><span class="sB8D990E2"> </span><span class="sB8D990E2">could </span><span class="sB8D990E2">result in her </span><span class="sB8D990E2">be</span><span class="sB8D990E2">ing</span><span class="sB8D990E2"> fined and ordered to reimburse the applicant</span><span class="sB8D990E2">â€™</span><span class="sB8D990E2">s travel costs.</span><span class="sB8D990E2"> </span><span class="sB8D990E2">Given the </span><span class="sB8D990E2">strained relationship </span><span class="sB8D990E2">between the parents, </span><span class="sB8D990E2">a </span><span class="sB8D990E2">notary initiated child protection proceedings (</span><span class="s6B621B36">vÃ©delembe vÃ©tel</span><span class="sB8D990E2">) on 27 December 2006. </span><span class="sB8D990E2">Subsequently, on a </span><span class="sB8D990E2">number of occasions Ms</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">N.R. was </span><span class="sB8D990E2">fined for not complying with the agreement.</span><span class="sB8D990E2"> </span><span class="sB8D990E2">I</span><span class="sB8D990E2">t appears from the case</span><span class="sB8D990E2"> </span><span class="sB8D990E2">file </span><span class="sB8D990E2">that </span><span class="sB8D990E2">the applicant could exercise </span><span class="sB8D990E2">contact</span><span class="sB8D990E2"> between 10 July 2007 and 10 November 2008.</span></p><p class="s30EEC3F8"><span class="sB8D990E2">11</span><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">In 2007 Ms N.R. </span><span class="sB8D990E2">brought </span><span class="sB8D990E2">an action seeking </span><span class="sB8D990E2">to change</span><span class="sB8D990E2"> the applicant</span><span class="sB8D990E2">â€™</span><span class="sB8D990E2">s </span><span class="sB8D990E2">contact </span><span class="sB8D990E2">rights and </span><span class="sB8D990E2">an </span><span class="sB8D990E2">increase </span><span class="sB8D990E2">in </span><span class="sB8D990E2">the amount of child allowance. In </span><span class="sB8D990E2">a </span><span class="sB8D990E2">counterclaim the applicant requested </span><span class="sB8D990E2">that the </span><span class="sB8D990E2">child</span><span class="sB8D990E2"> be placed </span><span class="sB8D990E2">in his custody.</span></p><p class="s30EEC3F8"><span class="sB8D990E2">12</span><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">The applicant also </span><span class="sB8D990E2">filed a </span><span class="sB8D990E2">criminal </span><span class="sB8D990E2">complaint </span><span class="sB8D990E2">against Ms N.R. alleging </span><span class="sB8D990E2">child endangerment</span><span class="sB8D990E2">. </span><span class="sB8D990E2">The parties</span><span class="sB8D990E2">â€™</span><span class="sB8D990E2"> attempt to </span><span class="sB8D990E2">stabilise</span><span class="sB8D990E2"> the relationship between the applicant and his daughter during the suspension of the </span><span class="sB8D990E2">custody </span><span class="sB8D990E2">proceedings </span><span class="sB8D990E2">were unsuccessful</span><span class="sB8D990E2"> and the Szo</span><span class="sB8D990E2">lnok District Court ordered that </span><span class="sB8D990E2">any </span><span class="sB8D990E2">meetings between the</span><span class="sB8D990E2">m</span><span class="sB8D990E2"> take place at a child protection centre.</span></p><p class="s30EEC3F8"><span class="sB8D990E2">13</span><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">In a</span><span class="sB8D990E2"> judgment of 10 June 2008 the Szolnok District Court reduced the applicant</span><span class="sB8D990E2">â€™</span><span class="sB8D990E2">s </span><span class="sB8D990E2">contact with </span><span class="sB8D990E2">his daughter to every first and third Saturday of the month from 9 a.m. to </span><span class="sB8D990E2">6 </span><span class="sB8D990E2">p.m. </span><span class="sB8D990E2">It held that</span><span class="sB8D990E2"> the previously agreed form of </span><span class="sB8D990E2">contact</span><span class="sB8D990E2"> was unlikely to be implemented and would only lead to further proceedings before the guardianship authority, </span><span class="sB8D990E2">which would be </span><span class="sB8D990E2">to the detriment of the child. </span><span class="sB8D990E2">The court based its judgment on </span><span class="sB8D990E2">an </span><span class="sB8D990E2">expert opinion finding that the child </span><span class="sB8D990E2">should </span><span class="sB8D990E2">have </span><span class="sB8D990E2">had </span><span class="sB8D990E2">a</span><span class="sB8D990E2">n adaptation</span><span class="sB8D990E2"> period to re-establish her relationship with her father. The court dismissed the applicant</span><span class="sB8D990E2">â€™</span><span class="sB8D990E2">s claim concerning custody, stating that the child</span><span class="sB8D990E2">â€™</span><span class="sB8D990E2">s wishes </span><span class="sB8D990E2">had </span><span class="sB8D990E2">to be taken into account, given that she </span><span class="sB8D990E2">was now</span><span class="sB8D990E2"> fourteen years</span><span class="sB8D990E2"> of age</span><span class="sB8D990E2">.</span></p><p class="s30EEC3F8"><a name="jasznagykunszolnokcourt"><span class="sB8D990E2">14</span></a><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">On</span><span class="sB8D990E2"> 19 November 2008</span><span class="sB8D990E2"> the JÃ¡sz-Nagykun-Szolnok County Regional Court upheld the first-instance judgment in essence but </span><span class="sB8D990E2">amended </span><span class="sB8D990E2">the applicant</span><span class="sB8D990E2">â€™</span><span class="sB8D990E2">s</span><span class="sB8D990E2"> </span><span class="sB8D990E2">contact</span><span class="sB8D990E2"> rights </span><span class="sB8D990E2">to </span><span class="sB8D990E2">every </span><span class="sB8D990E2">other </span><span class="sB8D990E2">Saturday between 9 a.m. and </span><span class="sB8D990E2">4</span><span class="sB8D990E2"> </span><span class="sB8D990E2">p.m. until 31</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">May 2009</span><span class="sB8D990E2">,</span><span class="sB8D990E2"> and </span><span class="sB8D990E2">all weekend-long visits </span><span class="sB8D990E2">every </span><span class="sB8D990E2">other </span><span class="sB8D990E2">weekend as of 1</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">June 2009.</span></p><p class="s30EEC3F8"><a name="failedtoappear"><span class="sB8D990E2">15</span></a><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">In 2</span><span class="sB8D990E2">009</span><span class="sB8D990E2"> th</span><span class="sB8D990E2">e applicant failed to </span><span class="sB8D990E2">turn up </span><span class="sB8D990E2">at </span><span class="sB8D990E2">numerous </span><span class="sB8D990E2">scheduled meetings for months</span><span class="sB8D990E2">,</span><span class="sB8D990E2"> for which he was fined HUF 10,000 (approximately EUR 35).</span></p><p class="s30EEC3F8"><a name="szolnokdistrictcourt"><span class="sB8D990E2">16</span></a><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">In 2010 the applicant</span><span class="sB8D990E2">â€™</span><span class="sB8D990E2">s </span><span class="sB8D990E2">contact </span><span class="sB8D990E2">rights </span><span class="sB8D990E2">and the amount of child allowance </span><span class="sB8D990E2">were subject to further litigation. </span><span class="sB8D990E2">On 29 January 2010 the Szolnok District Court dismissed </span><span class="sB8D990E2">an</span><span class="sB8D990E2"> action </span><span class="sB8D990E2">brought by him </span><span class="sB8D990E2">seeking </span><span class="sB8D990E2">to </span><span class="sB8D990E2">decrease the amount of child allowance, and </span><span class="sB8D990E2">a </span><span class="sB8D990E2">re</span><span class="sB8D990E2">view </span><span class="sB8D990E2">of the way </span><span class="sB8D990E2">contact should be</span><span class="sB8D990E2"> exercised. The court established that since the court decision of 1</span><span class="sB8D990E2">9</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">November 2008</span><span class="sB8D990E2">,</span><span class="sB8D990E2"> no contact </span><span class="sB8D990E2">had taken place</span><span class="sB8D990E2"> between the applicant and his daughter and, despite </span><span class="sB8D990E2">a request by the </span><span class="sB8D990E2">applicant, the </span><span class="sB8D990E2">g</span><span class="sB8D990E2">uardianship </span><span class="sB8D990E2">a</span><span class="sB8D990E2">uthority had taken no steps to implement the judgment on the ground</span><span class="sB8D990E2">s</span><span class="sB8D990E2"> that </span><span class="sB8D990E2">he</span><span class="sB8D990E2"> had made no efforts to </span><span class="sB8D990E2">resolve </span><span class="sB8D990E2">the conflict </span><span class="sB8D990E2">with</span><span class="sB8D990E2"> his daughter. In particular, he </span><span class="sB8D990E2">had </span><span class="sB8D990E2">paid no heed to </span><span class="sB8D990E2">her</span><span class="sB8D990E2"> request to travel by public transport instead of </span><span class="sB8D990E2">in </span><span class="sB8D990E2">his car.</span></p><p class="s30EEC3F8"><span class="sB8D990E2">The court also found that in the absence </span><span class="sB8D990E2">of any </span><span class="sB8D990E2">significant </span><span class="sB8D990E2">change in circumstances, there was no reason to amend the </span><span class="sB8D990E2">arrangements for </span><span class="sB8D990E2">contact.</span></p><p class="s30EEC3F8"><a name="decreaseofchildallowance"><span class="sB8D990E2">17</span></a><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">In a</span><span class="sB8D990E2"> final judgment of 15 April 2010 the JÃ¡sz-Nagykun-Szolnok County Regional Court </span><span class="sB8D990E2">reviewed</span><span class="sB8D990E2"> the applicant</span><span class="sB8D990E2">â€™</span><span class="sB8D990E2">s parental rights, granting him </span><span class="sB8D990E2">contact </span><span class="sB8D990E2">every </span><span class="sB8D990E2">other </span><span class="sB8D990E2">weekend</span><span class="sB8D990E2"> on</span><span class="sB8D990E2"> the condition that the daughter, </span><span class="sB8D990E2">who was by now</span><span class="sB8D990E2"> already 16 years old, </span><span class="sB8D990E2">be allowed to</span><span class="sB8D990E2"> visit </span><span class="sB8D990E2">him</span><span class="sB8D990E2"> by herself. The court dismissed the applicant</span><span class="sB8D990E2">â€™</span><span class="sB8D990E2">s request for </span><span class="sB8D990E2">a </span><span class="sB8D990E2">decrease </span><span class="sB8D990E2">in </span><span class="sB8D990E2">the child allowance. The </span><span class="sB8D990E2">applicant lodged a </span><span class="sB8D990E2">petition for review with the Supreme Court</span><span class="sB8D990E2">. It</span><span class="sB8D990E2"> was dismissed on 8 February 2011.</span></p><p class="s30EEC3F8"><a name="ten_eleven"><span class="sB8D990E2">18</span></a><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">It</span><span class="sB8D990E2"> appears from the case</span><span class="sB8D990E2"> </span><span class="sB8D990E2">file</span><span class="sB8D990E2"> that</span><span class="sB8D990E2"> meetings between the applicant and his daughter </span><span class="sB8D990E2">only </span><span class="sB8D990E2">took place sporadically in 2010 and </span><span class="sB8D990E2">did not happen at all</span><span class="sB8D990E2"> </span><span class="sB8D990E2">in 2011, despite the applicant </span><span class="sB8D990E2">lodging </span><span class="sB8D990E2">numerous enforcement requests with the guardianship authority.</span></p><p class="s30EEC3F8"><a name="exclusionguardianshipauthority"><span class="sB8D990E2">19</span></a><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">In 2011 the applicant requested </span><span class="sB8D990E2">that</span><span class="sB8D990E2"> the JÃ¡sz-Nagykun-Szolnok Guardianship Authority and all subordinate guardianship authorities</span><span class="sB8D990E2"> be excluded</span><span class="sB8D990E2"> </span><span class="sB8D990E2">from </span><span class="sB8D990E2">any </span><span class="sB8D990E2">further proceedings for bias. On 12 December 2011 the Budapest Regional Guardianship Authority appointed the Budapest</span><span class="sB8D990E2"> XV</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">District Guardianship Authority </span><span class="sB8D990E2">to deal with </span><span class="sB8D990E2">any further proceedings concerning the enforcement of the applicant</span><span class="sB8D990E2">â€™</span><span class="sB8D990E2">s </span><span class="sB8D990E2">contact</span><span class="sB8D990E2"> </span><span class="sB8D990E2">rights, noting that at that point there were eig</span><span class="sB8D990E2">ht enforcement requests pending</span><span class="sB8D990E2">, </span><span class="sB8D990E2">the oldest dating back to January 2010.</span></p><p class="s30EEC3F8"><span class="sB8D990E2">20</span><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">The applicant lodged a number of requests seeking </span><span class="sB8D990E2">to end </span><span class="sB8D990E2">his obligation to pay child allowance, which </span><span class="sB8D990E2">were </span><span class="sB8D990E2">finally accepted by the Budapest IV and XV District Court on 10 October 2012 and on appeal by the Budapest High Court on 3 September 2013. Nonetheless, </span><span class="sB8D990E2">an</span><span class="sB8D990E2"> additional request</span><span class="sB8D990E2"> by him</span><span class="sB8D990E2"> for the reimbursement of </span><span class="sB8D990E2">the </span><span class="sB8D990E2">child allowance</span><span class="sB8D990E2"> he had</span><span class="sB8D990E2"> already paid was dismissed </span><span class="sB8D990E2">at </span><span class="sB8D990E2">both </span><span class="sB8D990E2">levels of jurisdiction</span><span class="sB8D990E2">.</span></p><p class="s1BD70772"><span class="sB8D990E2">II.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">RELEVANT DOMESTIC LAW</span></p><p class="sFA83D483"><span class="sB8D990E2">21</span><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">The relevant rules concerning the enforcement of contact orders are contained in Government Decree no. 149/1997 (IX. 10.) on Guardianship Authorities</span><span class="sB8D990E2"> and </span><span class="sB8D990E2">Child Protection and Guardianship </span><span class="sB8D990E2">Proceedings</span><span class="sB8D990E2">, which provides:</span></p><p class="s19630BCC"><span class="sDFC50A6A">Section 33</span></p><p class="s9E9B0CD7"><span class="sFBBFEE58">â€œ(2) A child</span><span class="sFBBFEE58">â€™</span><span class="sFBBFEE58">s development is endangered where the person entitled or obliged to maintain child contact repeatedly neglects, deliberately, to comply or to properly comply with the [contact </span><span class="sFBBFEE58">arrangements</span><span class="sFBBFEE58">], and thereby fails to ensure </span><span class="sFBBFEE58">uninterrupted </span><span class="sFBBFEE58">contact.</span></p><p class="s9E9B0CD7"><span class="sFBBFEE58">...</span></p><p class="s9E9B0CD7"><span class="sFBBFEE58">(4) Where, in examining compliance with subsections (1)-(2), the guardianship authority establishes [culpability on the parent</span><span class="sFBBFEE58">â€™</span><span class="sFBBFEE58">s side], it shall, by a decision, order the enforcement of the child contact within thirty days from the receipt of the enforcement request. In the enforcement order it shall:</span></p><p class="s9E9B0CD7"><span class="sFBBFEE58">a) invite the non-complying party to meet, according to the time and manner specified in the contact order, his or her obligations in respect of the contact due after the receipt of the order and to refrain from turning the child against the other parent,</span></p><p class="s9E9B0CD7"><span class="sFBBFEE58">b) warn the non-complying party of the legal consequences of own-fault non-compliance with the obligations under subsection (a),</span></p><p class="s9E9B0CD7"><span class="sFBBFEE58">c) oblige the non-complying party to bear any justified costs incurred by the frustration of contact.</span></p><p class="s9E9B0CD7"><span class="sFBBFEE58">(5) Where the person entitled or obliged to maintain contact fails to meet the obligations specified in the enforcement order under subsection (4), the guardianship authority may ...</span></p><p class="s9E9B0CD7"><span class="sFBBFEE58">a) initiate the involvement of the child contact centre of the child welfare service or take the child into protection in the event that the maintenance of contact </span><span class="sFBBFEE58">causes</span><span class="sFBBFEE58"> </span><span class="sFBBFEE58">arguments</span><span class="sFBBFEE58">, or is continuously frustrated by </span><span class="sFBBFEE58">difficulties</span><span class="sFBBFEE58">, or the parents have problems</span><span class="sFBBFEE58"> in communicating</span><span class="sFBBFEE58">,</span></p><p class="s9E9B0CD7"><span class="sFBBFEE58">b) initiate a child protection mediation procedure ....</span></p><p class="s9E9B0CD7"><span class="sFBBFEE58">...</span></p><p class="s9E9B0CD7"><span class="sFBBFEE58">(7) If it is established that during the child</span><span class="sFBBFEE58">â€™</span><span class="sFBBFEE58">s upbringing the parent/person obliged to allow </span><span class="sFBBFEE58">[contact] </span><span class="sFBBFEE58">to </span><span class="sFBBFEE58">the non-custodial parent/person continuously turns him/her against the person entitled to contact and, despite the enforcement measures specified </span><span class="sFBBFEE58">in </span><span class="sFBBFEE58">subsections (4)-(5), fails to comply with the contact order, the guardianship authority:</span></p><p class="s9E9B0CD7"><span class="sFBBFEE58">a) may bring an action seeking a change </span><span class="sFBBFEE58">to the place of care </span><span class="sFBBFEE58">if it is</span><span class="sFBBFEE58"> in</span><span class="sFBBFEE58"> the best interests of the child,</span></p><p class="s9E9B0CD7"><span class="sFBBFEE58">b) shall file a criminal complaint ...â€�</span></p><p class="s30CCF494"><span class="s32A37344">THE LAW</span></p><p class="s1BD70772"><span class="sB8D990E2">I.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">ALLEGED VIOLATION OF ARTICLE </span><span class="sB8D990E2">8</span><span class="sB8D990E2"> OF THE CONVENTION</span></p><p class="s30EEC3F8"><span class="sB8D990E2">22</span><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">The applicant complained that the Hungarian authorities had failed to take effective steps to enforce his contact with his daughter. He alleged a violation of Article 8 of the Convention, which reads:</span></p><p class="s9E9B0CD7"><span class="sFBBFEE58">â€œ1. Everyone has the right to respect for his private and family life, his home and his correspondence.</span></p><p class="s9E9B0CD7"><span class="sFBBFEE58">2. There shall be no interference by a public authority with the exercise of this right except such as is in accordance with the law and is necessary in a democratic society in the interests of national security, public safety or the economic well-being of the country, for the prevention of disorder or crime, for the protection of health or morals, or for the protection of the rights and freedoms of others.â€�</span></p><p class="sD5B7D322"><span class="s7D2086B4">A.</span><span class="s7D2086B4">&nbsp;</span><span class="s7D2086B4">&nbsp;</span><span class="s7D2086B4">Admissibility</span></p><p class="s30EEC3F8"><span class="sB8D990E2">23</span><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">The Court notes that this complaint is not manifestly ill-founded within the meaning of Article 35 Â§ 3 (a) of the Convention. It further notes that it is not inadmissible on any other grounds. It must therefore be declared admissible.</span></p><p class="sD5B7D322"><span class="s7D2086B4">B.</span><span class="s7D2086B4">&nbsp;</span><span class="s7D2086B4">&nbsp;</span><span class="s7D2086B4">Merits</span></p><p class="sCC3BCF28"><span class="s6B621B36">1.</span><span class="s6B621B36">&nbsp;</span><span class="s6B621B36">&nbsp;</span><span class="s6B621B36">The parties</span><span class="s6B621B36">â€™</span><span class="s6B621B36"> submissions</span></p><p class="s30EEC3F8"><a name="applicantobservation"><span class="sB8D990E2">24</span></a><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">The applicant submitted that his attempts to have regular and effective contact with his child had started in 2007. Those attempts had, however, remained for the large part ineffective. He </span><span class="sB8D990E2">emphasised</span><span class="sB8D990E2"> that </span><span class="sB8D990E2">owing </span><span class="sB8D990E2">to his </span><span class="sB8D990E2">former </span><span class="sB8D990E2">wife</span><span class="sB8D990E2">â€™</span><span class="sB8D990E2">s </span><span class="sB8D990E2">behaviour</span><span class="sB8D990E2">,</span><span class="sB8D990E2"> he had been prevented from having regular and uninterrupted contact with </span><span class="sB8D990E2">R.Ã“., since </span><span class="sB8D990E2">she</span><span class="sB8D990E2"> </span><span class="sB8D990E2">had been</span><span class="sB8D990E2"> </span><span class="sB8D990E2">manipulated by her mother into refusing contact with him</span><span class="sB8D990E2">.</span><span class="sB8D990E2"> </span><span class="sB8D990E2">He maintained that he had submitted more than sixty-two applications to the guardianship authorities requesting the enforcement of his contact rights. However, </span><span class="sB8D990E2">the domestic authorities had failed to apply</span><span class="sB8D990E2"> the</span><span class="sB8D990E2"> domestic law in a way which could </span><span class="sB8D990E2">have </span><span class="sB8D990E2">effectively secured his contact rights </span><span class="sB8D990E2">and they should have taken more steps to </span><span class="sB8D990E2">help him</span><span class="sB8D990E2"> </span><span class="sB8D990E2">re-establish meaningful contact.</span></p><p class="s30EEC3F8"><span class="sB8D990E2">25</span><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">The Government </span><span class="sB8D990E2">maintained that there had been no violation of Article 8. They contended that the domestic courts had done everything in their power to have the decisions on </span><span class="sB8D990E2">contact </span><span class="sB8D990E2">enforced. </span><span class="sB8D990E2">They </span><span class="sB8D990E2">also </span><span class="sB8D990E2">maintained that the domestic authorities had had to strike a careful balance between the </span><span class="sB8D990E2">applicant</span><span class="sB8D990E2">â€™</span><span class="sB8D990E2">s</span><span class="sB8D990E2"> undisputed right to have a connection with his child and the best interests of the child, who </span><span class="sB8D990E2">had refused </span><span class="sB8D990E2">any contact with him.</span></p><p class="s30EEC3F8"><span class="sB8D990E2">26</span><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">They also maintained that the applicant</span><span class="sB8D990E2">â€™</span><span class="sB8D990E2">s behavio</span><span class="sB8D990E2">u</span><span class="sB8D990E2">r, in particular his refusal to resolve certain conflicts during one of the visits</span><span class="sB8D990E2"> and </span><span class="sB8D990E2">failure </span><span class="sB8D990E2">to </span><span class="sB8D990E2">turn up at</span><span class="sB8D990E2"> </span><span class="sB8D990E2">several of </span><span class="sB8D990E2">the </span><span class="sB8D990E2">arranged </span><span class="sB8D990E2">appointments</span><span class="sB8D990E2">, had contributed to the </span><span class="sB8D990E2">hostility</span><span class="sB8D990E2"> between him and his child and the inability of </span><span class="sB8D990E2">the </span><span class="sB8D990E2">domestic authorities to enforce the decisions on contact.</span></p><p class="s30EEC3F8"><span class="sB8D990E2">27</span><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">They emphasised the active role the domestic authorities </span><span class="sB8D990E2">had had </span><span class="sB8D990E2">in implementing the decisions on contact, in particular by imposing a fine on the mother when she had failed to comply </span><span class="sB8D990E2">with the final judgments, warning R.Ã“. about her obligation to cooperate, and trying to </span><span class="sB8D990E2">establish </span><span class="sB8D990E2">contact arrangements suitable for both parties</span><span class="sB8D990E2">.</span></p><p class="s30EEC3F8"><span class="sB8D990E2">28</span><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">In any event, the child, who at the material time already had had full capacity to understand </span><span class="sB8D990E2">the situation, had been oppos</span><span class="sB8D990E2">ed to contact with her father.</span></p><p class="sCC3BCF28"><span class="s6B621B36">2.</span><span class="s6B621B36">&nbsp;</span><span class="s6B621B36">&nbsp;</span><span class="s6B621B36">The Court</span><span class="s6B621B36">â€™</span><span class="s6B621B36">s assessment</span></p><p class="sC9A68B25"><span class="sDFC50A6A">(a)</span><span class="sDFC50A6A">&nbsp;</span><span class="sDFC50A6A">&nbsp;</span><span class="sDFC50A6A">General principles</span></p><p class="s30EEC3F8"><span class="sB8D990E2">29</span><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">The Court reiterates that the mutual enjoyment by parent and child of each other</span><span class="sB8D990E2">â€™</span><span class="sB8D990E2">s company constitutes a fundamental element of â€œfamily lifeâ€� within the meaning of Article 8 of the Convention (see</span><span class="sB8D990E2">, among many other authorities,</span><span class="sB8D990E2"> </span><span class="s6B621B36">Monory v. Romania and Hungary</span><span class="sB8D990E2">, no. 71099/01, Â§ 70, 5</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">April</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">2005</span><span class="sB8D990E2"> and </span><span class="s6B621B36">Nazarenko v. Russia</span><span class="sB8D990E2">, </span><span class="sB8D990E2">no. 39438/13, Â§ 60, ECHR 2015 (extracts)</span><span class="sB8D990E2">).</span></p><p class="s30EEC3F8"><span class="sB8D990E2">30</span><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">The</span><span class="sB8D990E2"> essential object of Article 8 is to protect the individual against arbitrary action by public authorities. There are</span><span class="sB8D990E2">,</span><span class="sB8D990E2"> in addition</span><span class="sB8D990E2">,</span><span class="sB8D990E2"> positive obligations inherent in </span><span class="sB8D990E2">an </span><span class="sB8D990E2">effective â€œrespectâ€� for family life. In both contexts regard must be had to the fair balance that has to be struck between the </span><span class="sB8D990E2">competing interests of the individual and the community, including other concerned third parties, and the State</span><span class="sB8D990E2">â€™</span><span class="sB8D990E2">s margin of appreciation. The Court has already repeatedly held that in matters relating to their custody the interest of children are of paramount importance. The child</span><span class="sB8D990E2">â€™</span><span class="sB8D990E2">s best interests must </span><span class="sB8D990E2">be </span><span class="sB8D990E2">the primary </span><span class="sB8D990E2">consideration and may, depending on their nature and seriousness, override those of the parents </span><span class="sB8D990E2">(see </span><span class="s6B621B36">Sahin v. Germany </span><span class="sB8D990E2">[GC],</span><span class="s6B621B36"> </span><span class="sB8D990E2">no.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">30943/96, Â§ 66, ECHR 2003</span><span class="sB8D990E2">-</span><span class="sB8D990E2">VIII and </span><span class="s6B621B36">Plaza v. Poland</span><span class="sB8D990E2">, no. 18830/07, Â§</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">71, 25 January 2011).</span></p><p class="s30EEC3F8"><span class="sB8D990E2">31</span><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">In cases concerning the implementation of the contact rights of one of the parents, Article 8 includes a parent</span><span class="sB8D990E2">â€™</span><span class="sB8D990E2">s right to the taking of measures with a view to his or her being reunited with the child and an </span><span class="sB8D990E2">obligation on the national authorities to facilitate such reunion, in so far as the interest of the child dictates that everything must be done to preserve personal relations and, if and when appropriate, to â€œrebuildâ€� the family; the State</span><span class="sB8D990E2">â€™</span><span class="sB8D990E2">s obligation is not one of result, but of means </span><span class="sB8D990E2">(see, among other authorities, </span><span class="s6B621B36">Pascal</span><span class="s6B621B36">&nbsp;</span><span class="s6B621B36">v.</span><span class="s6B621B36">&nbsp;</span><span class="s6B621B36">Romania</span><span class="sB8D990E2">, no. 805/09</span><span class="sB8D990E2">, Â§ 69, 17</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">April</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">2012).</span></p><p class="s30EEC3F8"><span class="sB8D990E2">32</span><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">The obligation of the national authorities to take measures to facilitate contact by a non-custodial parent with children after divorce is not, however, absolute.</span><span class="sB8D990E2"> </span><span class="sB8D990E2">The establishment of contact may not be able to take place immediately and may require preparatory or phased measures. The co</span><span class="sB8D990E2">-</span><span class="sB8D990E2">operation and understanding of all concerned will always be an important ingredient. While national authorities must do their utmost to facilitate such co-operation, any obligation to apply coercion in this area must be limited since the interests as well as the rights and freedoms of all concerned must be taken into account, and more particularly the best interests of the child and his or her rights under Article 8 of the Convention. What is decisive is whether the national authorities have taken all necessary steps to facilitate the execution that can reasonably be demanded in the specific circumstances of each case. In this context, the adequacy of a measure is to be judged by the swiftness of its implementation, as the passage of time can have irremediable consequences for relations between the child and the parent who does not live with the child (see </span><span class="s6B621B36">Fusca v.</span><span class="s6B621B36">&nbsp;</span><span class="s6B621B36">Romania</span><span class="sB8D990E2">, no. 34630/07</span><span class="sB8D990E2">, Â§Â§</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">35-37, 13 July 2010).</span></p><p class="s30EEC3F8"><span class="sB8D990E2">33</span><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">The Court </span><span class="sB8D990E2">further recalls</span><span class="sB8D990E2"> the conclusion it reached in </span><span class="s6B621B36">Glaser v.</span><span class="s6B621B36">&nbsp;</span><span class="s6B621B36">the</span><span class="s6B621B36">&nbsp;</span><span class="s6B621B36">United Kingdom </span><span class="sB8D990E2">(no. 32346/96, Â§ 70, 19 September 2000) that active parental participation in </span><span class="sB8D990E2">the </span><span class="sB8D990E2">proceedings concerning children is required under Article 8 of the Convention in order to ensure the protection of their interests</span><span class="sB8D990E2">. W</span><span class="sB8D990E2">hen an applicant, as in that case, applies for the</span><span class="sB8D990E2"> </span><span class="sB8D990E2">enforcement of a court order, his conduct ? </span><span class="sB8D990E2">and</span><span class="sB8D990E2"> that of the courts ? is a relevant factor to be considered. The Court has also acknowledged that arrangements </span><span class="sB8D990E2">for </span><span class="sB8D990E2">contact may require great effort on the part of the parent with whom the child no longer lives (see </span><span class="s6B621B36">Kajari v. Finland</span><span class="sB8D990E2">, no. 65040/01, Â§ 42, 23 October 2007).</span></p><p class="sC9A68B25"><span class="sDFC50A6A">(b)</span><span class="sDFC50A6A">&nbsp;</span><span class="sDFC50A6A">&nbsp;</span><span class="sDFC50A6A">Application of these principles to the present case</span></p><p class="s30EEC3F8"><span class="sB8D990E2">34</span><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">The Court notes, firstly, that it is common ground that the relationship between the applicant</span><span class="sB8D990E2"> and his daughter</span><span class="sB8D990E2"> comes within the sphere of family life under Article 8 of the Convention.</span></p><p class="s30EEC3F8"><span class="sB8D990E2">35</span><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">In the light of the above principles</span><span class="sB8D990E2">,</span><span class="sB8D990E2"> the Court considers that the decisive question in the present case is whether or not the Hungarian authorities took all the appropriate steps that </span><span class="sB8D990E2">could </span><span class="sB8D990E2">reasonably </span><span class="sB8D990E2">have </span><span class="sB8D990E2">be</span><span class="sB8D990E2">en</span><span class="sB8D990E2"> </span><span class="sB8D990E2">expected </span><span class="sB8D990E2">to facilitate the enforcement of the contact arrangements </span><span class="sB8D990E2">set out in</span><span class="sB8D990E2"> the court</span><span class="sB8D990E2"> </span><span class="sB8D990E2">decisions of</span><span class="sB8D990E2"> </span><span class="sB8D990E2">24 Mar</span><span class="sB8D990E2">ch 2006, 19 November 2008 and 8</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">F</span><span class="sB8D990E2">ebruary</span><span class="sB8D990E2"> </span><span class="sB8D990E2">2011</span><span class="sB8D990E2">, 25 August and 29 December 2009 and </span><span class="sB8D990E2">2</span><span class="sB8D990E2">9 </span><span class="sB8D990E2">January</span><span class="sB8D990E2"> and </span><span class="sB8D990E2">15</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">April</span><span class="sB8D990E2"> 2010 (see paragraphs</span><span class="sB8D990E2"> </span><span class="sB8D990E2">7</span><span class="sB8D990E2">, </span><span class="sB8D990E2">14</span><span class="sB8D990E2">, </span><span class="sB8D990E2">17</span><span class="sB8D990E2"> above)</span><span class="sB8D990E2">, which all authorised the applicant to have regular contact with his daughter.</span></p><p class="s30EEC3F8"><span class="sB8D990E2">36</span><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">The Court observes that on </span><span class="sB8D990E2">24 March 2006 </span><span class="sB8D990E2">the </span><span class="sB8D990E2">Szolnok District Court approved the agreement between the applicant and his ex-wife granting the applicant </span><span class="sB8D990E2">contact with</span><span class="sB8D990E2"> his daughter every </span><span class="sB8D990E2">other </span><span class="sB8D990E2">weekend and</span><span class="sB8D990E2"> on some public holidays and</span><span class="sB8D990E2"> certain days of </span><span class="sB8D990E2">the</span><span class="sB8D990E2"> school holidays. </span><span class="sB8D990E2">The applicant</span><span class="sB8D990E2">â€™</span><span class="sB8D990E2">s ex-wife moved </span><span class="sB8D990E2">to another town </span><span class="sB8D990E2">with the child, when </span><span class="sB8D990E2">she</span><span class="sB8D990E2"> was 12</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">years old. It appears that the applicant and the mother </span><span class="sB8D990E2">initially </span><span class="sB8D990E2">managed to </span><span class="sB8D990E2">re</span><span class="sB8D990E2">solve the issue of contact, however difficulties in implementing the arrangement</span><span class="sB8D990E2">s</span><span class="sB8D990E2"> arose as early as 2006 and the applicant </span><span class="sB8D990E2">lodged</span><span class="sB8D990E2"> </span><span class="sB8D990E2">an enforcement request with the guardianship authority. Although Ms N.R. was warned and subsequently fined </span><span class="sB8D990E2">on </span><span class="sB8D990E2">a number of occasions, </span><span class="sB8D990E2">the applicant continued to experience problems in having regular and uninterrupted contact with his child.</span></p><p class="s30EEC3F8"><span class="sB8D990E2">37</span><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">It is true that, as argued by the Government, certain difficulties in </span><span class="sB8D990E2">achieving </span><span class="sB8D990E2">regular contact could be attributed to the applicant</span><span class="sB8D990E2">,</span><span class="sB8D990E2"> since </span><span class="sB8D990E2">he failed to </span><span class="sB8D990E2">turn up </span><span class="sB8D990E2">on</span><span class="sB8D990E2"> several of</span><span class="sB8D990E2"> </span><span class="sB8D990E2">the dates </span><span class="sB8D990E2">agreed</span><span class="sB8D990E2"> (see paragraph </span><span class="sB8D990E2">15</span><span class="sB8D990E2"> above). Furthermore, the a</span><span class="sB8D990E2">version of his daughter</span><span class="sB8D990E2"> towards him</span><span class="sB8D990E2">, as observed by the domestic authoriti</span><span class="sB8D990E2">e</span><span class="sB8D990E2">s, </span><span class="sB8D990E2">was partly due to his react</span><span class="sB8D990E2">ion during one of the visits (see paragraph</span><span class="sB8D990E2"> </span><span class="sB8D990E2">16</span><span class="sB8D990E2"> </span><span class="sB8D990E2">above). </span><span class="sB8D990E2">Be that as it may</span><span class="sB8D990E2">, it transpires that the applicant was </span><span class="sB8D990E2">initially </span><span class="sB8D990E2">constructive and made efforts to </span><span class="sB8D990E2">have </span><span class="sB8D990E2">contact with his daughter. Later, </span><span class="sB8D990E2">after a certain </span><span class="sB8D990E2">period </span><span class="sB8D990E2">of time </span><span class="sB8D990E2">characterised</span><span class="sB8D990E2"> by </span><span class="sB8D990E2">a </span><span class="sB8D990E2">continuous frustration of </span><span class="sB8D990E2">contact</span><span class="sB8D990E2">, </span><span class="sB8D990E2">he must have become more agitated facing the </span><span class="sB8D990E2">hostility </span><span class="sB8D990E2">of</span><span class="sB8D990E2"> his daughter and the lack of effort </span><span class="sB8D990E2">on the part </span><span class="sB8D990E2">of the authorities to </span><span class="sB8D990E2">enforce </span><span class="sB8D990E2">his contact with </span><span class="sB8D990E2">her</span><span class="sB8D990E2">. </span><span class="sB8D990E2">In these circumstances</span><span class="sB8D990E2">,</span><span class="sB8D990E2"> the Court cannot subscribe to the Government</span><span class="sB8D990E2">â€™</span><span class="sB8D990E2">s argument that the applicant</span><span class="sB8D990E2">â€™</span><span class="sB8D990E2">s own behaviour was </span><span class="sB8D990E2">a </span><span class="sB8D990E2">decisive</span><span class="sB8D990E2"> factor</span><span class="sB8D990E2"> for the non-enforcement of his </span><span class="sB8D990E2">contact </span><span class="sB8D990E2">rights by the domestic authorities.</span></p><p class="s30EEC3F8"><span class="sB8D990E2">38</span><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">The Court finds it significant that the applicant lodged more than sixty requests </span><span class="sB8D990E2">for</span><span class="sB8D990E2"> enforcement of the contact order (see paragraph</span><span class="sB8D990E2">s</span><span class="sB8D990E2"> </span><span class="sB8D990E2">10</span><span class="sB8D990E2">, </span><span class="sB8D990E2">16</span><span class="sB8D990E2">, and </span><span class="sB8D990E2">24</span><span class="sB8D990E2"> above)</span><span class="sB8D990E2">, </span><span class="sB8D990E2">as it demonstrates</span><span class="sB8D990E2"> that he had</span><span class="sB8D990E2"> </span><span class="sB8D990E2">a serious interest in his daughter.</span><span class="sB8D990E2"> </span><span class="sB8D990E2">It</span><span class="sB8D990E2"> further observes that the enforcement attempts were less than successful (see paragraphs</span><span class="sB8D990E2"> </span><span class="sB8D990E2">10</span><span class="sB8D990E2"> </span><span class="sB8D990E2">and </span><span class="sB8D990E2">18</span><span class="sB8D990E2"> above). It is true that the applicant</span><span class="sB8D990E2">â€™</span><span class="sB8D990E2">s enforcement requests led to </span><span class="sB8D990E2">Ms </span><span class="sB8D990E2">N.R.</span><span class="sB8D990E2"> </span><span class="sB8D990E2">receiving </span><span class="sB8D990E2">an administrative fine that was subsequently </span><span class="sB8D990E2">repeated</span><span class="sB8D990E2"> due to her continued non-compliance with the final court judgment (see paragraph</span><span class="sB8D990E2"> </span><span class="sB8D990E2">10</span><span class="sB8D990E2"> above)</span><span class="sB8D990E2">.The Court </span><span class="sB8D990E2">also </span><span class="sB8D990E2">acknowledges that the difficulties in </span><span class="sB8D990E2">securing </span><span class="sB8D990E2">the applicant</span><span class="sB8D990E2">â€™</span><span class="sB8D990E2">s </span><span class="sB8D990E2">contact </span><span class="sB8D990E2">rights were essentially due to the mother</span><span class="sB8D990E2">â€™</span><span class="sB8D990E2">s behavio</span><span class="sB8D990E2">u</span><span class="sB8D990E2">r, </span><span class="sB8D990E2">but </span><span class="sB8D990E2">considers that the facts of the case indicated that the financial sanctions imposed on </span><span class="sB8D990E2">Ms </span><span class="sB8D990E2">N.R.</span><span class="sB8D990E2"> were inadequate to improve the situation and overcome </span><span class="sB8D990E2">her</span><span class="sB8D990E2"> lack of cooperation</span><span class="sB8D990E2">.</span><span class="sB8D990E2"> </span><span class="sB8D990E2">The same holds true for the </span><span class="sB8D990E2">child protection proceedings and the criminal investigation</span><span class="sB8D990E2"> opened against </span><span class="sB8D990E2">Ms </span><span class="sB8D990E2">N.R.</span><span class="sB8D990E2">, </span><span class="sB8D990E2">neither </span><span class="sB8D990E2">of which resulted in </span><span class="sB8D990E2">any </span><span class="sB8D990E2">changes to the applicant</span><span class="sB8D990E2">â€™</span><span class="sB8D990E2">s </span><span class="sB8D990E2">contact with</span><span class="sB8D990E2"> his daughter.</span></p><p class="s30EEC3F8"><span class="sB8D990E2">39</span><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">In such a delicate situation, the Court finds it very difficult to believe that the focus on the ordinary civil enforcement proceedings or criminal law sanctions could have improved the situation.</span><span class="sB8D990E2"> W</span><span class="sB8D990E2">hile the guardianship authorities were unable to enforce all aspects of the </span><span class="sB8D990E2">contact </span><span class="sB8D990E2">orders because of the respondent</span><span class="sB8D990E2">â€™</span><span class="sB8D990E2">s lack of cooperation and subsequently the child</span><span class="sB8D990E2">â€™</span><span class="sB8D990E2">s </span><span class="sB8D990E2">negative </span><span class="sB8D990E2">attitude towards her father, they made no considerable efforts</span><span class="sB8D990E2"> </span><span class="sB8D990E2">to gradually re-establish the contact between them. </span><span class="sB8D990E2">Quite </span><span class="sB8D990E2">to the </span><span class="sB8D990E2">contrary, the </span><span class="sB8D990E2">Szolnok Distric</span><span class="sB8D990E2">t</span><span class="sB8D990E2"> Court</span><span class="sB8D990E2">â€™</span><span class="sB8D990E2">s judgment of 10 June 2008 </span><span class="sB8D990E2">restricting the applicant</span><span class="sB8D990E2">â€™</span><span class="sB8D990E2">s contact was based on the practical conclusion that the previous contact arrangements could not be implemented, thereby condoning the mother</span><span class="sB8D990E2">â€™</span><span class="sB8D990E2">s uncooperative behaviour and disregard for the previous agreement.</span></p><p class="s30EEC3F8"><span class="sB8D990E2">40</span><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">In a similar vein, the further court proceedings and decisions appear</span><span class="sB8D990E2">ed</span><span class="sB8D990E2"> to focus on the practical arrangements </span><span class="sB8D990E2">for</span><span class="sB8D990E2"> contact, </span><span class="sB8D990E2">which had </span><span class="sB8D990E2">not </span><span class="sB8D990E2">taken </span><span class="sB8D990E2">place for years, rather than on the support the parties would have needed to ensure that opportunities for maintaining the child</span><span class="sB8D990E2">â€™</span><span class="sB8D990E2">s relationship with the applicant </span><span class="sB8D990E2">were </span><span class="sB8D990E2">not lost in the future.</span></p><p class="s30EEC3F8"><span class="sB8D990E2">41</span><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">Looking at the facts of the case, the Court believes that it would have been </span><span class="sB8D990E2">worthwhile </span><span class="sB8D990E2">to explore all available avenues to facilitate the maintenance of </span><span class="sB8D990E2">those </span><span class="sB8D990E2">ties, whether </span><span class="sB8D990E2">with the</span><span class="sB8D990E2"> involvement </span><span class="sB8D990E2">of</span><span class="sB8D990E2"> social services or otherwise.</span></p><p class="s30EEC3F8"><span class="sB8D990E2">42</span><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">The Court also notes that even if the domestic legal order did not allow for the imposition of effective sanctions, each Contracting State must equip itself with an adequate and sufficient legal arsenal to ensure compliance with the positive obligations imposed on it by Article 8 of the Convention (see </span><span class="s6B621B36">Maire v. Portugal</span><span class="sB8D990E2">, no. 48206/99, Â§ 76, ECHR 2003</span><span class="sB8D990E2">-</span><span class="sB8D990E2">VII).</span></p><p class="s30EEC3F8"><span class="sB8D990E2">43</span><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">Lastly</span><span class="sB8D990E2">, i</span><span class="sB8D990E2">t is also apparent from the case file that the domestic authorities failed to </span><span class="sB8D990E2">deal with the matter </span><span class="sB8D990E2">promptly, since a number of enforcement request</span><span class="sB8D990E2">s</span><span class="sB8D990E2"> lodged by the applicant remained unprocessed for more than a year (see paragraph </span><span class="sB8D990E2">19</span><span class="sB8D990E2"> above).</span></p><p class="s30EEC3F8"><span class="sB8D990E2">44</span><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">Having regard to the foregoing, and notwithstanding the respondent State</span><span class="sB8D990E2">â€™</span><span class="sB8D990E2">s margin of appreciation in the matter, the Court concludes that the Hungarian authorities failed to fulfil their positive obligations </span><span class="sB8D990E2">to duly protect the applicant</span><span class="sB8D990E2">â€™</span><span class="sB8D990E2">s right to respect for his family life.</span></p><p class="s30EEC3F8"><span class="sB8D990E2">45</span><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">There has accordingly been a violation of Article 8 of the Convention.</span></p><p class="s1BD70772"><span class="sB8D990E2">II</span><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">APPLICATION OF ARTICLE 41 OF THE CONVENTION</span></p><p class="s30EEC3F8"><span class="sB8D990E2">46</span><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">Article 41 of the Convention provides:</span></p><p class="sBD4B43CB"><span class="sFBBFEE58">â€œIf the Court finds that there has been a violation of the Convention or the Protocols thereto, and if the internal law of the High Contracting Party concerned allows only partial reparation to be made, the Court shall, if necessary, afford just satisfaction to the injured party.â€�</span></p><p class="sD5B7D322"><span class="s7D2086B4">A.</span><span class="s7D2086B4">&nbsp;</span><span class="s7D2086B4">&nbsp;</span><span class="s7D2086B4">Damage</span></p><p class="s30EEC3F8"><span class="sB8D990E2">47</span><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">The applicant claimed </span><span class="sB8D990E2">15,000</span><span class="sB8D990E2"> euros (EUR) in respect of non-pecuniary damage.</span></p><p class="s30EEC3F8"><span class="sB8D990E2">48</span><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">The Government contested </span><span class="sB8D990E2">that </span><span class="sB8D990E2">claim.</span></p><p class="s30EEC3F8"><span class="sB8D990E2">49</span><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">The Court considers that the applicant must have suffered non-pecuniary damage on account of the violation found, </span><span class="sB8D990E2">and awards him, on an equitable basis, EUR 6,000 </span><span class="sB8D990E2">under this head</span><span class="sB8D990E2">.</span></p><p class="sD5B7D322"><span class="s7D2086B4">B.</span><span class="s7D2086B4">&nbsp;</span><span class="s7D2086B4">&nbsp;</span><span class="s7D2086B4">Costs and expenses</span></p><p class="s30EEC3F8"><span class="sB8D990E2">50</span><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">The applicant also claimed EUR </span><span class="sB8D990E2">3,000</span><span class="sB8D990E2"> for the costs and expenses incurred before the Court.</span></p><p class="s30EEC3F8"><span class="sB8D990E2">51</span><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">The Government contested </span><span class="sB8D990E2">that </span><span class="sB8D990E2">claim.</span></p><p class="s30EEC3F8"><span class="sB8D990E2">52</span><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">According to the Court</span><span class="sB8D990E2">â€™</span><span class="sB8D990E2">s case-law, an applicant is entitled to the reimbursement of costs and expenses only in so far as it has been shown that these have been actually and necessarily incurred and are reasonable as to quantum. In the present case, regard being had to the documents in its possession and the above criteria, the Court considers it reasonable to award the sum of EUR </span><span class="sB8D990E2">1,9</span><span class="sB8D990E2">00</span><span class="sB8D990E2"> for the costs and expenses incurred before it.</span></p><p class="sD5B7D322"><span class="s7D2086B4">C.</span><span class="s7D2086B4">&nbsp;</span><span class="s7D2086B4">&nbsp;</span><span class="s7D2086B4">Default interest</span></p><p class="s30EEC3F8"><span class="sB8D990E2">53</span><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">The Court considers it appropriate that the default interest rate should be based on the marginal lending rate of the European Central Bank, to which should be added three percentage points.</span></p><p class="s30CCF494"><span class="s32A37344">FOR THESE REASONS, THE COURT</span><span class="s32A37344">, UNANIMOUSLY,</span></p><p class="s52B9FB1C"><span class="sB8D990E2">1.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="s6B621B36">Declares</span><span class="sB8D990E2"> </span><span class="sB8D990E2">the </span><span class="sB8D990E2">application</span><span class="sB8D990E2"> admissible;</span></p><p class="s746C8714"><span class="sB8D990E2">&nbsp;</span></p><p class="s52B9FB1C"><span class="sB8D990E2">2</span><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="s6B621B36">Holds</span><span class="sB8D990E2"> </span><span class="sB8D990E2">that there has been a violation of Article</span><span class="sB8D990E2"> 8</span><span class="sB8D990E2"> of the Convention;</span></p><p class="s52B9FB1C"><span class="sB8D990E2">&nbsp;</span></p><p class="s52B9FB1C"><span class="sB8D990E2">3</span><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="s6B621B36">Holds</span></p><p class="s6C21291F"><span class="sB8D990E2">(a)</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">that the respondent State is to pay the applicant, within three months</span><span class="sB8D990E2"> </span><span class="sB8D990E2">from the date on which the judgment becomes final in accordance with Article</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">44</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">Â§</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">2 of the Convention,</span><span class="sB8D990E2"> the following amounts, to be converted into </span><span class="sB8D990E2">the currency of the respondent State</span><span class="s7D2086B4"> </span><span class="sB8D990E2">at the rate applicable at the date of settlement:</span></p><p class="s21D618BF"><span class="sB8D990E2">(i)</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">EUR </span><span class="sB8D990E2">6</span><span class="sB8D990E2">,0</span><span class="sB8D990E2">00</span><span class="sB8D990E2"> (</span><span class="sB8D990E2">six thousand</span><span class="sB8D990E2"> euros)</span><span class="sB8D990E2">, plus any tax that may be chargeable, in respect of </span><span class="sB8D990E2">non-</span><span class="sB8D990E2">pecuniary damage;</span></p><p class="s21D618BF"><span class="sB8D990E2">(ii)</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">EUR </span><span class="sB8D990E2">1,9</span><span class="sB8D990E2">00</span><span class="sB8D990E2"> (</span><span class="sB8D990E2">one</span><span class="sB8D990E2"> thousand</span><span class="sB8D990E2"> nine hundred</span><span class="sB8D990E2"> euros), plus any tax that may be chargeable to the applicant, in respect of costs and expenses;</span></p><p class="s6C21291F"><span class="sB8D990E2">(b)</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">that from the expiry of the above-mentioned three months until settlement simple interest shall be payable on the above amounts at a rate equal to the marginal lending rate of the European Central Bank during the default period plus three percentage points;</span></p><p class="s6C21291F"><span class="sB8D990E2">&nbsp;</span></p><p class="s52B9FB1C"><span class="sB8D990E2">4</span><span class="sB8D990E2">.</span><span class="sB8D990E2">&nbsp;</span><span class="sB8D990E2">&nbsp;</span><span class="s6B621B36">Dismisses</span><span class="sB8D990E2"> </span><span class="sB8D990E2">the remainder of the applicant</span><span class="sB8D990E2">â€™</span><span class="sB8D990E2">s</span><span class="sB8D990E2"> claim for just satisfaction.</span></p><p class="sFA83D483"><span class="sB8D990E2">Done in English, and notified in writing on </span><span class="sB8D990E2">30 May 2017</span><span class="sB8D990E2">, pursuant to Rule 77 Â§Â§ 2 and 3 of the Rules of Court.</span></p><p class="s63F375A7"><span class="sB2565A59"></span><span class="sB8D990E2">Andrea Tamietti</span><span class="sED80D76A"></span><span class="sB8D990E2">Ganna Yudkivska</span><br><span class="sC9562A37"></span><span class="sB8D990E2">Deputy </span><span class="sB8D990E2">Registrar</span><span class="s4B98E8F4"></span><span class="sB8D990E2">President</span></p></div></div>
                         </div>
                     </div>
                 </div>
-                <div id="recommend">
-                    <!--TEMPLATE_RECOMMENDER-->
-                </div>
-
-
-
-
-
-
-
-
+                <!-- Modal -->
 
 
             </div>
+
+            <div id="footer">
+                <div class="container">
+
+
+                    <div class="modal fade" id="myModal" role="dialog" style="z-index: 100000;">
+                        <div class="modal-dialog" style="min-width:90rem;" style="z-index: 100001;">
+
+                          <!-- Modal content-->
+                          <div class="modal-content" style="min-width:90rem;">
+                            <div class="modal-header" style="min-width:90rem;">
+                              <button type="button" class="close" data-dismiss="modal" style="width: 5rem;">&times;</button>
+                          </div>
+                          <div class="modal-body" >
+                              <div id="help-car" class="carousel">
+                                <div class="slide-container">
+
+                                    <!--  Slider  -->
+<div class="slide">
+                                        <div class="visual-content-container">
+                                            <h1 stryle="margin-top:15;">Welcome to</h1>  <h1 style="font-size: 7rem;">WhenTheFact</h1>  
+                                            <h2>a tool to detect relevant events in legal texts <br>and organize them in a timeline<br><br></h2>  
+                                                    <div><img src="./help/introtimeline.gif" style="width: 45rem;" alt="" /></div> 
+                                        </div>
+                                        
+                                            
+                                            <div class="helper-content-container">
+                                            <div class="helper-content" style="font-size: 2rem;">
+                                                <br><br>Please follow the next steps in order to retrieve <br> and process a document from the European Court of Justice.
+                                                    </div>
+                                                </div>
+                                            </div>  
+
+
+                                    <div class="slide">
+                                        <div class="visual-content-container">
+                                            <img src="./help/step1.gif" alt="" />              
+                                        </div>
+                                        <div class="helper-content-container">
+                                            <div class="helper-content">
+                                                <h2 class="slide-title">Step 1</h2>
+                                                Please go to the HUDOC database (<a href="https://hudoc.echr.coe.int/">https://hudoc.echr.coe.int/<a>)<br>
+                                                    and search for <a href="https://hudoc.echr.coe.int/eng#{%22languageisocode%22:[%22ENG%22],%22documentcollectionid2%22:[%22JUDGMENTS%22]}">judgments in English<a>.
+                                                    </div>
+                                                </div>
+                                            </div>   
+
+                                            <div class="slide">
+                                                <div class="visual-content-container">
+                                                    <img src="./help/step2.gif" alt="" />              
+                                                </div>
+                                                <div class="helper-content-container">
+                                                    <div class="helper-content">
+                                                        <h2 class="slide-title">Step 2</h2>
+                                                        Access to the jdugment you are interested in and copy its Document URL,<br>
+                                                        that should look like "http://hudoc.echr.coe.int/eng?i=XXX-XXXXXX"
+                                                    </div>
+                                                </div>
+                                            </div>   
+
+                                            <div class="slide">
+                                                <div class="visual-content-container">
+                                                    <img src="./help/step3.gif" alt="" />             
+                                                </div>
+                                                <div class="helper-content-container">
+                                                    <div class="helper-content">
+                                                        <h2 class="slide-title">Step 3</h2>
+                                                        Paste it in the search bar of this webpage and then click<br>
+                                                        the search button or press enter.
+                                                    </div>
+                                                </div>
+                                            </div>         
+
+                                            <div class="slide">
+                                                <div class="visual-content-container">
+                                                    <img src="./help/step4.gif" alt="" />              
+                                                </div>
+                                                <div class="helper-content-container">
+                                                    <div class="helper-content">
+                                                        <h2 class="slide-title">Step 4</h2>
+                                                        Once the website shows the text of your target judgment, click on "Events" in order to have<br> the events and relevant dates related annotated in the text. This step might take some time.
+                                                    </div>
+                                                </div>
+                                            </div>         
+
+
+                                            <div class="slide">
+                                                <div class="visual-content-container">
+                                                    <img src="./help/step5.gif" alt="" />             
+                                                </div>
+                                                <div class="helper-content-container">
+                                                    <div class="helper-content">
+                                                        <h2 class="slide-title">Step 5</h2>
+                                                        When the annotations appear in the screen click on "Timeline" <br> to see the timeline associated to the dated events in the text.
+                                                    </div>
+                                                </div>
+                                            </div> 
+
+
+                                            <div class="slide">
+                                                <div class="visual-content-container">
+                                                    <img src="./help/step6.gif" alt="" />              
+                                                </div>
+                                                <div class="helper-content-container">
+                                                    <div class="helper-content">
+                                                        <h2 class="slide-title">Step 6</h2>
+                                                        You can click on each of the events in the timeline <br> in order to go to their mention in the document.
+                                                    </div>
+                                                </div>
+                                            </div> 
+
+
+                                        </div>
+
+                                        <div class="controls">
+                                            <button class="button button-nav previous" title="Previous Slide">Back</button>
+                                            <div class="dynamic-toggles"></div>
+                                            <button class="button button-nav button-primary next" title="Next step">Next</button>
+                                            <button class="button primary button-primary complete" title="Got It!">Got it!</button>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+<script  src="./help/script.js"></script>
+<script type="text/javascript">
+    $(window).on('load',function(){
+        $('#myModal').modal('show');
+    });
+</script>
+                    <hr />
+                    <center id="idfooter">
+                        <p><small>TO INCLUDE AUTHORSHIP.</small></p>
+                        <!--                    <p class="muted credit"><small>Contents in this web are offered under a <a rel="license" href="http://purl.org/NET/rdflicense/cc-by4.0">Creative Commons Attribution 4.0 Unported License</a></small></p> -->
+                        <!-- <p><small>latest version: <span id="version"></span></small></p> -->
+                    </center>
+                </div>
+            </div>
+
+            <!-- <div>Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" 			    title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" 			    title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div> -->
+
         </div>
-    </div>
-</div>
-<div id="footer">
-    <div class="container">
-        <hr />
-        <center id="idfooter">
-            <p><small>TO INCLUDE AUTHORSHIP.</small></p>
-            <!--                    <p class="muted credit"><small>Contents in this web are offered under a <a rel="license" href="http://purl.org/NET/rdflicense/cc-by4.0">Creative Commons Attribution 4.0 Unported License</a></small></p> -->
-            <!-- <p><small>latest version: <span id="version"></span></small></p> -->
-        </center>
-    </div>
-</div>
+    </body>
 
-<!-- <div>Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" 			    title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" 			    title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div> -->
-
-</div>
-</body>
-
-</html>
+    </html>

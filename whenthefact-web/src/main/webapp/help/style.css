@@ -1,0 +1,158 @@
+body {
+  background: #29ABE2;
+  font: 16px/1.4 "Proxima Nova", sans-serif;
+  letter-spacing: .03em;
+  color: #546976;
+}
+
+.modal {
+  background: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.button {
+  background: #F0F6FC;
+  width: 100px;
+  height: 28px;
+  border-radius: 3px;
+  display: inline-block;
+  cursor: pointer;
+  border: 0;
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);
+  font-family: "Proxima Nova", sans-serif;
+  font-size: 14px;
+  outline: none;
+}
+.button:hover, .button:focus {
+  background: #f4f9fd;
+}
+.button:active {
+  background: #ecf3fb;
+}
+.button.button-primary {
+  background: #4C89CF;
+  color: #fff;
+}
+.button.button-primary:hover, .button.button-primary:focus {
+  background: #74a4da;
+}
+.button.button-primary:active {
+  background: #316fb7;
+}
+.button.button-nav {
+  display: none;
+}
+.button.previous {
+  float: left;
+}
+.button.next {
+  float: right;
+}
+.button.complete {
+  float: right;
+  display: none;
+}
+.button:disabled {
+  opacity: .5;
+  cursor: initial;
+  pointer-events: none;
+}
+
+.carousel {
+  width: auto;
+  margin: auto;
+}
+
+.controls {
+  text-align: center;
+  padding: 20px;
+  white-space: nowrap;
+}
+.controls.on-last-slide .button-nav.next {
+  display: none;
+}
+.controls.on-last-slide .complete {
+  display: inline-block;
+}
+.controls.has-nav .button-nav {
+  display: inline-block;
+}
+.controls .dynamic-toggles {
+  display: inline-block;
+}
+.controls .toggle {
+  margin: 0 .25rem;
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  border: 0;
+  background: #fff;
+  border-radius: 100%;
+  cursor: pointer;
+  outline: none;
+  background: #CDD7E0;
+}
+.controls .toggle:hover, .controls .toggle:focus {
+  background: #E0E8F1;
+}
+.controls .toggle.active {
+  background: #4C89CF;
+}
+
+.slide-container {
+  height: 460px;
+}
+
+.slide {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+  background: #fff;
+  opacity: 0;
+  transition: opacity .3s ease;
+  height: 360px;
+}
+.slide.active {
+  opacity: 1;
+  z-index: 1;
+}
+
+.visual-content-container {
+  height: 36rem;
+    width: 90rem;
+    display: inline-block;
+}
+.visual-content-container img, .visual-content-container video {
+  max-height: 100%;
+}
+
+.helper-content-container {
+  display: table;
+  width: 100%;
+  position: absolute;
+  right: 0;
+  top: 360px;
+  left: 0;
+  height: 100px;
+  box-sizing: border-box;
+  padding: 0 20px;
+}
+
+.helper-content {
+  display: table-cell;
+  vertical-align: middle;
+  font-size: 1.5rem;
+}
+
+.slide-title {
+  font-size: 1.7rem;
+  font-weight: 600;
+  margin-top = 5px!important;
+}
