@@ -638,26 +638,6 @@ function printSVGLines(lEventArray, svgInDOM, doSort = true, randomizeTest = fal
 
 
 
-
-}
-
-function createCenterHlineSVG(minX = 0, minY = 0, maxX, maxY, appendTo, id = "temporalLine", namespace = "http://www.w3.org/2000/svg") {
-
-  //Create a <path> node
-  var lineNode = document.createElementNS(namespace, "path");
-  //Set attributes to make the line show in the middle of the provided
-  lineNode.setAttributeNS(null, "id", id); //Give it an id to ease later modification
-
-  lineNode.setAttributeNS(null, "d", "M " + Math.round(minX) + "  " + Math.round(((maxY - minY) / 2) + minY) + " h " + Math.round(maxX - minX));
-  lineNode.classList.add("centerLineColor");
-  lineNode.setAttributeNS(null, "stroke-width", "10");
-  //lineNode.setAttributeNS(null,"stroke","#000000");
-  return appendTo.appendChild(lineNode);
-
-
-}
-
-
 function zoomPercentage(cx, cy, pctg, svgNode = document.querySelector("svg")) {
   dim = computeHTMLElemDimensions(svgNode);
 
