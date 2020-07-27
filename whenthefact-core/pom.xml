@@ -51,7 +51,40 @@
         <type>jar</type>
     </dependency>
         
-    <!-- https://mvnrepository.com/artifact/edu.stanford.nlp/stanford-corenlp -->
+        <dependency>
+            <groupId>eu.fbk.utils</groupId>
+            <artifactId>utils-core</artifactId>
+            <version>3.1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/eu.fbk.dh/tint-readability -->
+        <dependency>
+            <groupId>eu.fbk.dh</groupId>
+            <artifactId>tint-readability</artifactId>
+            <version>0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>eus.ixa</groupId>
+            <artifactId>ixa-pipe-pos</artifactId>
+            <version>1.5.1</version>
+        </dependency>
+        <dependency>
+            <groupId>eus.ixa</groupId>
+            <artifactId>ixa-pipe-tok</artifactId>
+            <version>1.8.5</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.ixa-ehu</groupId>
+            <artifactId>kaflib-naf</artifactId>
+            <version>1.1.15</version>
+        </dependency>
+ 
+        <!--<dependency>
+          <groupId>eus.ixa</groupId>
+          <artifactId>ixa-pipe-parse</artifactId>
+          <version>1.1.1</version>
+        </dependency> -->
+        
+        
     <dependency>
         <groupId>edu.stanford.nlp</groupId>
         <artifactId>stanford-corenlp</artifactId>
@@ -59,11 +92,23 @@
         <type>jar</type>
     </dependency>
     <dependency>
-        <groupId>edu.stanford.nlp</groupId>
-        <artifactId>stanford-corenlp</artifactId>
-        <version>3.9.1</version>
-        <classifier>models</classifier>
-    </dependency>
+            <groupId>edu.stanford.nlp</groupId>
+            <artifactId>stanford-corenlp</artifactId>
+            <version>3.9.1</version>
+            <classifier>models</classifier>
+            <exclusions>
+                <exclusion>
+                    <groupId>edu.stanford.nlp</groupId>
+                    <artifactId>stanford-corenlp-3.9.1-models-kbp</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+    <dependency>
+            <groupId>edu.stanford.nlp</groupId>
+            <artifactId>stanford-corenlp</artifactId>
+            <version>3.9.1</version>
+            <classifier>models-spanish</classifier>
+        </dependency>
     <dependency>
             <groupId>org.apache.pdfbox</groupId>
             <artifactId>pdfbox</artifactId>
