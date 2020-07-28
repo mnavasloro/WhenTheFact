@@ -111,9 +111,34 @@ public class XMLMerger2 {
                     int j2 = timexAnnotatedXML.indexOf("</TIMEX3>", j) + "</TIMEX3>".length();
                     int j3 = timexAnnotatedXML.indexOf("</TIMEX3>", j);
                     int lengtnew = j3 - j1;
-                    baseXML = baseXML.substring(0,i) + timexAnnotatedXML.substring(j, j2)+ baseXML.substring(i+lengtnew);
+                    // If there is a event tag in the way
+                    if(baseXML.substring(i,Integer.min(i+lengtnew+"<EVENT>".length(),baseXML.length())).contains("<EVENT")){
+                        String inTIMEX = timexAnnotatedXML.substring(j1, j3);
+                        int k = 0;
+                        int h = i;
+                        while(k<inTIMEX.length()){
+                            if(inTIMEX.charAt(k)!=baseXML.charAt(h) && baseXML.charAt(h)=='<'){
+                                int h1 = baseXML.indexOf(">", h) + 1;
+                                int h2 = baseXML.indexOf("<", h1);
+                                h = baseXML.indexOf("</EVENT>", h) + "</EVENT>".length();
+                                k+= h2 - h1;
+                            }
+                            else{
+                                h++;
+                                k++; 
+                            }
+                                                      
+                        }                                                
+                        baseXML = baseXML.substring(0,i) + timexAnnotatedXML.substring(j, j2)+ baseXML.substring(h);
+                    }
+                    else{
+                       baseXML = baseXML.substring(0,i) + timexAnnotatedXML.substring(j, j2)+ baseXML.substring(i+lengtnew);
+                     
+                    }
                     i = i + j2 - j;
                     j = j2;
+                } else if(baseXML.charAt(i) != timexAnnotatedXML.charAt(j)){
+                    System.out.println(i + " " + j);
                 }
             i++;
             j++;

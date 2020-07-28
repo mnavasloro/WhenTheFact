@@ -22,9 +22,9 @@ import org.apache.commons.io.FileUtils;
  */
 public class FileTempEval3ES {
 
-    File testFile = null; // File to test against
-    File inputFile = null; // Input file (cleaned of TimeML tags)
-    File outputFile = null; // File to write the output
+    public File testFile = null; // File to test against
+    public File inputFile = null; // Input file (cleaned of TimeML tags)
+    public File outputFile = null; // File to write the output
 
     String content = "";
 

@@ -963,7 +963,7 @@ public class ExtractorTIMEXPOSES {
                         String normalized = token.get(CoreAnnotations.NormalizedNamedEntityTagAnnotation.class);
 
                         /* Verb Event */
-                        if (pos.startsWith("VM")){// && !pos.equalsIgnoreCase("VBG")) {
+                        if (pos.startsWith("VM") || pos.startsWith("VS")){// && !pos.equalsIgnoreCase("VBG")) {
                                 inp3 = inp3.substring(0, offset + token.beginPosition()) + "<EVENT eid=\"e" + i + "\">" + inp3.substring(offset + token.beginPosition(), offset + token.endPosition()) + "</EVENT>" + inp3.substring(offset + token.endPosition());
                                 offset = offset + ("<EVENT eid=\"e" + i + "\">" + "</EVENT>" ).length();
                                 i++;

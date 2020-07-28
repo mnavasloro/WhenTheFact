@@ -1,32 +1,16 @@
 package oeg.tagger.main;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import oeg.corpus.FileTempEval3;
 import oeg.corpus.FileTempEval3ES;
-import oeg.corpus.ManagerTempEval3;
 import oeg.corpus.ManagerTempEval3ES;
-import oeg.tagger.eventextractors.ExtractorKeywordBased;
-import oeg.tagger.eventextractors.ExtractorTIMEXPOS;
-import oeg.tagger.main.auxFunctions;
-import oeg.tagger.docHandler.Document;
-import oeg.tagger.docHandler.StructureExtractorWord;
 import oeg.tagger.eventextractors.ExtractorTIMEXPOSES;
-import org.apache.commons.io.FileUtils;
 
 /**
  *
  * @author
  */
-public class POSMainES {
+public class POSMainESTrain {
 
     public static void main(String[] args) {
         System.out.println("Event Extractor");
@@ -34,8 +18,8 @@ public class POSMainES {
 //            String output = cf.annotate("The judge refused the appeal.", "");
 //        File foldertrain = new File("C:\\Users\\mnavas\\DATA\\ERWANA\\testclean\\");
 //        String folderwordtrain = "C:\\Users\\mnavas\\DATA\\ERWANA\\testword\\";
-        File foldertrain = new File("C:\\Users\\mnavas\\CODE\\OLD_CODE\\data\\datasets\\timeEval\\tempeval3ES\\test\\test-clean\\");
-        String foutput = "C:\\Users\\mnavas\\CODE\\OLD_CODE\\data\\datasets\\timeEval\\tempeval3ES\\test\\outputevents\\";
+        File foldertrain = new File("C:\\Users\\mnavas\\CODE\\OLD_CODE\\data\\datasets\\timeEval\\tempeval3ES\\test\\train-clean\\");
+        String foutput = "C:\\Users\\mnavas\\CODE\\OLD_CODE\\data\\datasets\\timeEval\\tempeval3ES\\test\\trainoutputevents\\";
         File[] files = foldertrain.listFiles();
         String txt = "";
         String filename = "";
