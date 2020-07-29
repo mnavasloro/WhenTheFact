@@ -38,7 +38,7 @@ public class FileTempEval3ES {
      */
     public FileTempEval3ES(File file, File test, File out) {
         inputFile = file;
-        testFile = new File(test.getAbsolutePath() + file.getName());
+        testFile = new File(test.getAbsolutePath() + "\\" + file.getName());
         outputFile = new File(out.getAbsolutePath() + "\\" + file.getName());
     }
 
@@ -111,7 +111,7 @@ public class FileTempEval3ES {
      * @return the TEXT of a string
      */
     public String getText(String input) {
-        String textRegex = "<TEXT>([^<]*?)<\\/TEXT>";
+        String textRegex = "<TEXT>([\\S\\s]*?)<\\/TEXT>";
         Pattern pText = Pattern.compile(textRegex);
         Matcher mText = pText.matcher(input);
         if (mText.find()) {

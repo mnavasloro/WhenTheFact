@@ -10,19 +10,19 @@ import oeg.tagger.eventextractors.ExtractorTIMEXPOSES;
  *
  * @author
  */
-public class POSMainESTrain {
+public class POSMainESDev {
 
     public static void main(String[] args) {
         System.out.println("Event Extractor");
         ExtractorTIMEXPOSES ekb = new ExtractorTIMEXPOSES();
 //            String output = cf.annotate("The judge refused the appeal.", "");
-//        File foldertrain = new File("C:\\Users\\mnavas\\DATA\\ERWANA\\testclean\\");
-//        String folderwordtrain = "C:\\Users\\mnavas\\DATA\\ERWANA\\testword\\";
+//        File folderdev = new File("C:\\Users\\mnavas\\DATA\\ERWANA\\testclean\\");
+//        String folderworddev = "C:\\Users\\mnavas\\DATA\\ERWANA\\testword\\";
         
         String filename = "";
 
         try {
-            ManagerTempEval3ES mte3 = new ManagerTempEval3ES("C:\\Users\\mnavas\\CODE\\OLD_CODE\\data\\datasets\\timeEval\\tempeval3ES\\test\\train-clean\\", "C:\\Users\\mnavas\\CODE\\OLD_CODE\\data\\datasets\\timeEval\\tempeval3ES\\test\\train\\", "C:\\Users\\mnavas\\CODE\\OLD_CODE\\data\\datasets\\timeEval\\tempeval3ES\\test\\trainoutputevents\\");
+            ManagerTempEval3ES mte3 = new ManagerTempEval3ES("C:\\Users\\mnavas\\CODE\\OLD_CODE\\data\\datasets\\timeEval\\tempeval3ES\\test\\dev-clean\\", "C:\\Users\\mnavas\\CODE\\OLD_CODE\\data\\datasets\\timeEval\\tempeval3ES\\test\\dev\\", "C:\\Users\\mnavas\\CODE\\OLD_CODE\\data\\datasets\\timeEval\\tempeval3ES\\test\\devoutputevents\\");
             List<FileTempEval3ES> list = mte3.lista;
             int tot = list.size();
             int i = 0;

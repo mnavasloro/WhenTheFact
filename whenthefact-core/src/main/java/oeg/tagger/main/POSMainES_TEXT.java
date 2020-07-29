@@ -31,7 +31,7 @@ public class POSMainES_TEXT {
     public static void main(String[] args) {
         System.out.println("Event Extractor");
         ExtractorTIMEXPOSES ekb = new ExtractorTIMEXPOSES();
-        String input2 = "Alicia Moreau es presidenta";
+        String input2 = "Ese Comité Ejecutivo está formado por representantes del BID, de la Organización de Estados Americanos ( OEA) y de la Comisión Económica de las Naciones Unidas para América Latina y el Caribe ( CEPAL).";
 
         try {
            
