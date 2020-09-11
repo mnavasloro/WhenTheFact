@@ -41,13 +41,25 @@ public class Document {
     public List<DocumentPart> getEventRelevantParts(){
         List<DocumentPart> ldp = new ArrayList<DocumentPart>();
         for(DocumentPart dp : parts){
-            if((dp.type.equalsIgnoreCase("Title") || dp.type.contains("Head1")) && (dp.text.contains("PROCEDURE") || dp.text.contains("FOR THESE REASONS, THE COURT"))){
+            if((dp.type.equalsIgnoreCase("Title") || dp.type.contains("Head1"))  && !dp.text.contains("PROCEDURE") && !dp.title.contains("LAW") && !dp.title.contains("THE FACTS")){// && (dp.text.contains("PROCEDURE") || dp.text.contains("FOR THESE REASONS, THE COURT"))){
                 ldp.add(dp);
-            } else if((dp.type.equalsIgnoreCase("Heading1") || dp.type.contains("Head2")) && dp.text.contains("THE CIRCUMSTANCES OF THE CASE")){
+            } else if((dp.type.equalsIgnoreCase("Heading1") || dp.type.contains("Head2")) && dp.text.contains("THE CIRCUMSTANCES OF THE CASE") && !dp.text.contains("PROCEDURE")  && !dp.title.contains("LAW") && !dp.title.contains("THE FACTS")){
                 ldp.add(dp);
+//            } else if( dp.title.contains("PROCEDURE") && dp.text.startsWith("The case originated in")){
+//                ldp.add(dp);
             }
         }
         return ldp;
+    }
+    
+    
+    public DocumentPart getProcedure(){
+        for(DocumentPart dp : parts){
+            if( dp.title.contains("PROCEDURE")){
+                return dp;
+            }
+        }
+        return null;
     }
     
 }

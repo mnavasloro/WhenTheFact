@@ -19,16 +19,16 @@ import org.apache.commons.io.FileUtils;
  *
  * @author 
  */
-public class AnnotadorMainTest {
+public class AnnotadorMainDev {
         public static void main(String[] args) {
           System.out.println("Event Extractor");
         ExtractorTIMEXKeywordBasedNE ekb = new ExtractorTIMEXKeywordBasedNE();
 //            String output = cf.annotate("The judge refused the appeal.", "");
 //        File foldertrain = new File("C:\\Users\\mnavas\\DATA\\ERWANA\\testclean\\");
 //        String folderwordtrain = "C:\\Users\\mnavas\\DATA\\ERWANA\\testword\\";
-        File foldertrain = new File("C:\\Users\\mnavas\\DATA\\ERWANA2\\testclean\\");
+        File foldertrain = new File("C:\\Users\\mnavas\\DATA\\ERWANA2\\devclean\\");
         String folderwordtrain = "C:\\Users\\mnavas\\DATA\\ERWANA2\\word\\";
-        String foutput = "C:\\Users\\mnavas\\DATA\\ERWANA2\\outTIMEXTest\\";
+        String foutput = "C:\\Users\\mnavas\\DATA\\ERWANA2\\outTIMEXDev\\";
         File[] files = foldertrain.listFiles();
         String txt = "";
         String filename = "";

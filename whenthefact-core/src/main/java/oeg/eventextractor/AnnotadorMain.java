@@ -12,6 +12,7 @@ import oeg.tagger.extractors.ExtractorTIMEXKeywordBased;
 import static oeg.tagger.extractors.writer.writeFile;
 import oeg.tagger.docHandler.Document;
 import oeg.tagger.docHandler.StructureExtractorWord;
+import oeg.tagger.eventextractors.ExtractorTIMEXKeywordBasedNE;
 import org.apache.commons.io.FileUtils;
 
 /**
@@ -21,13 +22,13 @@ import org.apache.commons.io.FileUtils;
 public class AnnotadorMain {
         public static void main(String[] args) {
           System.out.println("Event Extractor");
-        ExtractorTIMEXKeywordBased ekb = new ExtractorTIMEXKeywordBased();
+        ExtractorTIMEXKeywordBasedNE ekb = new ExtractorTIMEXKeywordBasedNE();
 //            String output = cf.annotate("The judge refused the appeal.", "");
 //        File foldertrain = new File("C:\\Users\\mnavas\\DATA\\ERWANA\\testclean\\");
 //        String folderwordtrain = "C:\\Users\\mnavas\\DATA\\ERWANA\\testword\\";
-        File foldertrain = new File("C:\\Users\\mnavas\\DATA\\ERWANA\\trainclean\\");
-        String folderwordtrain = "C:\\Users\\mnavas\\DATA\\ERWANA\\trainword\\";
-        String foutput = "C:\\Users\\mnavas\\DATA\\ERWANA\\outTIMEX\\";
+        File foldertrain = new File("C:\\Users\\mnavas\\DATA\\ERWANA2\\trainclean\\");
+        String folderwordtrain = "C:\\Users\\mnavas\\DATA\\ERWANA2\\word\\";
+        String foutput = "C:\\Users\\mnavas\\DATA\\ERWANA2\\outTIMEX\\";
         File[] files = foldertrain.listFiles();
         String txt = "";
         String filename = "";
@@ -36,7 +37,7 @@ public class AnnotadorMain {
             try {
                 txt = FileUtils.readFileToString(f, "UTF-8");
                 filename = folderwordtrain + f.getName().replaceFirst("\\.docx.*", "\\.docx");
-                filename = filename.replaceFirst("\\.xml", "\\.docx");
+                filename = filename.replaceFirst("\\.xml.*", "\\.docx");
                 filenameXML = f.getName().replaceFirst("\\.docx.*", "\\.docx").replaceFirst("\\.docx", "\\.xml");
                 
                 File word = new File(filename);
@@ -44,7 +45,7 @@ public class AnnotadorMain {
                 System.out.println(output);
                 
                 String outf = foutput + filenameXML;
-                output = output.replaceAll("TIMEX3", "Eventwhen");
+                
                 System.out.println("Writing to: " + outf + "\n----");
                 if (!writeFile("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "<TEXT>" + output + "</TEXT>", outf)) {
             System.out.println("ERROR WHILE SAVING IN" + outf);
