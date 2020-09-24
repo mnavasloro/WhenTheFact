@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static oeg.eventExtractor.timelineGeneration.generateTimeline;
-import oeg.eventRepresentation.Event;
+import oeg.eventRepresentation.EventF;
 import org.apache.commons.io.IOUtils;
 
 /**
@@ -28,7 +28,7 @@ public class testEvent {
         try {
             String inputTIMEX = IOUtils.toString(new FileInputStream(new File("C:\\apache-tomcat-9.0.14\\bin\\bh2.txt")), "UTF-8");
             Annotation2JSON t2j = new Annotation2JSON();
-            ArrayList<Event> events = t2j.getEvents(inputTIMEX);
+            ArrayList<EventF> events = t2j.getEvents(inputTIMEX);
             String finaltimeline = generateTimeline(events);
             System.out.print(finaltimeline);
         } catch (Exception ex) {

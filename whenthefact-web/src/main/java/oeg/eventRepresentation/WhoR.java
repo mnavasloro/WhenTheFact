@@ -5,20 +5,24 @@
  */
 package oeg.eventRepresentation;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author Maria
  */
-public class CoreElement {
+public class WhoR {
     
     
-    public String anchor;
+    public List<CoreElementF> elements = new ArrayList<CoreElementF>();
+    public List<String> arrayEl = new ArrayList<String>();
     public float Begin;
     public float End;
     
     @Override
     public String toString(){
-        return "Anchor: " + anchor + "\nBegin: " + Begin +  "\nEnd: " + End + "\n";
+        return "ArrayEl: " + arrayEl.toString() + "\nBegin: " + Begin +  "\nEnd: " + End + "\n";
     }
     
 }

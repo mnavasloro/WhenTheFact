@@ -12,20 +12,25 @@ package oeg.eventRepresentation;
 public class Event {
     
     
-    public Who Who = new Who();
-    public When When = new When();
-    public Core Core = new Core();
+    public Who who = new Who();
+    public When when =new When();
+    public Core core = new Core();
+
     public String EventId;
     public String Link;
     
     @Override
     public String toString(){
-        return "Who: " + Who.toString() + "\nCore: " + Core.toString() + "\nEventId: " + EventId +  "\nLink: " + Link +  "\n";
-//        return "When: " + When.toString() + "\nWho: " + Who.toString() + "\nCore: " + Core.toString() + "\nEventId: " + EventId +  "\nLink: " + Link +  "\n";
+        return "Who: " + who.toString() + "\nCore: " + core.toString() + "\nEventId: " + EventId +  "\nLink: " + Link +  "\n";
+//        return "when: " + when.toString() + "\nWho: " + who.toString() + "\nCore: " + core.toString() + "\nEventId: " + EventId +  "\nLink: " + Link +  "\n";
     }
 
     public void addCore(String lemma) {
-        Core.arrayEl.add(lemma);
+        core.arrayEl.add(lemma);
+    }
+    
+    public void addPos(int lemma) {
+        core.positions.add(lemma);
     }
     
 }

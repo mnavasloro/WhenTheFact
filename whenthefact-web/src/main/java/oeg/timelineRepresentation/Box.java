@@ -5,7 +5,7 @@
  */
 package oeg.timelineRepresentation;
 
-import oeg.eventRepresentation.Event;
+import oeg.eventRepresentation.EventF;
 
 /**
  *
@@ -16,13 +16,29 @@ public class Box {
     
     public DateP date = new DateP();
     public String content;
+    public String who;
     public String link;
+    public String color ="";
     
-    public Box(Event ev){
-        date.day = ev.When.day;
-        date.month = ev.When.month;
-        content =  String.join(" ", ev.Core.arrayEl);
-        link = ev.Link;
+    public Box(EventF ev){
+        date.day = ev.when.day;
+        date.month = ev.when.month;
+        if(ev.who != null){
+            who = String.join(" ", ev.who.arrayEl);
+        }
+        content =  String.join(" ", ev.core.arrayEl);
+        if(content.length() >= 60){
+            int indaux = content.indexOf(" ", 60);
+            if(indaux!=-1){
+                content = content.substring(0, indaux) + " (...)";
+            }
+        }
+        link = ev.link;
+        
+        if(ev.core.type!=null && ev.core.type.startsWith("circumstance")){
+            color= " style=\"color:green\"";
+        }
+       
     }
     
     
@@ -32,9 +48,21 @@ public class Box {
         res = res + date.toString();
         res = res + "<div class=\"timeline__post\">\n" +
 "                                    <div class=\"timeline__content\"><a href=\"#" + link + "\">\n" +
-"                                        <p>" + content + "</p>\n" +
+"                                        <p" + color + ">" + content + "</p>\n" +
 "                                    </a></div>\n" +
 "                                </div>\n";
+        
+        if(who!=null){
+            res = "                            <div class=\"timeline__box\">\n" ;
+        res = res + date.toString();
+        res = res + "<div class=\"timeline__post\">\n" +
+"                                    <div class=\"timeline__content\"><a href=\"#" + link + "\">\n" +
+ "                                        <p" + color + "><b>" + who + "</b></p>\n" +               
+"                                        <p" + color + ">" + content + "</p>\n" +
+"                                    </a></div>\n" +
+"                                </div>\n";
+        }
+        
         return res + "                            </div>\n";
     }
     

@@ -12,17 +12,18 @@ import java.util.List;
  *
  * @author Maria
  */
-public class Who {
+public class CoreF {
     
     
-    public List<CoreElement> elements = new ArrayList<CoreElement>();
+    public List<CoreElementF> elements = new ArrayList<CoreElementF>();
     public List<String> arrayEl = new ArrayList<String>();
     public float Begin;
-    public float End;
+    public float End;    
+    public String type;
     
     @Override
     public String toString(){
-        return "ArrayEl: " + arrayEl.toString() + "\nBegin: " + Begin +  "\nEnd: " + End + "\n";
+        return "ArrayEl: " + arrayEl.toString() + "\nType: " + type  + "\nBegin: " + Begin +  "\nEnd: " + End + "\n";
     }
     
 }

@@ -13,11 +13,11 @@ import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.process.DocumentPreprocessor;
 import edu.stanford.nlp.tagger.maxent.MaxentTagger;
-//import edu.stanford.nlp.trees.Constituent;
+import edu.stanford.nlp.trees.Constituent;
 import edu.stanford.nlp.trees.GrammaticalStructure;
-//import edu.stanford.nlp.trees.LabeledScoredConstituentFactory;
-//import edu.stanford.nlp.trees.Tree;
-//import edu.stanford.nlp.trees.TreeCoreAnnotations;
+import edu.stanford.nlp.trees.LabeledScoredConstituentFactory;
+import edu.stanford.nlp.trees.Tree;
+import edu.stanford.nlp.trees.TreeCoreAnnotations;
 import edu.stanford.nlp.util.CoreMap;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -59,9 +59,9 @@ import org.slf4j.LoggerFactory;
  *
  * @author mnavas
  */
-public class ExtractorTIMEXKeywordBasedNE {
+public class ExtractorTIMEXKeywordBasedNEnoTIMEXflag {
 
-    private static final org.slf4j.Logger log = LoggerFactory.getLogger(ExtractorTIMEXKeywordBasedNE.class);
+    private static final org.slf4j.Logger log = LoggerFactory.getLogger(ExtractorTIMEXKeywordBasedNEnoTIMEXflag.class);
 
 //    PrintWriter out;
     String eventFile;
@@ -94,16 +94,16 @@ public class ExtractorTIMEXKeywordBasedNE {
      * @param lang language (ES - Spanish, EN - English)
      * @return an instance of the tagger
      */
-    public ExtractorTIMEXKeywordBasedNE() {
+    public ExtractorTIMEXKeywordBasedNEnoTIMEXflag() {
         init();
     }
 
-    public ExtractorTIMEXKeywordBasedNE(String language) {
+    public ExtractorTIMEXKeywordBasedNEnoTIMEXflag(String language) {
         lang = language;
         init();
     }
 
-    public ExtractorTIMEXKeywordBasedNE(String pos, String lemma, String rul, String language, String events) {
+    public ExtractorTIMEXKeywordBasedNEnoTIMEXflag(String pos, String lemma, String rul, String language, String events) {
         posModel = pos;
         lemmaModel = lemma;
         rules = rul;
@@ -112,7 +112,7 @@ public class ExtractorTIMEXKeywordBasedNE {
         init();
     }
 
-    public ExtractorTIMEXKeywordBasedNE(String rul, String language) {
+    public ExtractorTIMEXKeywordBasedNEnoTIMEXflag(String rul, String language) {
         rules = rul;
         lang = language;
         init();
@@ -153,12 +153,12 @@ public class ExtractorTIMEXKeywordBasedNE {
                 System.out.println("Error: " + ex.toString());
             }
         } catch (Exception ex) {
-            Logger.getLogger(ExtractorTIMEXKeywordBasedNE.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ExtractorTIMEXKeywordBasedNEnoTIMEXflag.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
                 fileIn.close();
             } catch (IOException ex) {
-                Logger.getLogger(ExtractorTIMEXKeywordBasedNE.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ExtractorTIMEXKeywordBasedNEnoTIMEXflag.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 
@@ -373,17 +373,16 @@ public class ExtractorTIMEXKeywordBasedNE {
 
             inpWhen = inpWhen.replaceAll("\\r\\n", "\n");
 
-            int offsetdelay = 1;
+            int offsetdelay = 0;
             int numval = 2;
             Annotation annotation = new Annotation(inpWhen);
 
             pipeline.annotate(annotation);
 
-            int offset = 1;
-            int offsetwho = 1;
-            int offsetev = 1;
-            int offsetEvent = "<Event argument=\"what\">".length() + "</Event>".length();
-            int offsetEventEv = "<Event argument=\"ev\">".length() + "</Event>".length();
+            int offset = 0;
+            int offsetwho = 0;
+            int offsetwhat = 0;
+            int offsetEvent = "<Event argument=\"core\">".length() + "</Event>".length();
 
             StructureExtractorECHR seECHR = new StructureExtractorECHR();
             Document doc = seECHR.extractFromDocument(wordfile);
@@ -776,7 +775,7 @@ public class ExtractorTIMEXKeywordBasedNE {
 
                 }
                 int flag = 0;
-                if (flagTIMEX == 1) { // Otra opcion es sumar uno por cada TIMEX, pero tampoco es una relacion uno a uno...
+//                if (flagTIMEX == 1) { // Otra opcion es sumar uno por cada TIMEX, pero tampoco es una relacion uno a uno...
                     if(sentence.toString().startsWith("The case originated in")){ // FIRST EVENT
                         int flagapp = 0;
                          for (CoreLabel token : sentence.get(CoreAnnotations.TokensAnnotation.class)) {
@@ -784,12 +783,12 @@ public class ExtractorTIMEXKeywordBasedNE {
                              String lemma = token.get(CoreAnnotations.LemmaAnnotation.class);
                              
                              if(word.equalsIgnoreCase("lodged")){
-                                 inpCore = inpCore.substring(0, offset + token.beginPosition()) + "<Event argument=\"what\"" + " tid=\"t" + "1" + "\" type=\"procedure\">" + inpCore.substring(offset + token.beginPosition(), offset + token.endPosition()) + "</Event>" + inpCore.substring(offset + token.endPosition());
-                                 offset = offset + offsetEvent + (" tid=\"t" + "1" + "\" type=\"procedure\"").length();
+                                 inpCore = inpCore.substring(0, offset + token.beginPosition()) + "<Event argument=\"core\"" + " tid=\"t" + "1" + "\">" + inpCore.substring(offset + token.beginPosition(), offset + token.endPosition()) + "</Event>" + inpCore.substring(offset + token.endPosition());
+                                 offset = offset + offsetEvent + (" tid=\"t" + "1" + "\"").length();
 
                              } else if(lemma.equalsIgnoreCase("application") && flagapp == 0){
                                  inpWho = inpWho.substring(0, offsetwho + token.beginPosition()) + "<Event argument=\"who\"" + " tid=\"t" + "1" + "\">" + inpWho.substring(offsetwho + token.beginPosition(), offsetwho + token.endPosition()) + "</Event>" + inpWho.substring(offsetwho + token.endPosition());                                 
-                                 offsetwho = offsetwho + offsetEvent - 1 + (" tid=\"t" + "1" + "\"").length(); // por el ev -> who
+                                 offsetwho = offsetwho + offsetEvent - 1 + (" tid=\"t" + "1" + "\"").length(); // por el what -> who
                                  flagapp = 1;
                              }
                          }
@@ -798,15 +797,15 @@ public class ExtractorTIMEXKeywordBasedNE {
                                     int beg = toks.get(0).beginPosition();
                                     int end = toks.get(toks.size() - 1).endPosition();
                                     String typ = "procedure";
-                                    inpWhat = inpWhat.substring(0, offsetev + beg) + "<Event argument=\"ev\"" + " tid=\"t" + "1" + "\" type=\"" + typ + "\">" + inpWhat.substring(offsetev + beg, offsetev + end) + "</Event>" + inpWhat.substring(offsetev + end);
+                                    inpWhat = inpWhat.substring(0, offsetwhat + beg) + "<Event argument=\"what\"" + " tid=\"t" + "1" + "\" type=\"" + typ + "\">" + inpWhat.substring(offsetwhat + beg, offsetwhat + end) + "</Event>" + inpWhat.substring(offsetwhat + end);
 
                                     // HOMOG. WHENS
-                                    if(offsetev == 0){
+                                    if(offsetwhat == 0){
                                         int oldlength = inpWhen.length();
                                         inpWhen = inpWhen.replaceAll("id=\"t(\\d+)\"", "id=\"t1\"");
                                         offsetdelay = offsetdelay - (oldlength - inpWhen.length());
                                     }
-                                    offsetev = offsetev + offsetEventEv + "\" type=\"".length() + typ.length() + (" tid=\"t" + "1" + "\"").length();
+                                    offsetwhat = offsetwhat + offsetEvent + "\" type=\"".length() + typ.length() + (" tid=\"t" + "1" + "\"").length();
                          
                          
 
@@ -814,7 +813,6 @@ public class ExtractorTIMEXKeywordBasedNE {
                     for (CoreLabel token : sentence.get(CoreAnnotations.TokensAnnotation.class)) {
                     /* We collect the different tags of each token */
                     String word = token.get(CoreAnnotations.TextAnnotation.class);
-                    System.out.println("w: " + word);
                     String lemma = token.get(CoreAnnotations.LemmaAnnotation.class);
                     String pos = token.get(CoreAnnotations.PartOfSpeechAnnotation.class);
                     String ne = token.get(CoreAnnotations.NamedEntityTagAnnotation.class);
@@ -841,7 +839,21 @@ public class ExtractorTIMEXKeywordBasedNE {
                                     // coger sentence, buscar los tokens min y max en positions, y sus begin position y end position, y hacer lo de abajo
                                     ArrayList<Integer> positions = searchPositionInSentence(sentence, ev);
                                     
-                                    
+                                    if (positions.isEmpty()) {
+                                        inpCore = inpCore.substring(0, offset + token.beginPosition() + 1) + "<Event argument=\"core\"" + " tid=\"t" + numval + "\">" + inpCore.substring(offset + token.beginPosition() + 1, offset + token.endPosition() + 1) + "</Event>" + inpCore.substring(offset + token.endPosition() + 1);
+
+                                    } else if (positions.size() >= 2 && positions.get(0) != -1) {
+                                        inpCore = inpCore.substring(0, offset + positions.get(0)) + "<Event argument=\"core\"" + " tid=\"t" + numval + "\">" + inpCore.substring(offset + positions.get(0), offset + positions.get(1)) + "</Event>" + inpCore.substring(offset + positions.get(1));
+                                        offset = offset + offsetEvent + (" tid=\"t" + numval + "\"").length();
+                                    }
+                                    if (positions.size() == 4) {
+
+                                        // ADD WHO TO INP4
+                                        inpWho = inpWho.substring(0, offsetwho + positions.get(2)) + "<Event argument=\"who\"" + " tid=\"t" + numval + "\">" + inpWho.substring(offsetwho + positions.get(2), offsetwho + positions.get(3)) + "</Event>" + inpWho.substring(offsetwho + positions.get(3));
+//                               inp3 = inp3.substring(0, offset + token.beginPosition() + 1) + "<Event argument=\"core\"" + " tid=\"t" + numval + "\">" + inp3.substring(offset + token.beginPosition() + 1, offset + token.endPosition() + 1) + "</Event>" + inp3.substring(offset + token.endPosition() + 1);
+                                        offsetwho = offsetwho + offsetEvent - 1 + (" tid=\"t" + numval + "\"").length(); // por el what -> who
+                                    }
+
                                     //TODO annotate sentence
                                     List<CoreLabel> toks = sentence.get(CoreAnnotations.TokensAnnotation.class);
                                     int beg = toks.get(0).beginPosition();
@@ -851,25 +863,9 @@ public class ExtractorTIMEXKeywordBasedNE {
                                     if(frame.percProc > 0.5){
                                         typ = "procedure";
                                     }
-                                    
-                                    if (positions.isEmpty()) {
-                                        inpCore = inpCore.substring(0, offset + token.beginPosition() + 1) + "<Event argument=\"what\"" + " tid=\"t" + numval + "\" type=\"" + typ + "\">" + inpCore.substring(offset + token.beginPosition() + 1, offset + token.endPosition() + 1) + "</Event>" + inpCore.substring(offset + token.endPosition() + 1);
+                                    inpWhat = inpWhat.substring(0, offsetwhat + beg) + "<Event argument=\"what\"" + " tid=\"t" + numval + "\" type=\"" + typ + "\">" + inpWhat.substring(offsetwhat + beg, offsetwhat + end) + "</Event>" + inpWhat.substring(offsetwhat + end);
 
-                                    } else if (positions.size() >= 2 && positions.get(0) != -1) {
-                                        inpCore = inpCore.substring(0, offset + positions.get(0)) + "<Event argument=\"what\"" + " tid=\"t" + numval + "\" type=\"" + typ + "\">" + inpCore.substring(offset + positions.get(0), offset + positions.get(1)) + "</Event>" + inpCore.substring(offset + positions.get(1));
-                                        offset = offset + offsetEvent + (" tid=\"t" + numval + "\" type=\"" + typ + "\"").length();
-                                    }
-                                    if (positions.size() == 4) {
-
-                                        // ADD WHO TO INP4
-                                        inpWho = inpWho.substring(0, offsetwho + positions.get(2)) + "<Event argument=\"who\"" + " tid=\"t" + numval + "\">" + inpWho.substring(offsetwho + positions.get(2), offsetwho + positions.get(3)) + "</Event>" + inpWho.substring(offsetwho + positions.get(3));
-//                               inp3 = inp3.substring(0, offset + token.beginPosition() + 1) + "<Event argument=\"what\"" + " tid=\"t" + numval + "\">" + inp3.substring(offset + token.beginPosition() + 1, offset + token.endPosition() + 1) + "</Event>" + inp3.substring(offset + token.endPosition() + 1);
-                                        offsetwho = offsetwho + offsetEvent - 1 + (" tid=\"t" + numval + "\"").length(); // por el ev -> who
-                                    }
-
-                                    inpWhat = inpWhat.substring(0, offsetev + beg) + "<Event argument=\"ev\"" + " tid=\"t" + numval + "\" type=\"" + typ + "\">" + inpWhat.substring(offsetev + beg, offsetev + end) + "</Event>" + inpWhat.substring(offsetev + end);
-
-                                    offsetev = offsetev + offsetEventEv + "\" type=\"".length() + typ.length() + (" tid=\"t" + numval + "\"").length();
+                                    offsetwhat = offsetwhat + offsetEvent + "\" type=\"".length() + typ.length() + (" tid=\"t" + numval + "\"").length();
                                     numval++;
                                     flag = 1;
 
@@ -891,7 +887,7 @@ public class ExtractorTIMEXKeywordBasedNE {
                 }
                     }
 
-            }
+//            }
             }
 
 //            inpWhen = inpWhen.replaceAll(" , ", ", ");
@@ -906,8 +902,8 @@ public class ExtractorTIMEXKeywordBasedNE {
 
             inpWhen = inpWhen.replaceAll("\\n", "\r\n");
             inpCore = inpCore.replaceAll("\\n", "\r\n");
-            inpCore = inpCore.replaceAll("<Event", "<Event_what");
-            inpCore = inpCore.replaceAll("</Event", "</Event_what");
+            inpCore = inpCore.replaceAll("<Event", "<Event_core");
+            inpCore = inpCore.replaceAll("</Event", "</Event_core");
             inpWho = inpWho.replaceAll("\\n", "\r\n");
             inpWho = inpWho.replaceAll("<Event", "<Event_who");
             inpWho = inpWho.replaceAll("</Event", "</Event_who");
@@ -927,15 +923,15 @@ public class ExtractorTIMEXKeywordBasedNE {
             String res = xmlM.mergeXML3(inpWho, inpCore);
             res = xmlM.mergeXML3(res, inpWhen);
             res = xmlM.mergeXML3(res, inpWhat);
-            res = res.replaceAll("(<\\/Event><TIMEX3[^>]+>)<Event argument=\"what\"[^>]+>([^<]+)<\\/Event>(<\\/TIMEX3><Event argument=\"what\"[^>]+>[^<]+<\\/Event>)", "$1$2$3");
-            res = res.replaceAll("<\\/Event><Event argument=\"ev\" [^>]+>", "");
+            res = res.replaceAll("(<\\/Event><TIMEX3[^>]+>)<Event argument=\"core\"[^>]+>([^<]+)<\\/Event>(<\\/TIMEX3><Event argument=\"core\"[^>]+>[^<]+<\\/Event>)", "$1$2$3");
+            res = res.replaceAll("<\\/Event><Event argument=\"what\" [^>]+>", "");
             
 //            System.out.println("res1:\n" + res + "\n----------\n");
 
             res = res.replaceAll("<TIMEX3", "<Event_when");
             res = res.replaceAll("<\\/TIMEX3", "<\\/Event_when");
             res = res.replaceAll("(<Event_who argument=\"who\"[^>]+>)([^<]*)(<\\/Event_when>)", "$2$3$1");
-            res = res.replaceAll("(<Event_when [^>]+>)(<Event_what [^>]+>)([^<]+)(<\\/Event_what>)(<\\/Event_when>)", "$1$3$5");
+            res = res.replaceAll("(<Event_when [^>]+>)(<Event_core [^>]+>)([^<]+)(<\\/Event_core>)(<\\/Event_when>)", "$1$3$5");
             
 //            System.out.println("res2:\n" + res + "\n----------\n");
             res = res.replaceAll("(<Event_[^>]+>)(<Event [^>]+>)", "$2$1");
@@ -944,7 +940,7 @@ public class ExtractorTIMEXKeywordBasedNE {
 //            System.out.println("res3:\n" + res + "\n----------\n");
 
 
-            res = res.replaceAll("<\\/Event><Event argument=\"ev\" [^>]+>", "");
+            res = res.replaceAll("<\\/Event><Event argument=\"what\" [^>]+>", "");
 
             //
             pAnchor = Pattern.compile("<Event_when tid=(\\\"t\\d+\\\") [^>]+>([^<]+)<\\/Event_when>");
@@ -960,7 +956,7 @@ public class ExtractorTIMEXKeywordBasedNE {
                 String id = m.group(1);
                 String inside = m.group(2);
 
-                if (!res.substring(0,m.start()).contains("<Event argument=\"ev\" tid=" + id)) {
+                if (!res.substring(0,m.start()).contains("<Event argument=\"what\" tid=" + id)) {
                     m.appendReplacement(sb, inside);
                 }
 
@@ -973,14 +969,13 @@ public class ExtractorTIMEXKeywordBasedNE {
 //            System.out.println("res5:\n" + res + "\n----------\n");
 
             
-            res = res.replaceAll("(<Event_when [^>]+>)(<Event_what [^>]+>)([^<]+)(<\\/Event_what>)(<\\/Event_when>)", "$1$3$5");
-            res = res.replaceAll("(<\\/Event_what>)([^<]*)(<\\/Event_when>)", "$2$3$1");
+            res = res.replaceAll("(<Event_when [^>]+>)(<Event_core [^>]+>)([^<]+)(<\\/Event_core>)(<\\/Event_when>)", "$1$3$5");
+            res = res.replaceAll("(<\\/Event_core>)([^<]*)(<\\/Event_when>)", "$2$3$1");
             res = res.replaceAll("(<\\/Event_who>)([^<]*)(<\\/Event_when>)", "$2$3$1");
-            res = res.replaceAll("(<\\/Event_what>)([^<]*)(<\\/Event_who>)", "$2$3$1");
-            res = res.replaceAll("(<Event_what [^>]+>)([^<]+)(<\\/Event_who>)", "$3$1$2");
+            res = res.replaceAll("(<\\/Event_core>)([^<]*)(<\\/Event_who>)", "$2$3$1");
+            res = res.replaceAll("(<Event_core [^>]+>)([^<]+)(<\\/Event_who>)", "$3$1$2");
             
             res = res.replaceAll("(<Event_who [^>]+>)([Tt]he )", "$2$1");
-            res = res.replaceAll("(<Event_who [^>]+>)([Aa]n? )", "$2$1");
  
             
 //            System.out.println("res6:\n" + res + "\n----------\n");
@@ -998,56 +993,28 @@ public class ExtractorTIMEXKeywordBasedNE {
             
             ending = ending.replaceAll("<Event [^>]+>", "");
             ending = ending.replaceAll("<\\/Event>", "");
-            ending = ending.replaceAll("<Event_what [^>]+>", "");
-            ending = ending.replaceAll("<\\/Event_what>", "");
+            ending = ending.replaceAll("<Event_core [^>]+>", "");
+            ending = ending.replaceAll("<\\/Event_core>", "");
             
             Pattern pText4 = Pattern.compile("(\\s)*\\d+\\.(\\s*)(.+)", Pattern.MULTILINE);
         
-            if(ending.contains("\n")){
             String[] split = ending.split("\n");
             for(String s : split){
                 Matcher mText4 = pText4.matcher(s);
                 if(mText4.find()){
-                    ending = ending.replaceFirst(mText4.group(3), "<\\/Event_what>\n" + mText4.group(2) + "<Event_what argument=\"what\" tid=\"t0\" type=\"procedure\">" + mText4.group(3));
+                    ending = ending.replaceFirst(mText4.group(3), "<\\/Event_core>\n" + mText4.group(2) + "<Event_core argument=\"core\" tid=\"t0\">" + mText4.group(3));
                 } else if(s.startsWith("Done in")){
-                    ending = ending.substring(0, ending.indexOf(s)-1) + "</Event_what>" + ending.substring(ending.indexOf(s)-1, ending.indexOf(s) + s.length() -1) + "</Event>" + ending.substring(ending.indexOf(s) + s.length()-1);
+                    ending = ending.substring(0, ending.indexOf(s)-1) + "</Event_core>" + ending.substring(ending.indexOf(s)-1, ending.indexOf(s) + s.length() -1) + "</Event>" + ending.substring(ending.indexOf(s) + s.length()-1);
                 }
             }
-            ending = ending.replaceAll("(\\\n)(\\d+\\.)(<\\/Event_what>)", "$3$1$2");
-//            ending = ending.replaceAll("(\\r?\\n\\r?)(<\\/Event_what>)Done", "$2$1Done");
+            ending = ending.replaceAll("(\\\n)(\\d+\\.)(<\\/Event_core>)", "$3$1$2");
+//            ending = ending.replaceAll("(\\r?\\n\\r?)(<\\/Event_core>)Done", "$2$1Done");
             ending = ending.replaceAll("id=\"t(\\d+)\"", "id=\"t0\"");
-//            ending = ending.replaceAll("(\\s)(<Event_what argument=\"what\" tid=\"t0\">)([ ]+)(.)", "$3$2$4");
-            ending = ending.replaceFirst("(<\\/Event_what>)", "");
-            ending = ending.replaceAll("(\\r)(<\\/Event_what>)(\\n)", "$2$1$3");
-            ending = ending.replaceAll("([\\r\\n])(<Event_what argument=\"what\" tid=\"t0\" type=\"procedure\">)([^\\w]+)", "$3$2");
-            } else{
-//                String[] split = ending.split(";");
-//            for(String s : split){
-//                Matcher mText4 = pText4.matcher(s);
-//                System.out.println("s: " + s + "\n----");
-//                if(mText4.find()){
-//                    ending = ending.replaceFirst(mText4.group(3), "<\\/Event_what>\n" + mText4.group(2) + "<Event_what argument=\"what\" tid=\"t0\">" + mText4.group(3));
-//                }
-//                else if(s.contains("Done in")){
-//                    String saux = s.replaceAll("<Event_what argument=\"what\" tid=\"t0\">", "");
-//                    saux = saux.replaceAll("<\\/Event_what>\\n*", "");
-//                    System.out.println("DONE IN checked; ending: " + ending + "**********");
-//                    System.out.println("DONE IN checked; saux: " + ending + "**********");
-//                    ending = ending.substring(0, ending.indexOf(saux) + saux.indexOf("Done in")-1) + "</Event_what>" + ending.substring(ending.indexOf(saux) + saux.indexOf("Done in")-1, ending.indexOf(saux) + saux.indexOf(".", saux.indexOf("Done in")) -1) + "</Event>" + ending.substring(ending.indexOf(saux) + saux.indexOf(".", saux.indexOf("Done in"))-1);
-//                    System.out.println("DONE IN done: " + ending + "**********");
-//                    break;
-//                }
-                   ending = ending.substring(0,ending.indexOf("UNANIMOUSLY")+12) + "<Event_what argument=\"what\" tid=\"t0\" type=\"procedure\">" + ending.substring(ending.indexOf("UNANIMOUSLY")+12);
-
-                   ending = ending.substring(0,ending.lastIndexOf("Done in")) + "</Event_what>" + ending.substring(ending.lastIndexOf("Done in"), ending.indexOf(".",ending.lastIndexOf("Done in"))) +  "</Event>" + ending.substring(ending.indexOf(".",ending.lastIndexOf("Done in")));
+//            ending = ending.replaceAll("(\\s)(<Event_core argument=\"core\" tid=\"t0\">)([ ]+)(.)", "$3$2$4");
+            ending = ending.replaceFirst("(<\\/Event_core>)", "");
+            ending = ending.replaceAll("(\\r)(<\\/Event_core>)(\\n)", "$2$1$3");
+            ending = ending.replaceAll("([\\r\\n])(<Event_core argument=\"core\" tid=\"t0\">)([^\\w]+)", "$3$2");
             
-            
-            ending = ending.replaceAll("id=\"t(\\d+)\"", "id=\"t0\"");
-            ending = ending.replaceAll("(<Event_what argument=\"what\" tid=\"t0\" type=\"procedure\">)(\\s)*", "$2$1");
-//            ending = ending.replaceAll("(\\r)(<\\/Event_what>)(\\n)", "$2$1$3");
-//            ending = ending.replaceAll("([\\r\\n])(<Event_what argument=\"what\" tid=\"t0\">)([^\\w]+)", "$3$2");
-
-            }
             
 //            System.out.println("res7:\n" + res + "\n----------\n");
 
@@ -1074,10 +1041,9 @@ public class ExtractorTIMEXKeywordBasedNE {
             
             
             
-            res = res.substring(0, ini) + "<Event argument=\"ev\" tid=\"t0\" type=\"procedure\">" + ending;
+            res = res.substring(0, ini) + "<Event argument=\"what\" tid=\"t0\" type=\"procedure\">" + ending;
         }
-            res = res.replace("</<Event_what argument=\"what\" tid=\"t0\">Event_what>", "");
-            res = res.replace(" id=\"t0\">", " tid=\"t0\">");
+            res = res.replace("</<Event_core argument=\"core\" tid=\"t0\">Event_core>", "");
             System.out.println("CONJ:\n" + res + "\n----------\n");
             
             
@@ -1085,7 +1051,7 @@ public class ExtractorTIMEXKeywordBasedNE {
             return res;
 
         } catch (Exception ex) {
-            Logger.getLogger(ExtractorTIMEXKeywordBasedNE.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ExtractorTIMEXKeywordBasedNEnoTIMEXflag.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
     }
@@ -1100,7 +1066,7 @@ public class ExtractorTIMEXKeywordBasedNE {
             bw.close();
             return true;
         } catch (Exception ex) {
-            Logger.getLogger(ExtractorTIMEXKeywordBasedNE.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ExtractorTIMEXKeywordBasedNEnoTIMEXflag.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
     }
@@ -1135,35 +1101,16 @@ public class ExtractorTIMEXKeywordBasedNE {
     public Event checkEvent(String deppar, String word, Frame frame, int pos) {
 
         Event ev = new Event();
-        try{
-//        System.out.println("CHECK");
-//        
-//        
-//        System.out.println("HOLo");
         ArrayList<String> constRels = new ArrayList<String>();
         constRels.addAll(Arrays.asList("ccomp", "xcomp", "aux", "auxpass", "aux:pass"));
 
-//        System.out.println("HOLI " + word);
-//        System.out.println("HOLI " + pos);
-//        System.out.println("size pos " + ev.core.arrayEl.size());
-        
-        ev.addCore(word);
-        
-//        System.out.println("wordone ");
-//        System.out.println("size pos " + ev.core.toString());
-        ev.addPos(pos);
-//        System.out.println("size pos2 " + ev.core.positions.size());
-//        
-//
-//        System.out.println("HOLI " + deppar);
+        ev.core.arrayEl.add(word);
+        ev.core.positions.add(pos);
+
         /* We check if i is a passive */
         Pattern pText1 = Pattern.compile("nsubjpass\\(" + word + "-" + pos + ", ([^-]+)-(\\d+)\\)");
         Matcher mText1 = pText1.matcher(deppar);
-        
-//        System.out.println("PRE");
         if (mText1.find()) { // passive sentence
-            
-//        System.out.println("PASSIVE");
             String word2 = mText1.group(1);
             String word2pos = mText1.group(2);
             Pattern pText2 = Pattern.compile("[^\\(]+\\(" + word2 + "-" + word2pos + ", ([^-]+)-(\\d+)\\)");
@@ -1174,8 +1121,21 @@ public class ExtractorTIMEXKeywordBasedNE {
                 ev.who.arrayEl.add(mText2.group(1));
                 ev.who.positions.add(Integer.parseInt(mText2.group(2)));
             }
-//                    System.out.println("PASSIVE2");
 
+//            pText1 = Pattern.compile("nmod:agent\\(" + word + "-\\d+, ([^-]+)-\\d+\\)");
+//            mText1 = pText1.matcher(deppar);
+//            if (mText1.find()) {
+//                // Passive sentence
+//                if (mText1.find()) { // passive sentence
+//                    word2 = mText1.group(1);
+//                    pText2 = Pattern.compile("[^\\(]+\\(" + word2 + "-\\d+, ([^-]+)-\\d+\\)");
+//                    mText2 = pText2.matcher(deppar);
+//                    frame.core.arrayEl.add(word2);
+//                    while (mText2.find()) { // passive sentence
+//                        frame.core.arrayEl.add(mText2.group(1));
+//                    }
+//                }
+//            }
             /* We check the relations previously seen in the training set for this verb in active*/
             for (String rel : frame.passRels) {
                 pText1 = Pattern.compile(rel + "\\(" + word + "-" + pos + ", ([^-]+)-(\\d+)\\)");
@@ -1199,10 +1159,7 @@ public class ExtractorTIMEXKeywordBasedNE {
                 }
             }
 
-        } 
-
-        /* We check the subject-seller */ else {
-//                System.out.println("ACTIVE");
+        } /* We check the subject-seller */ else {
             pText1 = Pattern.compile("nsubj[^\\(]*\\(" + word + "-" + pos + ", ([^-]+)-(\\d+)\\)");
             mText1 = pText1.matcher(deppar);
             while (mText1.find()) {
@@ -1219,7 +1176,6 @@ public class ExtractorTIMEXKeywordBasedNE {
                 }
             }
 
-//                System.out.println("ACTIVE2");
             /* We check the item, that can be an nmod:of or a dobj */
 //        pText1 = Pattern.compile("nmod:of\\(" + word + "-\\d+, ([^-]+)-\\d+\\)");
 //        mText1 = pText1.matcher(deppar);
@@ -1245,10 +1201,33 @@ public class ExtractorTIMEXKeywordBasedNE {
                     }
                 }
 
+//        pText1 = Pattern.compile("dobj\\(" + word + "-\\d+, ([^-]+)-\\d+\\)");
+//        mText1 = pText1.matcher(deppar);
+//        if (mText1.find()) {
+//            String word2 = mText1.group(1);
+//            Pattern pText2 = Pattern.compile("[^\\(]+\\(" + word2 +  "-\\d+, ([^-]+)-\\d+\\)");
+//            Matcher mText2 = pText2.matcher(deppar);
+//            while (mText2.find()){ // passive sentence
+//               x = frame.who.arrayEl;
+//               x.add(word2);
+//               frame.who.arrayEl = x;
+//            }
+//        }
             }
+//        if(frame.who.arrayEl.isEmpty()){
+//            
+//            pText1 = Pattern.compile("\\(([^-]+)-\\d+, " + word + "-\\d+\\)");
+//        mText1 = pText1.matcher(deppar);
+//        if (mText1.find()) {
+//            String word2 = mText1.group(1);
+//            if(!word2.equalsIgnoreCase("root")){
+//                
+//            
+//            frame = checkEvent(deppar,word2);
+//        }
+//            }
         }
         
-//                System.out.println("GENERAL");
         for (String rel : constRels) {
                 pText1 = Pattern.compile(rel + "\\(" + word + "-" + pos + ", ([^-]+)-(\\d+)\\)");
                 mText1 = pText1.matcher(deppar);
@@ -1263,12 +1242,23 @@ public class ExtractorTIMEXKeywordBasedNE {
                         while (mText2.find()) {
                             if(mText2.group(1).contains("nsubj")){
                                 
+//                                String word3 = mText2.group(2);
+//                                String word3pos = mText2.group(3);
+//                                ev.who.arrayEl.add(word3);
+//                                ev.who.positions.add(Integer.parseInt(word3pos));
+////                                Pattern pText3 = Pattern.compile("[^\\(]+\\(" + word3 + "-" + word3pos + ", ([^-]+)-(\\d+)\\)");
+////                                Matcher mText3 = pText3.matcher(deppar);
+////                                while (mText3.find()) {
+////                                    ev.who.arrayEl.add(mText3.group(1));
+////                                    ev.who.positions.add(Integer.parseInt(mText3.group(2)));
+////
+////                                }
+//                                if (!ev.who.positions.contains(Integer.parseInt(word2pos)) && ev.who.positions.get(0) < Integer.parseInt(word2pos)) {
+                                    
+//                            }
                             
-//                System.out.println("GEN SUJ");
                             }
                             else{
-                                
-//                System.out.println("GEN NO SUJ");
                             if (ev.who.positions.isEmpty() || (!ev.who.positions.isEmpty() && !ev.who.positions.contains(Integer.parseInt(mText2.group(3))) && ev.who.positions.get(0) < Integer.parseInt(mText2.group(3)))) {
                                 ev.core.arrayEl.add(mText2.group(2));
                                 ev.core.positions.add(Integer.parseInt(mText2.group(3)));
@@ -1280,11 +1270,6 @@ public class ExtractorTIMEXKeywordBasedNE {
                 }
         }
 
-//        System.out.println(ev.toString());
-        }
-        catch(Exception e){
-            System.out.println(e.toString());
-        }
         return ev;
 
     }
@@ -1295,35 +1280,35 @@ public class ExtractorTIMEXKeywordBasedNE {
      * @param word
      * @return String with the parsing tree
      */
-//    public String constituencyParsing(CoreMap sentence, String word) {
-//
-//        System.out.println("\n\n----------------\n");
-//        Tree tree = sentence.get(TreeCoreAnnotations.TreeAnnotation.class);
-//
-//        Set<Constituent> treeConstituents = tree.constituents(new LabeledScoredConstituentFactory());
-//        for (Constituent constituent : treeConstituents) {
-//            if (constituent.label() != null
-//                    && (constituent.label().toString().equals("VP")) && tree.getLeaves().get(constituent.start()).toString().equalsIgnoreCase(word)) {
-//                System.err.println("found constituent: " + constituent.toString());
-//                System.err.println(tree.getLeaves().subList(constituent.start(), constituent.end() + 1));
-//            }
-//        }
-//
-//        System.out.println(tree);
-//        System.out.println("\n\n----------------\n");
-//        return tree.toString();
-//    }
+    public String constituencyParsing(CoreMap sentence, String word) {
+
+        System.out.println("\n\n----------------\n");
+        Tree tree = sentence.get(TreeCoreAnnotations.TreeAnnotation.class);
+
+        Set<Constituent> treeConstituents = tree.constituents(new LabeledScoredConstituentFactory());
+        for (Constituent constituent : treeConstituents) {
+            if (constituent.label() != null
+                    && (constituent.label().toString().equals("VP")) && tree.getLeaves().get(constituent.start()).toString().equalsIgnoreCase(word)) {
+                System.err.println("found constituent: " + constituent.toString());
+                System.err.println(tree.getLeaves().subList(constituent.start(), constituent.end() + 1));
+            }
+        }
+
+        System.out.println(tree);
+        System.out.println("\n\n----------------\n");
+        return tree.toString();
+    }
 
     private ArrayList<Integer> searchPositionInSentence(CoreMap sentence, Event ev) {
         ArrayList<Integer> pos = new ArrayList<Integer>();
         List<CoreLabel> toks = sentence.get(CoreAnnotations.TokensAnnotation.class);
 
         // CORE
-        List<Integer> whatpos = ev.core.positions;
-        if (!whatpos.isEmpty()) {
-            Collections.sort(whatpos);
-            Integer coremin = whatpos.get(0) - 1;
-            Integer coremax = whatpos.get(whatpos.size() - 1) - 1;
+        List<Integer> corepos = ev.core.positions;
+        if (!corepos.isEmpty()) {
+            Collections.sort(corepos);
+            Integer coremin = corepos.get(0) - 1;
+            Integer coremax = corepos.get(corepos.size() - 1) - 1;
 
             pos.add(toks.get(coremin).beginPosition());
             pos.add(toks.get(coremax).endPosition());

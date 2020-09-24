@@ -18,8 +18,8 @@ public class Who {
     public List<CoreElement> elements = new ArrayList<CoreElement>();
     public List<String> arrayEl = new ArrayList<String>();
     public List<Integer> positions = new ArrayList<Integer>();
-    public float Begin;
-    public float End;
+    public float Begin = -1;
+    public float End = -1;
     
     @Override
     public String toString(){

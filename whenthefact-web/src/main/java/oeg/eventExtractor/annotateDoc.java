@@ -28,7 +28,8 @@ import org.apache.commons.io.IOUtils;
 import org.json.*;
 import oeg.eventExtractor.Annotation2JSON;
 import static oeg.eventExtractor.timelineGeneration.generateTimeline;
-import oeg.eventRepresentation.Event;
+import oeg.eventRepresentation.EventF;
+import oeg.tagger.eventextractors.ExtractorTIMEXKeywordBasedNE;
 
 /**
  * Servlet that returns the javascript needed for the BRAT visualization of the
@@ -38,10 +39,12 @@ import oeg.eventRepresentation.Event;
  */
 public class annotateDoc extends HttpServlet {
 
-    static ExtractorTIMEXKeywordBased etkb;
+    static ExtractorTIMEXKeywordBasedNE etkb;
+//    static ExtractorTIMEXKeywordBased etkb;
     static String pathpos;
     static String pathlemma;
     static String pathrules;
+    static String pathser;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -88,6 +91,7 @@ public class annotateDoc extends HttpServlet {
 //        pathpos = context.getResource("/WEB-INF/classes/ixa-pipes/morph-models-1.5.0/es/es-pos-perceptron-autodict01-ancora-2.0.bin").getPath();
 //        pathlemma = context.getResource("/WEB-INF/classes/ixa-pipes/morph-models-1.5.0/es/es-lemma-perceptron-ancora-2.0.bin").getPath();
         pathrules = context.getResource("/WEB-INF/classes/rules/rulesEN.txt").getPath();
+        pathser = context.getResource("/WEB-INF/classes/events/events.ser").getPath();
 //        String inputHTML = filesDownloader.htmlDownloader(inputID);
 
         // We call the tagger and return its output
@@ -148,7 +152,9 @@ public class annotateDoc extends HttpServlet {
         Date dct = null;
         try {
             if (etkb == null) {
-                etkb = new ExtractorTIMEXKeywordBased(null, null, pathrules, "EN"); // We innitialize the tagger in Spanish
+//                                etkb = new ExtractorTIMEXKeywordBased(null, null, pathrules, "EN"); // We innitialize the tagger in Spanish
+
+                etkb = new ExtractorTIMEXKeywordBasedNE(null, null, pathrules, "EN", pathser); // We innitialize the tagger in Spanish
             }
 
 //            String inputURL = "https://cors-anywhere.herokuapp.com/https://hudoc.echr.coe.int/app/conversion/docx/html/body?library=ECHR&id=" + inputID;
@@ -160,7 +166,7 @@ public class annotateDoc extends HttpServlet {
 
             // We add the json for the timeline
             Annotation2JSON t2j = new Annotation2JSON();
-            ArrayList<Event> events = t2j.getEvents(output);
+            ArrayList<EventF> events = t2j.getEvents(output);
             String finaltimeline = generateTimeline(events);
             
             // We just maintain the events that can be converted to a timeline
@@ -168,11 +174,24 @@ public class annotateDoc extends HttpServlet {
             if (!writeFile(output, ev4.getAbsolutePath())) {
                 System.out.println("ERROR WHILE SAVING IN" + ev4.getAbsolutePath());
             }
-            System.out.println(output);
+                System.out.println("CORRECLY SAVED IN " + ev4.getAbsolutePath());
+                
+//            System.out.println(output);
+            
 
+            output = HTMLMerger.prepareHTML(output);
+            
             output = HTMLMerger.mergeHTML(inputHTML, output);
+            
+            output = output.replaceAll("EVENTTOKENINI", "&#9658;");
+            output = output.replaceAll("EVENTTOKENEND", "&#9668;");
+//            output = output.replaceAll("EVENTTOKENINI", "&lceil;");
+//            output = output.replaceAll("EVENTTOKENEND", "&rceil;");
+//            output = output.replaceAll("<Event [^>]+>", "&lceil;");
+//            output = output.replaceAll("</Event>", "&rceil;");
+            
             System.out.println(output);
-            String out2 = createHighlights(output);
+            String out2 = createHighlights(output, events);
             System.out.println(stylestring + out2);
             return stylestring + out2 + finaltimeline;
 //NO            return stylestring + new String(out2.getBytes(Charset.forName("UTF-8")), Charset.forName("Windows-1252"));
@@ -184,7 +203,7 @@ public class annotateDoc extends HttpServlet {
         }
     }
 
-    static public String createHighlights(String input) {
+    static public String createHighlights(String input, ArrayList<EventF> events) {
 //        input2 = input2.replaceFirst(Pattern.quote("<?xml version=\"1.0\"?>\n" + "<!DOCTYPE TimeML SYSTEM \"TimeML.dtd\">\n" + "<TimeML>"), "");
         String input2 = input.replaceFirst(Pattern.quote("</TimeML>"), "");
 
@@ -194,14 +213,15 @@ public class annotateDoc extends HttpServlet {
 //        input2 = input2.replaceAll("<TIMEX3", "<span style=\"padding: 6px;border-radius: 3px;background-color: #3364b7;color:#FFFFFF;\" ");
 //
 //        input2 = input2.replaceAll("<Event", "<span class=\"highlighter_def\" ");
-        input2 = input2.replaceAll("</Event_core>", "</span>");
+//        input2 = input2.replaceAll("</Event_core>", "</span>");
         input2 = input2.replaceAll("</Event_what>", "</span>");
         input2 = input2.replaceAll("</Event_when>", "</span>");
+        input2 = input2.replaceAll("</Event_who>", "</span>");
         input2 = input2.replaceAll("</TIMEX3>", "</span>");
-        input2 = input2.replaceAll("</Event>", "</span>");
+//        input2 = input2.replaceAll("</Event>", "</span>");
         input2 = input2.replaceAll("\\r?\\n", "<br>");
 
-        String pattern = "(<(TIMEX3|Event_when|Event_what|Event_core|Event) ([^>]*tid=\"([^\"]*)\"([^>]*))>)";
+        String pattern = "(<(Event_when|Event_what|Event_who) ([^>]*tid=\"([^\"]*)\"([^>]*))>)";
         Pattern r = Pattern.compile(pattern);
         Matcher m = r.matcher(input2);
         StringBuffer sb = new StringBuffer();
@@ -212,11 +232,33 @@ public class annotateDoc extends HttpServlet {
             String contetRegex = m.group(3);
             contetRegex = contetRegex.replaceAll("\"", "");
             contetRegex = contetRegex.replaceAll(" ", "\n");
-            if (m.group(2).contains("when") || m.group(2).contains("TIMEX3")) {
-                color = "style=\"padding: 6px;border-radius: 3px;background-color: #3364b7;color:#FFFFFF;\"";//DodgerBlue";
+            if (m.group(2).contains("when")) {
+                color = "style=\"padding: 6px;border-radius: 3px;background-color: #e6a132;color:#FFFFFF;\"";//Naranjita";
 //                color = "id=\"annotate_" + m.group(4) + "\" style=\"padding: 6px;border-radius: 3px;background-color: #3364b7;color:#FFFFFF;\"";//DodgerBlue";
                 auxwhen="<span class= \"hash_link_tag\" id=\"annotate_" + m.group(4) + "\" style=\"visibility:hidden; overflow:hidden; margin-top: -100px; position: absolute;\"></span> ";
-            }
+            } else if (m.group(2).contains("who")) {
+                color = "style=\"padding: 6px;border-radius: 3px;background-color: #a583c9;color:#FFFFFF;\"";//Morado";
+//                auxwhen="<span class= \"hash_link_tag\" id=\"annotate_" + m.group(4) + "\" style=\"visibility:hidden; overflow:hidden; margin-top: -100px; position: absolute;\"></span> ";
+            } else if (m.group(2).contains("what")) {                
+                        if(m.group(0).contains("procedure")){
+                            color = "style=\"padding: 6px;border-radius: 3px;background-color: #3364b7;color:#FFFFFF;\"";//DodgerBlue";              
+                        }
+                        
+                    
+//                for(EventF e : events){
+//                    if(e.eventId.equalsIgnoreCase(m.group(4))){
+//                        if(e.type.equalsIgnoreCase("procedure")){
+//                            color = "style=\"padding: 6px;border-radius: 3px;background-color: #3364b7;color:#FFFFFF;\"";//DodgerBlue";              
+//                        }
+//                        break;
+//                    }
+//                }
+//                auxwhen="<span class= \"hash_link_tag\" id=\"annotate_" + m.group(4) + "\" style=\"visibility:hidden; overflow:hidden; margin-top: -100px; position: absolute;\"></span> ";
+            } 
+//            else if (m.group(2).contains("EventF")) {
+//                color = "style=\"padding: 6px;border-radius: 3px;background-color: #b4c6d6;color:#FFFFFF;\"";//Gris";
+////                auxwhen="<span class= \"hash_link_tag\" id=\"annotate_" + m.group(4) + "\" style=\"visibility:hidden; overflow:hidden; margin-top: -100px; position: absolute;\"></span> ";
+//            }
             String aux2 = m.group(0);
             aux2 = aux2.replace(">", "");
 

@@ -9,7 +9,7 @@ package oeg.eventRepresentation;
  *
  * @author Maria
  */
-public class When {
+public class WhenF {
     
     
     public int year;

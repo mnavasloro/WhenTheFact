@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Set;
 import java.util.TreeMap;
-import oeg.eventRepresentation.Event;
+import oeg.eventRepresentation.EventF;
 import oeg.timelineRepresentation.Box;
 import oeg.timelineRepresentation.Timeline;
 
@@ -19,17 +19,17 @@ import oeg.timelineRepresentation.Timeline;
  */
 public class timelineGeneration {
     
-    public static String generateTimeline(ArrayList<Event> events){
+    public static String generateTimeline(ArrayList<EventF> events){
         String res;
         Timeline tl = new Timeline();
         
-        TreeMap<Integer,ArrayList<Event>> map = new TreeMap<Integer,ArrayList<Event>>();
+        TreeMap<Integer,ArrayList<EventF>> map = new TreeMap<Integer,ArrayList<EventF>>();
         
         // We look for the years
-        for(Event ev : events){
-            if(!ev.Core.elements.isEmpty()){ //If the event is empty, we do not care about it                
-                int year = ev.When.year;
-                    ArrayList<Event> auxarr = new ArrayList<Event>();
+        for(EventF ev : events){
+            if(!ev.core.elements.isEmpty()){ //If the event is empty, we do not care about it                
+                int year = ev.when.year;
+                    ArrayList<EventF> auxarr = new ArrayList<EventF>();
                 if(map.containsKey(year)){
                     auxarr = map.get(year);
                 }
@@ -50,14 +50,16 @@ public class timelineGeneration {
         // We create the html
         tl.boxes = boxesaux;  
         res = tl.toString();
+        
+        System.out.println("Timeline generation done");
         return res;
         
     }
     
-    public static TreeMap<Integer, Box> orderBoxes(ArrayList<Event> evs){
+    public static TreeMap<Integer, Box> orderBoxes(ArrayList<EventF> evs){
         TreeMap<Integer, Box> res = new TreeMap<Integer, Box>();
-        for(Event ev : evs){
-            res.put(ev.When.month*100 + ev.When.day, new Box(ev));
+        for(EventF ev : evs){
+            res.put(ev.when.month*100 + ev.when.day, new Box(ev));
         }
         
         return res;        

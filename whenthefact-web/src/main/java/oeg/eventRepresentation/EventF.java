@@ -9,17 +9,20 @@ package oeg.eventRepresentation;
  *
  * @author Maria
  */
-public class Event {
+public class EventF {
     
     
-    public When When;
-    public Core Core;
-    public String EventId;
-    public String Link;
+    public WhenF when;
+    public CoreF core;
+    public CoreF who;
+    public CoreF what;
+    public String eventId;
+    public String link;
+    public String type;
     
     @Override
     public String toString(){
-        return "When: " + When.toString() + "\nCore: " + Core.toString() + "\nEventId: " + EventId +  "\nLink: " + Link +  "\n";
+        return "When: " + when.toString() + "\nCore: " + core.toString() + "\nEventId: " + eventId +  "\nLink: " + link +  "\n";
     }
     
 }
