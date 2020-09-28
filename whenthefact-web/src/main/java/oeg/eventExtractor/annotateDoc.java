@@ -2,13 +2,8 @@ package oeg.eventExtractor;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,14 +14,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import oeg.tagger.eventextractors.ExtractorTIMEXKeywordBased;
 import oeg.tagger.docHandler.*;
 import static oeg.tagger.extractors.writer.writeFile;
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.json.*;
-import oeg.eventExtractor.Annotation2JSON;
 import static oeg.eventExtractor.timelineGeneration.generateTimeline;
 import oeg.eventRepresentation.EventF;
 import oeg.tagger.eventextractors.ExtractorTIMEXKeywordBasedNE;
@@ -72,7 +63,6 @@ public class annotateDoc extends HttpServlet {
 
         String jsonString = IOUtils.toString(request.getInputStream());
 
-        String testhtmlout = jsonString;
 
         JSONObject json = new JSONObject(jsonString);
         String inputID = (String) json.get("id");
@@ -127,14 +117,15 @@ public class annotateDoc extends HttpServlet {
 //            System.out.println("ERROR WHILE SAVING IN" + ev1.getAbsolutePath());
 //        }
 //        
-        String stylestring = "";
+        StringBuilder sb = new StringBuilder("");
         String pattern = "<(style|script)>[\\s\\S]*<\\/(style|script)>";
         Pattern r = Pattern.compile(pattern);
         Matcher m = r.matcher(inputHTML2);
         while (m.find()) {
-            stylestring = stylestring + m.group();
+            sb.append(m.group());
 
         }
+        String stylestring = sb.toString();
 
         String inputHTML = inputHTML2.replaceAll(pattern, "");
 
@@ -267,9 +258,7 @@ public class annotateDoc extends HttpServlet {
         }
         m.appendTail(sb); // append the rest of the contents
 
-        String saux = sb.toString();
-//
-        return saux;
+        return sb.toString();
 //        return input2;
     }
 

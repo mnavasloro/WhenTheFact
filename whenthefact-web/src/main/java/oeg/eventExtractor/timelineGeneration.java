@@ -6,8 +6,7 @@
 package oeg.eventExtractor;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Set;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 import oeg.eventRepresentation.EventF;
 import oeg.timelineRepresentation.Box;
@@ -43,8 +42,8 @@ public class timelineGeneration {
         // we transform them into ordered boxes
         TreeMap<Integer, TreeMap<Integer, Box>> boxesaux = new TreeMap<Integer, TreeMap<Integer, Box>> ();
 
-        for(Integer year : map.keySet()){
-            boxesaux.put(year, orderBoxes(map.get(year)));
+        for(Entry<Integer,ArrayList<EventF>> entry : map.entrySet()){
+            boxesaux.put(entry.getKey(), orderBoxes(entry.getValue()));
         }
         
         // We create the html

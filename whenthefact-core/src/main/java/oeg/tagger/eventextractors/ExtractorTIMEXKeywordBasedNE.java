@@ -38,8 +38,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -531,11 +531,9 @@ public class ExtractorTIMEXKeywordBasedNE {
                             durations = parseDuration(duration);
                         }
 
-                        Set<String> durString = durations.keySet();
-
-                        for (String gran : durString) {
-
-                            int plusI = Integer.valueOf(durations.get(gran));
+                        for (Entry<String, String> entry : durations.entrySet()) {
+                            String gran = entry.getKey();
+                            int plusI = Integer.valueOf(entry.getValue());
 
                             // Needs to be more general, check if today, proceed otherwise if not
                             if (gran.equalsIgnoreCase("D")) {
@@ -700,25 +698,26 @@ public class ExtractorTIMEXKeywordBasedNE {
                         String auxfin = "P";
                         int flagT = 0;
                         int mins = 0;
-                        Set<String> durString = auxVal.keySet();
-                        for (String gran : durString) {
+                        for (Entry<String, String> entry : auxVal.entrySet()) {
+                            String gran = entry.getKey();
+                            String gran2 = entry.getValue();
                             if ((gran.equalsIgnoreCase("AF") || gran.equalsIgnoreCase("MO") || gran.equalsIgnoreCase("MI") || gran.equalsIgnoreCase("EV") || gran.equalsIgnoreCase("NI")) && flagT == 0) {
                                 flagT = 1;
-                                auxfin = auxfin + "T" + auxVal.get(gran).replaceFirst("\\.0", "") + gran;
+                                auxfin = auxfin + "T" + gran2.replaceFirst("\\.0", "") + gran;
                             } else if (gran.equalsIgnoreCase("H") && flagT == 0) {
                                 flagT = 1;
-                                auxfin = auxfin + "T" + auxVal.get(gran).replaceFirst("\\.0", "") + gran;
+                                auxfin = auxfin + "T" + gran2.replaceFirst("\\.0", "") + gran;
                             } else if (gran.equalsIgnoreCase("MIN") && flagT == 0) {
                                 flagT = 1;
-                                auxfin = auxfin + "T" + auxVal.get(gran).replaceFirst("\\.0", "") + "M";
+                                auxfin = auxfin + "T" + gran2.replaceFirst("\\.0", "") + "M";
                             } else if (gran.equalsIgnoreCase("HALF")) {
                                 flagT = 1;
-                                auxfin = auxfin + auxVal.get(gran).replaceFirst("\\.0", "") + "H";
+                                auxfin = auxfin + gran2.replaceFirst("\\.0", "") + "H";
                             } else if (gran.equalsIgnoreCase("S") && flagT == 0) {
                                 flagT = 1;
-                                auxfin = auxfin + "T" + auxVal.get(gran).replaceFirst("\\.0", "") + gran;
+                                auxfin = auxfin + "T" + gran2.replaceFirst("\\.0", "") + gran;
                             } else {
-                                auxfin = auxfin + auxVal.get(gran).replaceFirst("\\.0", "") + gran;
+                                auxfin = auxfin + gran2.replaceFirst("\\.0", "") + gran;
                             }
                         }
                         val = auxfin;
@@ -814,7 +813,7 @@ public class ExtractorTIMEXKeywordBasedNE {
                     for (CoreLabel token : sentence.get(CoreAnnotations.TokensAnnotation.class)) {
                     /* We collect the different tags of each token */
                     String word = token.get(CoreAnnotations.TextAnnotation.class);
-                    System.out.println("w: " + word);
+////                    System.out.println("w: " + word);
                     String lemma = token.get(CoreAnnotations.LemmaAnnotation.class);
                     String pos = token.get(CoreAnnotations.PartOfSpeechAnnotation.class);
                     String ne = token.get(CoreAnnotations.NamedEntityTagAnnotation.class);
@@ -823,7 +822,9 @@ public class ExtractorTIMEXKeywordBasedNE {
                     /* Verb Event */
                     flag = 0;
 
-                    for (String k : eventFrames.keySet()) {
+                    
+                    for (Entry<String, Frame> entry : eventFrames.entrySet()) {
+                        String k = entry.getKey();
                         if (lemma.contains(k) && pos.contains("V") && !pos.equalsIgnoreCase("VBG")) {
                             String deppar = dependencyParsing(sentence.toString());
                             int wordpos = token.index();
@@ -833,7 +834,7 @@ public class ExtractorTIMEXKeywordBasedNE {
                                 // It is an auxiliary verb, continue parsing!
                             } else {
 //                                String contspar = constituencyParsing(sentence,word);
-                                Frame frame = eventFrames.get(k);
+                                Frame frame = entry.getValue();
                                 Event ev = checkEvent(deppar, word, frame, token.index());
 //                                if (!lemma.contains("bear") && ev.who.arrayEl.contains("applicant")) {
                                 if (!(lemma.equalsIgnoreCase("bear") && (ev.who.arrayEl.contains("applicant") || ev.who.arrayEl.contains("applicants")))) {
@@ -935,6 +936,7 @@ public class ExtractorTIMEXKeywordBasedNE {
             res = res.replaceAll("<TIMEX3", "<Event_when");
             res = res.replaceAll("<\\/TIMEX3", "<\\/Event_when");
             res = res.replaceAll("(<Event_who argument=\"who\"[^>]+>)([^<]*)(<\\/Event_when>)", "$2$3$1");
+            
             res = res.replaceAll("(<Event_when [^>]+>)(<Event_what [^>]+>)([^<]+)(<\\/Event_what>)(<\\/Event_when>)", "$1$3$5");
             
 //            System.out.println("res2:\n" + res + "\n----------\n");
@@ -977,10 +979,9 @@ public class ExtractorTIMEXKeywordBasedNE {
             res = res.replaceAll("(<\\/Event_what>)([^<]*)(<\\/Event_when>)", "$2$3$1");
             res = res.replaceAll("(<\\/Event_who>)([^<]*)(<\\/Event_when>)", "$2$3$1");
             res = res.replaceAll("(<\\/Event_what>)([^<]*)(<\\/Event_who>)", "$2$3$1");
-            res = res.replaceAll("(<Event_what [^>]+>)([^<]+)(<\\/Event_who>)", "$3$1$2");
+            res = res.replaceAll("(<Event_what [^>]+>)([^<]*)(<\\/Event_who>)", "$3$1$2");
+
             
-            res = res.replaceAll("(<Event_who [^>]+>)([Tt]he )", "$2$1");
-            res = res.replaceAll("(<Event_who [^>]+>)([Aa]n? )", "$2$1");
  
             
 //            System.out.println("res6:\n" + res + "\n----------\n");
@@ -1003,7 +1004,9 @@ public class ExtractorTIMEXKeywordBasedNE {
             
             Pattern pText4 = Pattern.compile("(\\s)*\\d+\\.(\\s*)(.+)", Pattern.MULTILINE);
         
-            if(ending.contains("\n")){
+            if(ending.contains("\n")){            
+            res = res.replaceAll("(<Event_who [^>]+>)([Tt]he )", "$2$1");
+            res = res.replaceAll("(<Event_who [^>]+>)([Aa]n? )", "$2$1");
             String[] split = ending.split("\n");
             for(String s : split){
                 Matcher mText4 = pText4.matcher(s);
@@ -1037,15 +1040,23 @@ public class ExtractorTIMEXKeywordBasedNE {
 //                    System.out.println("DONE IN done: " + ending + "**********");
 //                    break;
 //                }
+//System.out.println("ENDING1 :\n" + ending + "\nççççççççççççç");
                    ending = ending.substring(0,ending.indexOf("UNANIMOUSLY")+12) + "<Event_what argument=\"what\" tid=\"t0\" type=\"procedure\">" + ending.substring(ending.indexOf("UNANIMOUSLY")+12);
 
+//System.out.println("ENDING2 :\n" + ending + "\nççççççççççççç");
                    ending = ending.substring(0,ending.lastIndexOf("Done in")) + "</Event_what>" + ending.substring(ending.lastIndexOf("Done in"), ending.indexOf(".",ending.lastIndexOf("Done in"))) +  "</Event>" + ending.substring(ending.indexOf(".",ending.lastIndexOf("Done in")));
-            
+     
+//System.out.println("ENDING3 :\n" + ending + "\nççççççççççççç");       
             
             ending = ending.replaceAll("id=\"t(\\d+)\"", "id=\"t0\"");
-            ending = ending.replaceAll("(<Event_what argument=\"what\" tid=\"t0\" type=\"procedure\">)(\\s)*", "$2$1");
+            
+//System.out.println("ENDING4 :\n" + ending + "\nççççççççççççç");
+            ending = ending.replaceAll("(<Event_what argument=\"what\" tid=\"t0\" type=\"procedure\">)(\\s*)", "$2$1");
+
+//System.out.println("ENDING5 :\n" + ending + "\nççççççççççççç");
 //            ending = ending.replaceAll("(\\r)(<\\/Event_what>)(\\n)", "$2$1$3");
 //            ending = ending.replaceAll("([\\r\\n])(<Event_what argument=\"what\" tid=\"t0\">)([^\\w]+)", "$3$2");
+
 
             }
             
@@ -1078,6 +1089,13 @@ public class ExtractorTIMEXKeywordBasedNE {
         }
             res = res.replace("</<Event_what argument=\"what\" tid=\"t0\">Event_what>", "");
             res = res.replace(" id=\"t0\">", " tid=\"t0\">");
+            
+            res = res.replaceAll("(<Event_who argument=\"who\"[^>]+>)([^<]*)(<Event_when[^>]+>)([^<]*)(<\\/Event_when>)([^<]*)(<\\/Event_who>)", "$1$2$7$3$4$5$6");
+            
+            
+            res = res.replaceAll("(<Event[^>]+>)(\\s*)", "$2$1");
+            res = res.replaceAll("(\\s*)(<\\/Event[^>]+>)", "$2$1");
+            
             System.out.println("CONJ:\n" + res + "\n----------\n");
             
             

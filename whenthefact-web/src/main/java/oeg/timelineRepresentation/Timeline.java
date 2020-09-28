@@ -8,6 +8,7 @@ package oeg.timelineRepresentation;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 
 /**
@@ -20,17 +21,20 @@ public class Timeline {
     
     @Override
     public String toString(){
-        String res = "                    <div class=\"timeline\">\n" ;
-        for(Integer k : boxes.keySet()){
-            res = res + "<div class=\"timeline__group\">\n" +
-"                            <span class=\"timeline__year\">" + k + "</span>\n" ;
-            ArrayList<Box> arrboxes = new ArrayList<Box>(boxes.get(k).values());
+        StringBuilder sb = new StringBuilder("                    <div class=\"timeline\">\n");
+//        for(Integer k : boxes.keySet()){
+        for(Entry<Integer, TreeMap<Integer, Box>> entry : boxes.entrySet()){
+            Integer k = entry.getKey();
+            sb.append("<div class=\"timeline__group\">\n" +
+"                            <span class=\"timeline__year\">" + k + "</span>\n") ;
+            ArrayList<Box> arrboxes = new ArrayList<Box>(entry.getValue().values());
             for(Box b : arrboxes){
-                res = res + b.toString();
+                sb.append(b.toString());
             }        
             
-            res = res + "                    </div>\n";
+            sb.append("                    </div>\n");
         }
-        return res + "                    </div>\n";
+        sb.append("                    </div>\n");
+        return sb.toString();
     }
 }

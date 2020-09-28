@@ -44,26 +44,18 @@ public class Box {
     
         @Override
     public String toString(){
-        String res = "                            <div class=\"timeline__box\">\n" ;
-        res = res + date.toString();
-        res = res + "<div class=\"timeline__post\">\n" +
-"                                    <div class=\"timeline__content\"><a href=\"#" + link + "\">\n" +
-"                                        <p" + color + ">" + content + "</p>\n" +
-"                                    </a></div>\n" +
-"                                </div>\n";
+        StringBuilder sb = new StringBuilder("                            <div class=\"timeline__box\">\n");
+        sb.append(date.toString());
+        sb.append("<div class=\"timeline__post\">\n                                    <div class=\"timeline__content\"><a href=\"#").append(link).append("\">\n                                        <p").append(color).append(">").append(content).append("</p>\n                                    </a></div>\n                                </div>\n");
         
         if(who!=null){
-            res = "                            <div class=\"timeline__box\">\n" ;
-        res = res + date.toString();
-        res = res + "<div class=\"timeline__post\">\n" +
-"                                    <div class=\"timeline__content\"><a href=\"#" + link + "\">\n" +
- "                                        <p" + color + "><b>" + who + "</b></p>\n" +               
-"                                        <p" + color + ">" + content + "</p>\n" +
-"                                    </a></div>\n" +
-"                                </div>\n";
+            sb = new StringBuilder("                            <div class=\"timeline__box\">\n") ;
+        sb.append(date.toString());
+        sb.append("<div class=\"timeline__post\">\n                                    <div class=\"timeline__content\"><a href=\"#").append(link).append("\">\n                                        <p").append(color).append("><b>").append(who).append("</b></p>\n                                        <p").append(color).append(">").append(content).append("</p>\n                                    </a></div>\n                                </div>\n");
         }
         
-        return res + "                            </div>\n";
+        sb.append("                            </div>\n");
+        return sb.toString() ;
     }
     
 }

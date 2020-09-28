@@ -63,7 +63,7 @@ public class HTMLMerger {
                 int j = 0; //to iterate in timexAnnotatedString
                 int i = 0; //to iterate in baseString
                 int flaglastone = 0;
-                System.out.println(baseHTML.length());
+//                System.out.println(baseHTML.length());
                 while (i < baseHTML.length()) {
 
                     if (baseHTML.charAt(i) == '<') {
@@ -88,7 +88,7 @@ public class HTMLMerger {
                      flaglastone = 0;
                     } else if (j <= (eventAnnotatedXML.length()-13) && eventAnnotatedXML.substring(j, j + 10).equalsIgnoreCase("EVENTTOKEN")) {
                         
-                System.out.println("EMOS ENTRAO en " + j + ": " + eventAnnotatedXML.substring(j, j + 13));
+//                System.out.println("EMOS ENTRAO en " + j + ": " + eventAnnotatedXML.substring(j, j + 13));
                         baseHTML = baseHTML.substring(0, i) + eventAnnotatedXML.substring(j, j + 13) + baseHTML.substring(i);
                         i = i + 12;
                         j = j + 12;
@@ -131,7 +131,7 @@ public class HTMLMerger {
                         int j3 = eventAnnotatedXML.indexOf("</Event_when>", j);
                         int lengtnew = j3 - j1;
                         String intimex = eventAnnotatedXML.substring(j1, j3);
-                        System.out.println("Event_when - EMOS ENTRAO en " + j + ": " + eventAnnotatedXML.substring(j, j + 35));
+//                        System.out.println("Event_when - EMOS ENTRAO en " + j + ": " + eventAnnotatedXML.substring(j, j + 38));
                         if (!baseHTML.substring(i, i + lengtnew).equalsIgnoreCase(intimex)) {
                             int lengthint = intimex.length();
                             int k = 0;
@@ -145,12 +145,12 @@ public class HTMLMerger {
                             }
                             baseHTML = baseHTML.substring(0, i) + eventAnnotatedXML.substring(j, j2) + baseHTML.substring(i + k2);
 
-                            i = i + j2 - j;
-                            j = j2;
+                            i = i + j2 - j-1;
+                            j = j2-1;
                         } else {
                             baseHTML = baseHTML.substring(0, i) + eventAnnotatedXML.substring(j, j2) + baseHTML.substring(i + lengtnew);
-                            i = i + j2 - j;
-                            j = j2;
+                            i = i + j2 - j-1;
+                            j = j2-1;
                         }
                         if (baseHTML.charAt(i) == '<') {
                             i--;
@@ -158,7 +158,7 @@ public class HTMLMerger {
                         }
                     } else if (j < eventAnnotatedXML.length() && eventAnnotatedXML.charAt(j) == '<' && eventAnnotatedXML.substring(j + 1, j + 11).equalsIgnoreCase("Event_what")) {
                         
-                        System.out.println("Event_what - EMOS ENTRAO en " + j + ": " + eventAnnotatedXML.substring(j, j + 35));
+//                        System.out.println("Event_what - EMOS ENTRAO en " + j + ": " + eventAnnotatedXML.substring(j, j + 38));
                         int j1 = eventAnnotatedXML.indexOf(">", j) + 1;
                         int j2 = eventAnnotatedXML.indexOf("</Event_what>", j) + "</Event_what>".length();
                         int j3 = eventAnnotatedXML.indexOf("</Event_what>", j);
@@ -177,12 +177,12 @@ public class HTMLMerger {
                             }
                             baseHTML = baseHTML.substring(0, i) + eventAnnotatedXML.substring(j, j2) + baseHTML.substring(i + k2);
 
-                            i = i + j2 - j;
-                            j = j2;
+                            i = i + j2 - j -1;
+                            j = j2 - 1;
                         } else {
                             baseHTML = baseHTML.substring(0, i) + eventAnnotatedXML.substring(j, j2) + baseHTML.substring(i + lengtnew);
-                            i = i + j2 - j;
-                            j = j2;
+                            i = i + j2 - j -1;
+                            j = j2 -1;
                         }
                         if (baseHTML.charAt(i) == '<') {
                             i--;
@@ -190,7 +190,7 @@ public class HTMLMerger {
                         }
                     } else if (j < eventAnnotatedXML.length() && eventAnnotatedXML.charAt(j) == '<' && eventAnnotatedXML.substring(j + 1, j + 10).equalsIgnoreCase("Event_who")) {
                         
-                        System.out.println("Event_who - EMOS ENTRAO en " + j + ": " + eventAnnotatedXML.substring(j, j + 35));
+//                        System.out.println("Event_who - EMOS ENTRAO en " + j + ": " + eventAnnotatedXML.substring(j, j + 38));
                         int j1 = eventAnnotatedXML.indexOf(">", j) + 1;
                         int j2 = eventAnnotatedXML.indexOf("</Event_who>", j) + "</Event_who>".length();
                         int j3 = eventAnnotatedXML.indexOf("</Event_who>", j);
@@ -209,12 +209,12 @@ public class HTMLMerger {
                             }
                             baseHTML = baseHTML.substring(0, i) + eventAnnotatedXML.substring(j, j2) + baseHTML.substring(i + k2);
 
-                            i = i + j2 - j;
-                            j = j2;
+                            i = i + j2 - j-1;
+                            j = j2-1;
                         } else {
                             baseHTML = baseHTML.substring(0, i) + eventAnnotatedXML.substring(j, j2) + baseHTML.substring(i + lengtnew);
-                            i = i + j2 - j;
-                            j = j2;
+                            i = i + j2 - j-1;
+                            j = j2-1;
                         }
                         if (baseHTML.charAt(i) == '<') {
                             i--;
@@ -254,12 +254,12 @@ public class HTMLMerger {
 //                        }
                     } else if ((baseHTML.charAt(i) != eventAnnotatedXML.charAt(j)) && (eventAnnotatedXML.charAt(j) == ' ' || eventAnnotatedXML.charAt(j) == '\t')) {
                         i--;
-                        System.out.println("Space detected, skiping");
+//                        System.out.println("Space detected, skiping");
                     } else if (baseHTML.charAt(i) != eventAnnotatedXML.charAt(j)) {
 //                        System.out.println("Weird char: \n" + baseHTML.substring(i, i + 500) + "\n" + "-------------\n" + eventAnnotatedXML.substring(j, j + 500));
                         j--;
 //                        System.out.println("-------------");
-                        System.out.print(baseHTML.charAt(i) + "(" + i + ") ");
+//                        System.out.print(baseHTML.charAt(i) + "(" + i + ") ");
 //                    break;
                     }
                     i++;
@@ -269,7 +269,7 @@ public class HTMLMerger {
                 return stylestring + baseHTML;
             }
         } catch (Exception e) {
-            System.out.println(e.toString());
+//            System.out.println(e.toString());
         }
 
         return null;
@@ -305,20 +305,20 @@ public class HTMLMerger {
                 Pattern r = Pattern.compile(pattern);
                 Matcher m = r.matcher(output);
                 while (m.find()) {
-                    System.out.println("FOUND " + m.group(0));
+//                    System.out.println("FOUND " + m.group(0));
                     String ini = m.group(1);
                     String end = m.group(3);
                     String inner = m.group(2);
 
                     if (inner.contains("<") && inner.contains(">")) {
 
-                    System.out.println("INSIDE " + inner);
+//                    System.out.println("INSIDE " + inner);
                         String auxst = inner;
                         Matcher m2 = r2.matcher(inner);
                         if (m2.find()) {
                             auxst = m2.group(1) + end + m2.group(2) + ini + m2.group(3);
                             
-                    System.out.println("FOUND INSIDE " + auxst);
+//                    System.out.println("FOUND INSIDE " + auxst);
                         }
 
                         m.appendReplacement(sb, ini + auxst + end);
@@ -337,7 +337,7 @@ public class HTMLMerger {
                 r = Pattern.compile(pattern);
                 m = r.matcher(output);
                 if (m.find()) {
-                    System.out.println("FOUNDt0 " + m.group(0));
+//                    System.out.println("FOUNDt0 " + m.group(0));
 //                    String ini = m.group(1);
 //                    String end = m.group(3);
                     String inner = m.group(2);
@@ -360,8 +360,13 @@ public class HTMLMerger {
 //m.appendTail(sb);
                     } else if (inner.contains("\t")) {
 
-                       String auxst = inner.replaceAll("(\\t*)", "</Event_what>$1<Event_what argument=\"what\" tid=\"t0\" type=\"procedure\">");
-                    output = output.replace(inner, auxst);
+//                        System.out.println("NNNN " + inner);
+                        
+                       String auxst = inner.replaceAll("(\\t\\t+)", "</Event_what>$1<Event_what argument=\"what\" tid=\"t0\" type=\"procedure\">");
+                    
+//                       System.out.println("INXMSKMSIDE " + auxst);
+                       
+                       output = output.replace(inner, auxst);
 //                    System.out.println("INSIDE " + inner);
 //                        String auxst = inner;
 //                        Matcher m2 = r2.matcher(inner);
@@ -387,7 +392,7 @@ public class HTMLMerger {
                 output = output.replaceAll("(<Event_what[^>]+>) "," $1");
                 
                 
-                    System.out.println("ITS THE FINAL " + output);
+//                    System.out.println("ITS THE FINAL " + output);
 
                 if (!writeFile(output, ev2.getAbsolutePath())) {
                     System.out.println("ERROR WHILE SAVING IN" + ev2.getAbsolutePath());
