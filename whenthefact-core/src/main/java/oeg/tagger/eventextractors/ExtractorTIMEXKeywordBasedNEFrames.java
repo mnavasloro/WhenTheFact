@@ -46,6 +46,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import oeg.eventRepresentation.Event;
 import oeg.eventRepresentation.Frame;
+import oeg.eventRepresentation.FrameFrame;
 import oeg.tagger.docHandler.Document;
 import oeg.tagger.docHandler.DocumentPart;
 import oeg.tagger.docHandler.StructureExtractor;
@@ -59,12 +60,13 @@ import org.slf4j.LoggerFactory;
  *
  * @author mnavas
  */
-public class ExtractorTIMEXKeywordBasedNE {
+public class ExtractorTIMEXKeywordBasedNEFrames {
 
-    private static final org.slf4j.Logger log = LoggerFactory.getLogger(ExtractorTIMEXKeywordBasedNE.class);
+    private static final org.slf4j.Logger log = LoggerFactory.getLogger(ExtractorTIMEXKeywordBasedNEFrames.class);
 
 //    PrintWriter out;
     String eventFile;
+    String framesFile;
     String rules;
     Properties properties = new Properties();
     String posModel;
@@ -72,6 +74,7 @@ public class ExtractorTIMEXKeywordBasedNE {
     StanfordCoreNLP pipeline;
 
     HashMap<String, Frame> eventFrames;
+    HashMap<String, FrameFrame> frameFrames;
 
     /* Variables for dependency */
     String modelPath = DependencyParser.DEFAULT_MODEL;
@@ -94,25 +97,26 @@ public class ExtractorTIMEXKeywordBasedNE {
      * @param lang language (ES - Spanish, EN - English)
      * @return an instance of the tagger
      */
-    public ExtractorTIMEXKeywordBasedNE() {
+    public ExtractorTIMEXKeywordBasedNEFrames() {
         init();
     }
 
-    public ExtractorTIMEXKeywordBasedNE(String language) {
+    public ExtractorTIMEXKeywordBasedNEFrames(String language) {
         lang = language;
         init();
     }
 
-    public ExtractorTIMEXKeywordBasedNE(String pos, String lemma, String rul, String language, String events) {
+    public ExtractorTIMEXKeywordBasedNEFrames(String pos, String lemma, String rul, String language, String events, String fevents) {
         posModel = pos;
         lemmaModel = lemma;
         rules = rul;
         lang = language;
         eventFile = events;
+        framesFile = fevents;
         init();
     }
 
-    public ExtractorTIMEXKeywordBasedNE(String rul, String language) {
+    public ExtractorTIMEXKeywordBasedNEFrames(String rul, String language) {
         rules = rul;
         lang = language;
         init();
@@ -126,12 +130,23 @@ public class ExtractorTIMEXKeywordBasedNE {
             eventFile = ".\\src\\main\\resources\\events.ser";
         }
 
+        if (framesFile == null) {
+            framesFile = ".\\src\\main\\resources\\frames.ser";
+        }
+
         try {
             fileIn = new FileInputStream(eventFile);
             ObjectInputStream in = new ObjectInputStream(fileIn);
             eventFrames = (HashMap<String, Frame>) in.readObject();
             in.close();
             fileIn.close();
+
+            fileIn = new FileInputStream(framesFile);
+            in = new ObjectInputStream(fileIn);
+            frameFrames = (HashMap<String, FrameFrame>) in.readObject();
+            in.close();
+            fileIn.close();
+
 //            System.out.println(eventFrames);
             if (rules == null) {
                 rules = "./src/main/resources/rules/rulesEN.txt";
@@ -153,12 +168,12 @@ public class ExtractorTIMEXKeywordBasedNE {
                 System.out.println("Error: " + ex.toString());
             }
         } catch (Exception ex) {
-            Logger.getLogger(ExtractorTIMEXKeywordBasedNE.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ExtractorTIMEXKeywordBasedNEFrames.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
                 fileIn.close();
             } catch (IOException ex) {
-                Logger.getLogger(ExtractorTIMEXKeywordBasedNE.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ExtractorTIMEXKeywordBasedNEFrames.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 
@@ -349,7 +364,7 @@ public class ExtractorTIMEXKeywordBasedNE {
         return durations;
     }
 
-    public String annotate(String input, String anchorDate, File wordfile, String filename) {
+    public String annotate(String input, String anchorDate, File filename) {
 
         try {
             DateTime a = new DateTime(anchorDate);
@@ -365,29 +380,48 @@ public class ExtractorTIMEXKeywordBasedNE {
         String lastDATE = anchorDate; // Where we keep the last date, in case we have to normalize
 //        Pattern pAnchor = Pattern.compile("anchor\\((\\w+),([+-]?\\d+),(\\w+)\\)");
         try {
-            String inpWhen = input;  //TIMEX
-            String inpCore = input;  //CORE
-            String inpWho = input;  //WHO
-            String inpWhat = input;  //WHAT
+            
+            String input2 = input.replaceAll("\\r\\n", "\n");
+            
+            String inpWhen = input2;  //TIMEX
+            String inpCore = input2;  //CORE
+            String inpWho = input2;  //WHO
+            String inpWhat = input2;  //WHAT
             int flagRN = 0;
 
-            inpWhen = inpWhen.replaceAll("\\r\\n", "\n");
+//            inpWhen = inpWhen.replaceAll("\\r\\n", "\n");
 
-            int offsetdelay = 1;
+            int offsetdelay = 0;
             int numval = 2;
             Annotation annotation = new Annotation(inpWhen);
 
             pipeline.annotate(annotation);
+            
+            //LETS TRY TO SERIALIZE
+            
+            
+            //
 
-            int offset = 1;
-            int offsetwho = 1;
-            int offsetev = 1;
+
+            int offset = 0;
+            int offsetwho = 0;
+            int offsetev = 0;
+            
             int offsetEvent = "<Event argument=\"what\">".length() + "</Event>".length();
             int offsetEventEv = "<Event argument=\"ev\">".length() + "</Event>".length();
 
-            StructureExtractor seECHR = new StructureExtractor();
-            Document doc = seECHR.extractFromDocument(wordfile);
+            StructureExtractor se = new StructureExtractor();
+            Document doc = se.extractFromDocument(filename);
             List<DocumentPart> eventRelevantParts = doc.getEventRelevantParts();
+            
+//            if(doc.type.equalsIgnoreCase("echr")){
+//                offsetdelay = 1;
+//                offset = 1;
+//                offsetwho = 1;
+//                offsetev = 1;
+//            }
+            
+            
 
             List<CoreMap> sentencesAll = annotation.get(CoreAnnotations.SentencesAnnotation.class);
             List<CoreMap> sentences = new ArrayList<CoreMap>();
@@ -398,20 +432,16 @@ public class ExtractorTIMEXKeywordBasedNE {
                 for (CoreMap sentence : sentencesAll) {
                     List<CoreLabel> toks = sentence.get(CoreAnnotations.TokensAnnotation.class);
                     Integer beginSentence = toks.get(0).beginPosition();
-                    if(sentence.toString().startsWith("The case originated in ") && beginSentence >= p.offset_ini && beginSentence < p.offset_end){
-                                                    sentences.add(sentence);
 
-                    } else{
-                    
                     for (DocumentPart erp : eventRelevantParts) {
                         if (beginSentence >= erp.offset_ini && beginSentence < erp.offset_end) {
                             sentences.add(sentence);
                             break;
                         }
                     }
-                    }
+
                 }
-                
+
             }
 
             lastfullDATE = backupAnchor;
@@ -765,145 +795,191 @@ public class ExtractorTIMEXKeywordBasedNE {
                         toAdd = addini + text.substring(0, text.length() - 1) + addfin + ";";
                     }
 
-                    if (typ.equalsIgnoreCase("DATE") && !inpWhen.substring(ini + offsetdelay - "decision of ".length(), ini + offsetdelay).equalsIgnoreCase("decision of ") && !inpWhen.substring(ini + offsetdelay - "judgment of ".length(), ini + offsetdelay).equalsIgnoreCase("judgment of ")) {
+                    if (typ.equalsIgnoreCase("DATE") && (ini + offsetdelay < "decision of ".length())) {
+//                    if (typ.equalsIgnoreCase("DATE") && !inp2.substring(ini + offsetdelay - " of ".length(), ini + offsetdelay).equalsIgnoreCase(" of ")) {
+                        flagTIMEX = 1;
+                        inpWhen = inpWhen.substring(0, ini + offsetdelay) + toAdd + inpWhen.substring(ini + text.length() + offsetdelay);
+                        offsetdelay = offsetdelay + toAdd.length() - text.length();
+
+                    } else if (typ.equalsIgnoreCase("DATE") && !inpWhen.substring(ini + offsetdelay - "decision of ".length(), ini + offsetdelay).equalsIgnoreCase("decision of ") && !inpWhen.substring(ini + offsetdelay - "judgment of ".length(), ini + offsetdelay).equalsIgnoreCase("judgment of ")) {
+//                    if (typ.equalsIgnoreCase("DATE") && !inp2.substring(ini + offsetdelay - " of ".length(), ini + offsetdelay).equalsIgnoreCase(" of ")) {
+                        flagTIMEX = 1;
+                        inpWhen = inpWhen.substring(0, ini + offsetdelay) + toAdd + inpWhen.substring(ini + text.length() + offsetdelay);
+                        offsetdelay = offsetdelay + toAdd.length() - text.length();
+
+                    } else if (typ.equalsIgnoreCase("DATE") && (inpWhen.substring(ini + offsetdelay - "by decision of ".length(), ini + offsetdelay).equalsIgnoreCase("by decision of ") || inpWhen.substring(ini + offsetdelay - "by judgment of ".length(), ini + offsetdelay).equalsIgnoreCase("by judgment of "))) {
 //                    if (typ.equalsIgnoreCase("DATE") && !inp2.substring(ini + offsetdelay - " of ".length(), ini + offsetdelay).equalsIgnoreCase(" of ")) {
                         flagTIMEX = 1;
                         inpWhen = inpWhen.substring(0, ini + offsetdelay) + toAdd + inpWhen.substring(ini + text.length() + offsetdelay);
                         offsetdelay = offsetdelay + toAdd.length() - text.length();
 
                     }
+                    if (flagTIMEX == 1) {  // Solo una expresion temporal
+                        break;
+                    }
 
                 }
                 int flag = 0;
                 if (flagTIMEX == 1) { // Otra opcion es sumar uno por cada TIMEX, pero tampoco es una relacion uno a uno...
-                    if(sentence.toString().startsWith("The case originated in")){ // FIRST EVENT
-                        int flagapp = 0;
-                         for (CoreLabel token : sentence.get(CoreAnnotations.TokensAnnotation.class)) {
-                             String word = token.get(CoreAnnotations.TextAnnotation.class);
-                             String lemma = token.get(CoreAnnotations.LemmaAnnotation.class);
-                             
-                             if(word.equalsIgnoreCase("lodged")){
-                                 inpCore = inpCore.substring(0, offset + token.beginPosition()) + "<Event argument=\"what\"" + " tid=\"t" + "1" + "\" type=\"procedure\">" + inpCore.substring(offset + token.beginPosition(), offset + token.endPosition()) + "</Event>" + inpCore.substring(offset + token.endPosition());
-                                 offset = offset + offsetEvent + (" tid=\"t" + "1" + "\" type=\"procedure\"").length();
 
-                             } else if(lemma.equalsIgnoreCase("application") && flagapp == 0){
-                                 inpWho = inpWho.substring(0, offsetwho + token.beginPosition()) + "<Event argument=\"who\"" + " tid=\"t" + "1" + "\">" + inpWho.substring(offsetwho + token.beginPosition(), offsetwho + token.endPosition()) + "</Event>" + inpWho.substring(offsetwho + token.endPosition());                                 
-                                 offsetwho = offsetwho + offsetEvent - 1 + (" tid=\"t" + "1" + "\"").length(); // por el ev -> who
-                                 flagapp = 1;
-                             }
-                         }
-                         
-                         List<CoreLabel> toks = sentence.get(CoreAnnotations.TokensAnnotation.class);
-                                    int beg = toks.get(0).beginPosition();
-                                    int end = toks.get(toks.size() - 1).endPosition();
-                                    String typ = "procedure";
-                                    inpWhat = inpWhat.substring(0, offsetev + beg) + "<Event argument=\"ev\"" + " tid=\"t" + "1" + "\" type=\"" + typ + "\">" + inpWhat.substring(offsetev + beg, offsetev + end) + "</Event>" + inpWhat.substring(offsetev + end);
-
-                                    // HOMOG. WHENS
-                                    if(offsetev == 0){
-                                        int oldlength = inpWhen.length();
-                                        inpWhen = inpWhen.replaceAll("id=\"t(\\d+)\"", "id=\"t1\"");
-                                        offsetdelay = offsetdelay - (oldlength - inpWhen.length());
-                                    }
-                                    offsetev = offsetev + offsetEventEv + "\" type=\"".length() + typ.length() + (" tid=\"t" + "1" + "\"").length();
-                         
-                         
-
-                    } else{
                     for (CoreLabel token : sentence.get(CoreAnnotations.TokensAnnotation.class)) {
-                    /* We collect the different tags of each token */
-                    String word = token.get(CoreAnnotations.TextAnnotation.class);
+                        /* We collect the different tags of each token */
+                        String word = token.get(CoreAnnotations.TextAnnotation.class);
 ////                    System.out.println("w: " + word);
-                    String lemma = token.get(CoreAnnotations.LemmaAnnotation.class);
-                    String pos = token.get(CoreAnnotations.PartOfSpeechAnnotation.class);
-                    String ne = token.get(CoreAnnotations.NamedEntityTagAnnotation.class);
-                    String normalized = token.get(CoreAnnotations.NormalizedNamedEntityTagAnnotation.class);
+                        String lemma = token.get(CoreAnnotations.LemmaAnnotation.class);
+                        String pos = token.get(CoreAnnotations.PartOfSpeechAnnotation.class);
+                        String ne = token.get(CoreAnnotations.NamedEntityTagAnnotation.class);
+                        String normalized = token.get(CoreAnnotations.NormalizedNamedEntityTagAnnotation.class);
 
-                    /* Verb Event */
-                    flag = 0;
+                        /* Verb Event */
+                        flag = 0;
 
-                    
-                    for (Entry<String, Frame> entry : eventFrames.entrySet()) {
-                        String k = entry.getKey();
-                        if (lemma.contains(k) && pos.contains("V") && !pos.equalsIgnoreCase("VBG")) {
-                            String deppar = dependencyParsing(sentence.toString());
-                            int wordpos = token.index();
-                            Pattern pText1 = Pattern.compile("[^\\)]*aux[^\\(]*\\(([^-]+)-(\\d+), " + word + "-" + wordpos + "\\)");
-                            Matcher mText1 = pText1.matcher(deppar);
-                            if (mText1.find()) {
-                                // It is an auxiliary verb, continue parsing!
-                            } else {
+                        for (Entry<String, Frame> entry : eventFrames.entrySet()) {
+                            String k = entry.getKey();
+                            if (lemma.contains(k) && pos.contains("V") && !pos.equalsIgnoreCase("VBG")) {
+                                String deppar = dependencyParsing(sentence.toString());
+                                int wordpos = token.index();
+                                Pattern pText1 = Pattern.compile("[^\\)]*aux[^\\(]*\\(([^-]+)-(\\d+), " + word + "-" + wordpos + "\\)");
+                                Matcher mText1 = pText1.matcher(deppar);
+                                if (mText1.find()) {
+                                    // It is an auxiliary verb, continue parsing!
+                                } else {
 //                                String contspar = constituencyParsing(sentence,word);
-                                Frame frame = entry.getValue();
-                                Event ev = checkEvent(deppar, word, frame, token.index());
+                                    Frame frame = entry.getValue();
+                                    Event ev = checkEvent(deppar, word, frame, token.index());
 //                                if (!lemma.contains("bear") && ev.who.arrayEl.contains("applicant")) {
-                                if (!(lemma.equalsIgnoreCase("bear") && (ev.who.arrayEl.contains("applicant") || ev.who.arrayEl.contains("applicants")))) {
-                                    // ADD CORE TO INP3
-                                    // coger sentence, buscar los tokens min y max en positions, y sus begin position y end position, y hacer lo de abajo
-                                    ArrayList<Integer> positions = searchPositionInSentence(sentence, ev);
-                                    
-                                    
-                                    //TODO annotate sentence
-                                    List<CoreLabel> toks = sentence.get(CoreAnnotations.TokensAnnotation.class);
-                                    int beg = toks.get(0).beginPosition();
-                                    int end = toks.get(toks.size() - 1).endPosition();
-                                    //CHOOSE TYPE
-                                    String typ = "circumstance";
-                                    if(frame.percProc > 0.5){
-                                        typ = "procedure";
-                                    }
-                                    
-                                    if (positions.isEmpty()) {
-                                        inpCore = inpCore.substring(0, offset + token.beginPosition() + 1) + "<Event argument=\"what\"" + " tid=\"t" + numval + "\" type=\"" + typ + "\">" + inpCore.substring(offset + token.beginPosition() + 1, offset + token.endPosition() + 1) + "</Event>" + inpCore.substring(offset + token.endPosition() + 1);
+                                    if (!(lemma.equalsIgnoreCase("bear") && (ev.who.arrayEl.contains("applicant") || ev.who.arrayEl.contains("applicants")))) {
+                                        // ADD CORE TO INP3
+                                        // coger sentence, buscar los tokens min y max en positions, y sus begin position y end position, y hacer lo de abajo
+                                        ArrayList<Integer> positions = searchPositionInSentence(sentence, ev);
 
-                                    } else if (positions.size() >= 2 && positions.get(0) != -1) {
-                                        inpCore = inpCore.substring(0, offset + positions.get(0)) + "<Event argument=\"what\"" + " tid=\"t" + numval + "\" type=\"" + typ + "\">" + inpCore.substring(offset + positions.get(0), offset + positions.get(1)) + "</Event>" + inpCore.substring(offset + positions.get(1));
-                                        offset = offset + offsetEvent + (" tid=\"t" + numval + "\" type=\"" + typ + "\"").length();
-                                    }
-                                    if (positions.size() == 4) {
+                                        //TODO annotate sentence
+                                        List<CoreLabel> toks = sentence.get(CoreAnnotations.TokensAnnotation.class);
+                                        int beg = toks.get(0).beginPosition();
+                                        int end = toks.get(toks.size() - 1).endPosition();
+                                        //CHOOSE TYPE
+                                        String typ = "circumstance";
+                                        if (frame.percProc > 0.5) {
+                                            typ = "procedure";
+                                        }
 
-                                        // ADD WHO TO INP4
-                                        inpWho = inpWho.substring(0, offsetwho + positions.get(2)) + "<Event argument=\"who\"" + " tid=\"t" + numval + "\">" + inpWho.substring(offsetwho + positions.get(2), offsetwho + positions.get(3)) + "</Event>" + inpWho.substring(offsetwho + positions.get(3));
+                                        if (positions.isEmpty()) {
+                                            inpCore = inpCore.substring(0, offset + token.beginPosition() + 1) + "<Event argument=\"what\"" + " tid=\"t" + numval + "\" type=\"" + typ +  "\" prov=\"eventsmattertrain" + "\" lemma=\"" + lemma + "\">" + inpCore.substring(offset + token.beginPosition() + 1, offset + token.endPosition() + 1) + "</Event>" + inpCore.substring(offset + token.endPosition() + 1);
+                                            offset = offset + ("\" prov=\"eventsmattertrain\" lemma=\"" + lemma).length();
+
+                                        } else if (positions.size() >= 2 && positions.get(0) != -1) {
+                                            inpCore = inpCore.substring(0, offset + positions.get(0)) + "<Event argument=\"what\"" + " tid=\"t" + numval + "\" type=\"" + typ +  "\" prov=\"eventsmattertrain" + "\" lemma=\"" + lemma + "\">" + inpCore.substring(offset + positions.get(0), offset + positions.get(1)) + "</Event>" + inpCore.substring(offset + positions.get(1));
+                                            offset = offset + offsetEvent + (" tid=\"t" + numval + "\" type=\"" + typ +  "\" prov=\"eventsmattertrain" + "\"" + "\" lemma=\"" + lemma).length();
+                                        }
+                                        if (positions.size() == 4) {
+
+                                            // ADD WHO TO INP4
+                                            inpWho = inpWho.substring(0, offsetwho + positions.get(2)) + "<Event argument=\"who\"" + " tid=\"t" + numval + "\">" + inpWho.substring(offsetwho + positions.get(2), offsetwho + positions.get(3)) + "</Event>" + inpWho.substring(offsetwho + positions.get(3));
 //                               inp3 = inp3.substring(0, offset + token.beginPosition() + 1) + "<Event argument=\"what\"" + " tid=\"t" + numval + "\">" + inp3.substring(offset + token.beginPosition() + 1, offset + token.endPosition() + 1) + "</Event>" + inp3.substring(offset + token.endPosition() + 1);
-                                        offsetwho = offsetwho + offsetEvent - 1 + (" tid=\"t" + numval + "\"").length(); // por el ev -> who
-                                    }
+                                            offsetwho = offsetwho + offsetEvent - 1 + (" tid=\"t" + numval + "\"").length(); // por el ev -> who
+                                        }
 
-                                    inpWhat = inpWhat.substring(0, offsetev + beg) + "<Event argument=\"ev\"" + " tid=\"t" + numval + "\" type=\"" + typ + "\">" + inpWhat.substring(offsetev + beg, offsetev + end) + "</Event>" + inpWhat.substring(offsetev + end);
+                                        inpWhat = inpWhat.substring(0, offsetev + beg) + "<Event argument=\"ev\"" + " tid=\"t" + numval + "\" type=\"" + typ + "\">" + inpWhat.substring(offsetev + beg, offsetev + end) + "</Event>" + inpWhat.substring(offsetev + end);
 
-                                    offsetev = offsetev + offsetEventEv + "\" type=\"".length() + typ.length() + (" tid=\"t" + numval + "\"").length();
-                                    numval++;
-                                    flag = 1;
+                                        offsetev = offsetev + offsetEventEv + "\" type=\"".length() + typ.length() + (" tid=\"t" + numval + "\"").length();
+                                        numval++;
+                                        flag = 1;
 
 //                        flag = 1;
-                                    break;
-                                } else{
-                                    flag = 1;
-                                    break;
+                                        break;
+                                    } else {
+                                        flag = 1;
+                                        break;
+                                    }
                                 }
-                            }
 
 //            System.out.println("token: word=" + word + ",  \t lemma=" + lemma + ",  \t pos=" + pos + ",  \t ne=" + ne + ",  \t normalized=" + normalized);
+                            }
+
+                        }
+                        if (flag == 1) {
+                            break;
+                        }
+
+                        for (Entry<String, FrameFrame> entry : frameFrames.entrySet()) {
+                            String k = entry.getKey();
+                            FrameFrame va  = entry.getValue();
+                            if (lemma.contains(k) && ((pos.contains("V") && !pos.equalsIgnoreCase("VBG") && va.pos.equalsIgnoreCase("v")))) {// || (pos.equalsIgnoreCase("NN") && va.pos.equalsIgnoreCase("n")))) {
+                                String deppar = dependencyParsing(sentence.toString());
+                                int wordpos = token.index();
+                                Pattern pText1 = Pattern.compile("[^\\)]*aux[^\\(]*\\(([^-]+)-(\\d+), " + word + "-" + wordpos + "\\)");
+                                Matcher mText1 = pText1.matcher(deppar);
+                                if (mText1.find()) {
+                                    // It is an auxiliary verb, continue parsing!
+                                } else {
+//                                String contspar = constituencyParsing(sentence,word);
+                                    FrameFrame frame = entry.getValue();
+                                    Event ev = checkEventF(deppar, word, frame, token.index());
+//                                if (!lemma.contains("bear") && ev.who.arrayEl.contains("applicant")) {
+                                    if (!(lemma.equalsIgnoreCase("bear") && (ev.who.arrayEl.contains("applicant") || ev.who.arrayEl.contains("applicants")))) {
+                                        // ADD CORE TO INP3
+                                        // coger sentence, buscar los tokens min y max en positions, y sus begin position y end position, y hacer lo de abajo
+                                        ArrayList<Integer> positions = searchPositionInSentence(sentence, ev);
+
+                                        //TODO annotate sentence
+                                        List<CoreLabel> toks = sentence.get(CoreAnnotations.TokensAnnotation.class);
+                                        int beg = toks.get(0).beginPosition();
+                                        int end = toks.get(toks.size() - 1).endPosition();
+                                        //CHOOSE TYPE
+                                        String typ = "procedure";
+//                                    String typ = "circumstance";
+//                                    if(frame.percProc > 0.5){
+//                                        typ = "procedure";
+//                                    }
+
+                                        if (positions.isEmpty()) {
+                                            inpCore = inpCore.substring(0, offset + token.beginPosition() + 1) + "<Event argument=\"what\"" + " tid=\"t" + numval + "\" type=\"" + typ + "\" lemma=\"" + lemma + "\">" + inpCore.substring(offset + token.beginPosition() + 1, offset + token.endPosition() + 1) + "</Event>" + inpCore.substring(offset + token.endPosition() + 1);
+                                            offset = offset +  ("\" prov=\"framenet\" lemma=\"" + lemma).length();
+
+                                        } else if (positions.size() >= 2 && positions.get(0) != -1) {
+                                            inpCore = inpCore.substring(0, offset + positions.get(0)) + "<Event argument=\"what\"" + " tid=\"t" + numval + "\" type=\"" + typ +  "\" prov=\"framenet" + "\" lemma=\"" + lemma + "\">" + inpCore.substring(offset + positions.get(0), offset + positions.get(1)) + "</Event>" + inpCore.substring(offset + positions.get(1));
+                                            offset = offset + offsetEvent + (" tid=\"t" + numval + "\" type=\"" + typ +  "\" prov=\"framenet" + "\"" + "\" lemma=\"" + lemma).length();
+                                        }
+                                        if (positions.size() == 4) {
+
+                                            // ADD WHO TO INP4
+                                            inpWho = inpWho.substring(0, offsetwho + positions.get(2)) + "<Event argument=\"who\"" + " tid=\"t" + numval + "\">" + inpWho.substring(offsetwho + positions.get(2), offsetwho + positions.get(3)) + "</Event>" + inpWho.substring(offsetwho + positions.get(3));
+//                               inp3 = inp3.substring(0, offset + token.beginPosition() + 1) + "<Event argument=\"what\"" + " tid=\"t" + numval + "\">" + inp3.substring(offset + token.beginPosition() + 1, offset + token.endPosition() + 1) + "</Event>" + inp3.substring(offset + token.endPosition() + 1);
+                                            offsetwho = offsetwho + offsetEvent - 1 + (" tid=\"t" + numval + "\"").length(); // por el ev -> who
+                                        }
+
+                                        inpWhat = inpWhat.substring(0, offsetev + beg) + "<Event argument=\"ev\"" + " tid=\"t" + numval + "\" type=\"" + typ + "\">" + inpWhat.substring(offsetev + beg, offsetev + end) + "</Event>" + inpWhat.substring(offsetev + end);
+
+                                        offsetev = offsetev + offsetEventEv + "\" type=\"".length() + typ.length() + (" tid=\"t" + numval + "\"").length();
+                                        numval++;
+                                        flag = 1;
+
+//                        flag = 1;
+                                        break;
+                                    } else {
+                                        flag = 1;
+                                        break;
+                                    }
+                                }
+
+//            System.out.println("token: word=" + word + ",  \t lemma=" + lemma + ",  \t pos=" + pos + ",  \t ne=" + ne + ",  \t normalized=" + normalized);
+                            }
+
+                        }
+                        if (flag == 1) {
+                            break;
                         }
 
                     }
-                    if (flag == 1) {
-                        break;
-                    }
+
                 }
-                    }
-
-            }
             }
 
-//            inpWhen = inpWhen.replaceAll(" , ", ", ");
-//            inpCore = inpCore.replaceAll(" , ", ", ");
             inpCore = inpCore.replaceAll("\\.</Event>", "</Event>\\.");
             inpCore = inpCore.replaceAll(",</Event>", "</Event>,");
-//            inpWho = inpWho.replaceAll(" , ", ", ");
-//            inpWhat = inpWhat.replaceAll(" , ", ", ");
 
-            inpWho = inpWho.replaceAll("THE COURT, UNANIMOUSLY", "<Event argument=\"who\" id=\"t" + numval + "\">THE COURT</Event>, UNANIMOUSLY");
-//TODO lodge application y resto de arguments de unanimously
+
+            inpWho = inpWho.replaceAll("THE COURT, UNANIMOUSLY", "<Event argument=\"who\" tid=\"t" + numval + "\">THE COURT</Event>, UNANIMOUSLY");
 
             inpWhen = inpWhen.replaceAll("\\n", "\r\n");
             inpCore = inpCore.replaceAll("\\n", "\r\n");
@@ -916,45 +992,31 @@ public class ExtractorTIMEXKeywordBasedNE {
 
             //TODO MERGE ALL XMLS
             XMLMerger xmlM = new XMLMerger();
-//            System.out.println("TIMEX:\n" + inpWhen + "\n----------\n");
-//            System.out.println("EVS:\n" + inpCore + "\n----------\n");
-//            System.out.println("WHO:\n" + inpWho + "\n----------\n");
-//            System.out.println("WHAT:\n" + inpWhat + "\n----------\n");
-//            String res = xmlM.mergeXML(inpCore, inpWhen);
-//            String res = xmlM.mergeXML(inpWho, inpWhen);
-//            res = xmlM.mergeXML3(res, inpCore);
-//            res = xmlM.mergeXML3(res, inpWhat);
-
+            
             String res = xmlM.mergeXML3(inpWho, inpCore);
             res = xmlM.mergeXML3(res, inpWhen);
             res = xmlM.mergeXML3(res, inpWhat);
             res = res.replaceAll("(<\\/Event><TIMEX3[^>]+>)<Event argument=\"what\"[^>]+>([^<]+)<\\/Event>(<\\/TIMEX3><Event argument=\"what\"[^>]+>[^<]+<\\/Event>)", "$1$2$3");
             res = res.replaceAll("<\\/Event><Event argument=\"ev\" [^>]+>", "");
-            
-//            System.out.println("res1:\n" + res + "\n----------\n");
 
+//            System.out.println("res1:\n" + res + "\n----------\n");
             res = res.replaceAll("<TIMEX3", "<Event_when");
             res = res.replaceAll("<\\/TIMEX3", "<\\/Event_when");
             res = res.replaceAll("(<Event_who argument=\"who\"[^>]+>)([^<]*)(<\\/Event_when>)", "$2$3$1");
-            
+
             res = res.replaceAll("(<Event_when [^>]+>)(<Event_what [^>]+>)([^<]+)(<\\/Event_what>)(<\\/Event_when>)", "$1$3$5");
-            
+
 //            System.out.println("res2:\n" + res + "\n----------\n");
             res = res.replaceAll("(<Event_[^>]+>)(<Event [^>]+>)", "$2$1");
             res = res.replaceAll("(<\\/Event>)(<\\/Event_[^>]+>)", "$2$1");
-            
+
 //            System.out.println("res3:\n" + res + "\n----------\n");
-
-
             res = res.replaceAll("<\\/Event><Event argument=\"ev\" [^>]+>", "");
 
             //
             pAnchor = Pattern.compile("<Event_when tid=(\\\"t\\d+\\\") [^>]+>([^<]+)<\\/Event_when>");
-            
-            
-//            System.out.println("res4:\n" + res + "\n----------\n");
 
-
+            
             Matcher m = pAnchor.matcher(res);
             StringBuffer sb = new StringBuffer();
             while (m.find()) {
@@ -962,7 +1024,7 @@ public class ExtractorTIMEXKeywordBasedNE {
                 String id = m.group(1);
                 String inside = m.group(2);
 
-                if (!res.substring(0,m.start()).contains("<Event argument=\"ev\" tid=" + id)) {
+                if (!res.substring(0, m.start()).contains("<Event argument=\"ev\" tid=" + id)) {
                     m.appendReplacement(sb, inside);
                 }
 
@@ -970,140 +1032,84 @@ public class ExtractorTIMEXKeywordBasedNE {
             m.appendTail(sb);
 
             res = sb.toString();
-            
-            
-//            System.out.println("res5:\n" + res + "\n----------\n");
 
-            
+//            System.out.println("res5:\n" + res + "\n----------\n");
             res = res.replaceAll("(<Event_when [^>]+>)(<Event_what [^>]+>)([^<]+)(<\\/Event_what>)(<\\/Event_when>)", "$1$3$5");
             res = res.replaceAll("(<\\/Event_what>)([^<]*)(<\\/Event_when>)", "$2$3$1");
             res = res.replaceAll("(<\\/Event_who>)([^<]*)(<\\/Event_when>)", "$2$3$1");
             res = res.replaceAll("(<\\/Event_what>)([^<]*)(<\\/Event_who>)", "$2$3$1");
             res = res.replaceAll("(<Event_what [^>]+>)([^<]*)(<\\/Event_who>)", "$3$1$2");
 
-            
- 
-            
 //            System.out.println("res6:\n" + res + "\n----------\n");
-
-
-             
             // LAST EVENT
             int ini = res.indexOf("FOR THESE REASONS, <Event_who argument=\"who\" ");
-            if(ini != -1){
+            if (ini != -1) {
                 int end = res.indexOf("\tPresident", ini);
-                if(end==-1){
-                    end=res.length()-1;
+                if (end == -1) {
+                    end = res.length() - 1;
                 }
-            String ending = res.substring(ini, end);
-            
-            ending = ending.replaceAll("<Event [^>]+>", "");
-            ending = ending.replaceAll("<\\/Event>", "");
-            ending = ending.replaceAll("<Event_what [^>]+>", "");
-            ending = ending.replaceAll("<\\/Event_what>", "");
-            
-            Pattern pText4 = Pattern.compile("(\\s)*\\d+\\.(\\s*)(.+)", Pattern.MULTILINE);
-        
-            if(ending.contains("\n")){            
-            res = res.replaceAll("(<Event_who [^>]+>)([Tt]he )", "$2$1");
-            res = res.replaceAll("(<Event_who [^>]+>)([Aa]n? )", "$2$1");
-            String[] split = ending.split("\n");
-            for(String s : split){
-                Matcher mText4 = pText4.matcher(s);
-                if(mText4.find()){
-                    ending = ending.replaceFirst(mText4.group(3), "<\\/Event_what>\n" + mText4.group(2) + "<Event_what argument=\"what\" tid=\"t0\" type=\"procedure\">" + mText4.group(3));
-                } else if(s.startsWith("Done in")){
-                    ending = ending.substring(0, ending.indexOf(s)-1) + "</Event_what>" + ending.substring(ending.indexOf(s)-1, ending.indexOf(s) + s.length() -1) + "</Event>" + ending.substring(ending.indexOf(s) + s.length()-1);
-                }
-            }
-            ending = ending.replaceAll("(\\\n)(\\d+\\.)(<\\/Event_what>)", "$3$1$2");
-//            ending = ending.replaceAll("(\\r?\\n\\r?)(<\\/Event_what>)Done", "$2$1Done");
-            ending = ending.replaceAll("id=\"t(\\d+)\"", "id=\"t0\"");
-//            ending = ending.replaceAll("(\\s)(<Event_what argument=\"what\" tid=\"t0\">)([ ]+)(.)", "$3$2$4");
-            ending = ending.replaceFirst("(<\\/Event_what>)", "");
-            ending = ending.replaceAll("(\\r)(<\\/Event_what>)(\\n)", "$2$1$3");
-            ending = ending.replaceAll("([\\r\\n])(<Event_what argument=\"what\" tid=\"t0\" type=\"procedure\">)([^\\w]+)", "$3$2");
-            } else{
-//                String[] split = ending.split(";");
-//            for(String s : split){
-//                Matcher mText4 = pText4.matcher(s);
-//                System.out.println("s: " + s + "\n----");
-//                if(mText4.find()){
-//                    ending = ending.replaceFirst(mText4.group(3), "<\\/Event_what>\n" + mText4.group(2) + "<Event_what argument=\"what\" tid=\"t0\">" + mText4.group(3));
-//                }
-//                else if(s.contains("Done in")){
-//                    String saux = s.replaceAll("<Event_what argument=\"what\" tid=\"t0\">", "");
-//                    saux = saux.replaceAll("<\\/Event_what>\\n*", "");
-//                    System.out.println("DONE IN checked; ending: " + ending + "**********");
-//                    System.out.println("DONE IN checked; saux: " + ending + "**********");
-//                    ending = ending.substring(0, ending.indexOf(saux) + saux.indexOf("Done in")-1) + "</Event_what>" + ending.substring(ending.indexOf(saux) + saux.indexOf("Done in")-1, ending.indexOf(saux) + saux.indexOf(".", saux.indexOf("Done in")) -1) + "</Event>" + ending.substring(ending.indexOf(saux) + saux.indexOf(".", saux.indexOf("Done in"))-1);
-//                    System.out.println("DONE IN done: " + ending + "**********");
-//                    break;
-//                }
+                String ending = res.substring(ini, end);
+
+                ending = ending.replaceAll("<Event [^>]+>", "");
+                ending = ending.replaceAll("<\\/Event>", "");
+                ending = ending.replaceAll("<Event_what [^>]+>", "");
+                ending = ending.replaceAll("<\\/Event_what>", "");
+
+                Pattern pText4 = Pattern.compile("(\\s)*\\d+\\.(\\s*)(.+)", Pattern.MULTILINE);
+
+                if (ending.contains("\n")) {
+                    res = res.replaceAll("(<Event_who [^>]+>)([Tt]he )", "$2$1");
+                    res = res.replaceAll("(<Event_who [^>]+>)([Aa]n? )", "$2$1");
+                    String[] split = ending.split("\n");
+                    for (String s : split) {
+                        Matcher mText4 = pText4.matcher(s);
+                        if (mText4.find()) {
+                            ending = ending.replaceFirst(mText4.group(3), "<\\/Event_what>\n" + mText4.group(2) + "<Event_what argument=\"what\" tid=\"t0\" type=\"procedure\""  + "\" lemma=\"" + "do" + ">" + mText4.group(3));
+                        } else if (s.startsWith("Done in")) {
+                            ending = ending.substring(0, ending.indexOf(s) - 1) + "</Event_what>" + ending.substring(ending.indexOf(s) - 1, ending.indexOf(s) + s.length() - 1) + "</Event>" + ending.substring(ending.indexOf(s) + s.length() - 1);
+                        }
+                    }
+                    ending = ending.replaceAll("(\\\n)(\\d+\\.)(<\\/Event_what>)", "$3$1$2");
+                    
+                    ending = ending.replaceAll("tid=\"t\\d+\"", "tid=\"t0\"");
+                    
+                    ending = ending.replaceFirst("(<\\/Event_what>)", "");
+                    ending = ending.replaceAll("(\\r)(<\\/Event_what>)(\\n)", "$2$1$3");
+                    ending = ending.replaceAll("([\\r\\n])(<Event_what argument=\"what\" tid=\"t0\" type=\"procedure\">)([^\\w]+)", "$3$2");
+                } else {
+
 //System.out.println("ENDING1 :\n" + ending + "\nççççççççççççç");
-                   ending = ending.substring(0,ending.indexOf("UNANIMOUSLY")+12) + "<Event_what argument=\"what\" tid=\"t0\" type=\"procedure\">" + ending.substring(ending.indexOf("UNANIMOUSLY")+12);
+                    ending = ending.substring(0, ending.indexOf("UNANIMOUSLY") + 12) + "<Event_what argument=\"what\" tid=\"t0\" type=\"procedure\">" + ending.substring(ending.indexOf("UNANIMOUSLY") + 12);
 
 //System.out.println("ENDING2 :\n" + ending + "\nççççççççççççç");
-                   ending = ending.substring(0,ending.lastIndexOf("Done in")) + "</Event_what>" + ending.substring(ending.lastIndexOf("Done in"), ending.indexOf(".",ending.lastIndexOf("Done in"))) +  "</Event>" + ending.substring(ending.indexOf(".",ending.lastIndexOf("Done in")));
-     
+                    ending = ending.substring(0, ending.lastIndexOf("Done in")) + "</Event_what>" + ending.substring(ending.lastIndexOf("Done in"), ending.indexOf(".", ending.lastIndexOf("Done in"))) + "</Event>" + ending.substring(ending.indexOf(".", ending.lastIndexOf("Done in")));
+
 //System.out.println("ENDING3 :\n" + ending + "\nççççççççççççç");       
-            
-            ending = ending.replaceAll("id=\"t(\\d+)\"", "id=\"t0\"");
-            
+                    ending = ending.replaceAll("tid=\"t\\d+\"", "tid=\"t0\"");
+
 //System.out.println("ENDING4 :\n" + ending + "\nççççççççççççç");
-            ending = ending.replaceAll("(<Event_what argument=\"what\" tid=\"t0\" type=\"procedure\">)(\\s*)", "$2$1");
+                    ending = ending.replaceAll("(<Event_what argument=\"what\" tid=\"t0\" type=\"procedure\" lemma=\"do\">)(\\s*)", "$2$1");
 
-//System.out.println("ENDING5 :\n" + ending + "\nççççççççççççç");
-//            ending = ending.replaceAll("(\\r)(<\\/Event_what>)(\\n)", "$2$1$3");
-//            ending = ending.replaceAll("([\\r\\n])(<Event_what argument=\"what\" tid=\"t0\">)([^\\w]+)", "$3$2");
+                }
 
 
+                res = res.substring(0, ini) + "<Event argument=\"ev\" tid=\"t0\" type=\"procedure\"[^>]*>" + ending;
             }
-            
-//            System.out.println("res7:\n" + res + "\n----------\n");
 
-//            // FIRST EVENT
-//            CoreMap sent = null;
-//            DocumentPart erp = doc.getProcedure();
-//            for (CoreMap sentence : sentencesAll) {
-//                    List<CoreLabel> toks = sentence.get(CoreAnnotations.TokensAnnotation.class);
-//                    Integer beginSentence = toks.get(0).beginPosition();
-//                        if (beginSentence >= erp.offset_ini && beginSentence < erp.offset_end && sentence.toString().startsWith("The case originated in")) {
-//                            sent = sentence;
-//                            break;
-//                        }
-//                    
-//                }
-//            
-//            if(sent!=null){
-//                List<CoreLabel> toks = sent.get(CoreAnnotations.TokensAnnotation.class);
-//
-////                dependencyParsing()
-//            }
-            
-            
-            
-            
-            
-            res = res.substring(0, ini) + "<Event argument=\"ev\" tid=\"t0\" type=\"procedure\">" + ending;
-        }
-            res = res.replace("</<Event_what argument=\"what\" tid=\"t0\">Event_what>", "");
-            res = res.replace(" id=\"t0\">", " tid=\"t0\">");
-            
             res = res.replaceAll("(<Event_who argument=\"who\"[^>]+>)([^<]*)(<Event_when[^>]+>)([^<]*)(<\\/Event_when>)([^<]*)(<\\/Event_who>)", "$1$2$7$3$4$5$6");
-            
-            
+
             res = res.replaceAll("(<Event[^>]+>)(\\s*)", "$2$1");
             res = res.replaceAll("(\\s*)(<\\/Event[^>]+>)", "$2$1");
-            
+
+            res = res.replaceAll("(<Event_when [^>]+>)([^<\\n]+)(<Event [^>]+>)", "$3$2$1");
+            res = res.replaceAll("<\\/<Event_what argument=\"what\" tid=\"t0\" type=\"procedure\"[^>]*>Event_what>", "");
+
             System.out.println("CONJ:\n" + res + "\n----------\n");
-            
-            
 
             return res;
 
         } catch (Exception ex) {
-            Logger.getLogger(ExtractorTIMEXKeywordBasedNE.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ExtractorTIMEXKeywordBasedNEFrames.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
     }
@@ -1118,7 +1124,7 @@ public class ExtractorTIMEXKeywordBasedNE {
             bw.close();
             return true;
         } catch (Exception ex) {
-            Logger.getLogger(ExtractorTIMEXKeywordBasedNE.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ExtractorTIMEXKeywordBasedNEFrames.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
     }
@@ -1150,124 +1156,194 @@ public class ExtractorTIMEXKeywordBasedNE {
      * @param pos
      * @return the frame with new information (or not)
      */
-    public Event checkEvent(String deppar, String word, Frame frame, int pos) {
+    public Event checkEventF(String deppar, String word, FrameFrame frame, int pos) {
 
         Event ev = new Event();
-        try{
-//        System.out.println("CHECK");
-//        
-//        
-//        System.out.println("HOLo");
-        ArrayList<String> constRels = new ArrayList<String>();
-        constRels.addAll(Arrays.asList("ccomp", "xcomp", "aux", "auxpass", "aux:pass"));
+        try {
 
-//        System.out.println("HOLI " + word);
-//        System.out.println("HOLI " + pos);
-//        System.out.println("size pos " + ev.core.arrayEl.size());
-        
-        ev.addCore(word);
-        
-//        System.out.println("wordone ");
-//        System.out.println("size pos " + ev.core.toString());
-        ev.addPos(pos);
-//        System.out.println("size pos2 " + ev.core.positions.size());
-//        
-//
-//        System.out.println("HOLI " + deppar);
-        /* We check if i is a passive */
-        Pattern pText1 = Pattern.compile("nsubjpass\\(" + word + "-" + pos + ", ([^-]+)-(\\d+)\\)");
-        Matcher mText1 = pText1.matcher(deppar);
-        
+            ev.addCore(word);
+
+            ev.addPos(pos);
+            /* We check if i is a passive */
+            Pattern pText1 = Pattern.compile("nsubjpass\\(" + word + "-" + pos + ", ([^-]+)-(\\d+)\\)");
+            Matcher mText1 = pText1.matcher(deppar);
+
 //        System.out.println("PRE");
-        if (mText1.find()) { // passive sentence
-            
+            if (mText1.find()) { // passive sentence
+
 //        System.out.println("PASSIVE");
-            String word2 = mText1.group(1);
-            String word2pos = mText1.group(2);
-            Pattern pText2 = Pattern.compile("[^\\(]+\\(" + word2 + "-" + word2pos + ", ([^-]+)-(\\d+)\\)");
-            Matcher mText2 = pText2.matcher(deppar);
-            ev.who.arrayEl.add(word2);
-            ev.who.positions.add(Integer.parseInt(word2pos));
-            while (mText2.find()) { // passive sentence
-                ev.who.arrayEl.add(mText2.group(1));
-                ev.who.positions.add(Integer.parseInt(mText2.group(2)));
-            }
-//                    System.out.println("PASSIVE2");
-
-            /* We check the relations previously seen in the training set for this verb in active*/
-            for (String rel : frame.passRels) {
-                pText1 = Pattern.compile(rel + "\\(" + word + "-" + pos + ", ([^-]+)-(\\d+)\\)");
-                mText1 = pText1.matcher(deppar);
-                if (mText1.find()) {
-                    word2 = mText1.group(1);
-                    word2pos = mText1.group(2);
-                    pText2 = Pattern.compile("[^\\(]+\\(" + word2 + "-" + word2pos + ", ([^-]+)-(\\d+)\\)");
-                    mText2 = pText2.matcher(deppar);
-                    if (ev.who.positions.isEmpty() || (!ev.who.positions.isEmpty() && !ev.who.positions.contains(Integer.parseInt(word2pos)) && ev.who.positions.get(0) < Integer.parseInt(word2pos))) {
-
-                        ev.core.arrayEl.add(word2);
-                        ev.core.positions.add(Integer.parseInt(word2pos));
-                        while (mText2.find()) {
-                            if (ev.who.positions.isEmpty() || (!ev.who.positions.isEmpty() && !ev.who.positions.contains(Integer.parseInt(mText2.group(2))) && ev.who.positions.get(0) < Integer.parseInt(mText2.group(2)))) {
-                                ev.core.arrayEl.add(mText2.group(1));
-                                ev.core.positions.add(Integer.parseInt(mText2.group(2)));
-                            }
-                        }
-                    }
-                }
-            }
-
-        } 
-
-        /* We check the subject-seller */ else {
-//                System.out.println("ACTIVE");
-            pText1 = Pattern.compile("nsubj[^\\(]*\\(" + word + "-" + pos + ", ([^-]+)-(\\d+)\\)");
-            mText1 = pText1.matcher(deppar);
-            while (mText1.find()) {
                 String word2 = mText1.group(1);
                 String word2pos = mText1.group(2);
                 Pattern pText2 = Pattern.compile("[^\\(]+\\(" + word2 + "-" + word2pos + ", ([^-]+)-(\\d+)\\)");
                 Matcher mText2 = pText2.matcher(deppar);
                 ev.who.arrayEl.add(word2);
                 ev.who.positions.add(Integer.parseInt(word2pos));
-                while (mText2.find()) {
+                while (mText2.find()) { // passive sentence
                     ev.who.arrayEl.add(mText2.group(1));
                     ev.who.positions.add(Integer.parseInt(mText2.group(2)));
-
                 }
-            }
+//                    System.out.println("PASSIVE2");
 
-//                System.out.println("ACTIVE2");
-            /* We check the item, that can be an nmod:of or a dobj */
-//        pText1 = Pattern.compile("nmod:of\\(" + word + "-\\d+, ([^-]+)-\\d+\\)");
-//        mText1 = pText1.matcher(deppar);
-            /* We check the relations previously seen in the training set for this verb in active*/
-            for (String rel : frame.actRels) {
-                pText1 = Pattern.compile(rel + "\\(" + word + "-" + pos + ", ([^-]+)-(\\d+)\\)");
+            } /* We check the subject-seller */ else {
+//                System.out.println("ACTIVE");
+                pText1 = Pattern.compile("nsubj[^\\(]*\\(" + word + "-" + pos + ", ([^-]+)-(\\d+)\\)");
                 mText1 = pText1.matcher(deppar);
-                if (mText1.find()) {
+                while (mText1.find()) {
                     String word2 = mText1.group(1);
                     String word2pos = mText1.group(2);
                     Pattern pText2 = Pattern.compile("[^\\(]+\\(" + word2 + "-" + word2pos + ", ([^-]+)-(\\d+)\\)");
                     Matcher mText2 = pText2.matcher(deppar);
-                    if (ev.who.positions.isEmpty() || (!ev.who.positions.isEmpty() && !ev.who.positions.contains(Integer.parseInt(word2pos)) && ev.who.positions.get(0) < Integer.parseInt(word2pos))) {
+                    ev.who.arrayEl.add(word2);
+                    ev.who.positions.add(Integer.parseInt(word2pos));
+                    while (mText2.find()) {
+                        ev.who.arrayEl.add(mText2.group(1));
+                        ev.who.positions.add(Integer.parseInt(mText2.group(2)));
 
-                        ev.core.arrayEl.add(word2);
-                        ev.core.positions.add(Integer.parseInt(word2pos));
-                        while (mText2.find()) {
-                            if (ev.who.positions.isEmpty() || (!ev.who.positions.isEmpty() && !ev.who.positions.contains(Integer.parseInt(mText2.group(2))) && ev.who.positions.get(0) < Integer.parseInt(mText2.group(2)))) {
-                                ev.core.arrayEl.add(mText2.group(1));
-                                ev.core.positions.add(Integer.parseInt(mText2.group(2)));
+                    }
+                }
+
+//                System.out.println("ACTIVE2");
+                /* We check the item, that can be an nmod:of or a dobj */
+//        pText1 = Pattern.compile("nmod:of\\(" + word + "-\\d+, ([^-]+)-\\d+\\)");
+//        mText1 = pText1.matcher(deppar);
+                /* We check the relations previously seen in the training set for this verb in active*/
+            }
+
+//                System.out.println("GENERAL");
+//        System.out.println(ev.toString());
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+        return ev;
+
+    }
+
+    /**
+     * We check the arguments of the purchase frame for an event 'sell'
+     *
+     * @param deppar: dependency parsing string
+     * @param word: the event word
+     * @param frame
+     * @param pos
+     * @return the frame with new information (or not)
+     */
+    public Event checkEvent(String deppar, String word, Frame frame, int pos) {
+
+        Event ev = new Event();
+        try {
+//        System.out.println("CHECK");
+//        
+//        
+//        System.out.println("HOLo");
+            ArrayList<String> constRels = new ArrayList<String>();
+            constRels.addAll(Arrays.asList("ccomp", "xcomp", "aux", "auxpass", "aux:pass"));
+
+//        System.out.println("HOLI " + word);
+//        System.out.println("HOLI " + pos);
+//        System.out.println("size pos " + ev.core.arrayEl.size());
+            ev.addCore(word);
+
+//        System.out.println("wordone ");
+//        System.out.println("size pos " + ev.core.toString());
+            ev.addPos(pos);
+//        System.out.println("size pos2 " + ev.core.positions.size());
+//        
+//
+//        System.out.println("HOLI " + deppar);
+            /* We check if i is a passive */
+            Pattern pText1 = Pattern.compile("nsubjpass\\(" + word + "-" + pos + ", ([^-]+)-(\\d+)\\)");
+            Matcher mText1 = pText1.matcher(deppar);
+
+//        System.out.println("PRE");
+            if (mText1.find()) { // passive sentence
+
+//        System.out.println("PASSIVE");
+                String word2 = mText1.group(1);
+                String word2pos = mText1.group(2);
+                Pattern pText2 = Pattern.compile("[^\\(]+\\(" + word2 + "-" + word2pos + ", ([^-]+)-(\\d+)\\)");
+                Matcher mText2 = pText2.matcher(deppar);
+                ev.who.arrayEl.add(word2);
+                ev.who.positions.add(Integer.parseInt(word2pos));
+                while (mText2.find()) { // passive sentence
+                    ev.who.arrayEl.add(mText2.group(1));
+                    ev.who.positions.add(Integer.parseInt(mText2.group(2)));
+                }
+//                    System.out.println("PASSIVE2");
+                /* We check the relations previously seen in the training set for this verb in active*/
+                ArrayList<String> passrelstoCheck = frame.passRels;
+                passrelstoCheck.add("obl");
+                passrelstoCheck.add("oblagent");
+                for (String rel : passrelstoCheck) {
+                    pText1 = Pattern.compile(rel + "\\(" + word + "-" + pos + ", ([^-]+)-(\\d+)\\)");
+                    mText1 = pText1.matcher(deppar);
+                    if (mText1.find()) {
+                        word2 = mText1.group(1);
+                        word2pos = mText1.group(2);
+                        pText2 = Pattern.compile("[^\\(]+\\(" + word2 + "-" + word2pos + ", ([^-]+)-(\\d+)\\)");
+                        mText2 = pText2.matcher(deppar);
+                        if (ev.who.positions.isEmpty() || (!ev.who.positions.isEmpty() && !ev.who.positions.contains(Integer.parseInt(word2pos)) && ev.who.positions.get(0) < Integer.parseInt(word2pos))) {
+
+                            ev.core.arrayEl.add(word2);
+                            ev.core.positions.add(Integer.parseInt(word2pos));
+                            while (mText2.find()) {
+                                if (ev.who.positions.isEmpty() || (!ev.who.positions.isEmpty() && !ev.who.positions.contains(Integer.parseInt(mText2.group(2))) && ev.who.positions.get(0) < Integer.parseInt(mText2.group(2)))) {
+                                    ev.core.arrayEl.add(mText2.group(1));
+                                    ev.core.positions.add(Integer.parseInt(mText2.group(2)));
+                                }
                             }
                         }
                     }
                 }
 
+            } /* We check the subject-seller */ else {
+//                System.out.println("ACTIVE");
+                pText1 = Pattern.compile("nsubj[^\\(]*\\(" + word + "-" + pos + ", ([^-]+)-(\\d+)\\)");
+                mText1 = pText1.matcher(deppar);
+                while (mText1.find()) {
+                    String word2 = mText1.group(1);
+                    String word2pos = mText1.group(2);
+                    Pattern pText2 = Pattern.compile("[^\\(]+\\(" + word2 + "-" + word2pos + ", ([^-]+)-(\\d+)\\)");
+                    Matcher mText2 = pText2.matcher(deppar);
+                    ev.who.arrayEl.add(word2);
+                    ev.who.positions.add(Integer.parseInt(word2pos));
+                    while (mText2.find()) {
+                        ev.who.arrayEl.add(mText2.group(1));
+                        ev.who.positions.add(Integer.parseInt(mText2.group(2)));
+
+                    }
+                }
+
+//                System.out.println("ACTIVE2");
+                /* We check the item, that can be an nmod:of or a dobj */
+//        pText1 = Pattern.compile("nmod:of\\(" + word + "-\\d+, ([^-]+)-\\d+\\)");
+//        mText1 = pText1.matcher(deppar);
+                /* We check the relations previously seen in the training set for this verb in active*/
+                for (String rel : frame.actRels) {
+                    pText1 = Pattern.compile(rel + "\\(" + word + "-" + pos + ", ([^-]+)-(\\d+)\\)");
+                    mText1 = pText1.matcher(deppar);
+                    if (mText1.find()) {
+                        String word2 = mText1.group(1);
+                        String word2pos = mText1.group(2);
+                        Pattern pText2 = Pattern.compile("[^\\(]+\\(" + word2 + "-" + word2pos + ", ([^-]+)-(\\d+)\\)");
+                        Matcher mText2 = pText2.matcher(deppar);
+                        if (ev.who.positions.isEmpty() || (!ev.who.positions.isEmpty() && !ev.who.positions.contains(Integer.parseInt(word2pos)) && ev.who.positions.get(0) < Integer.parseInt(word2pos))) {
+
+                            ev.core.arrayEl.add(word2);
+                            ev.core.positions.add(Integer.parseInt(word2pos));
+                            while (mText2.find()) {
+                                if (ev.who.positions.isEmpty() || (!ev.who.positions.isEmpty() && !ev.who.positions.contains(Integer.parseInt(mText2.group(2))) && ev.who.positions.get(0) < Integer.parseInt(mText2.group(2)))) {
+                                    ev.core.arrayEl.add(mText2.group(1));
+                                    ev.core.positions.add(Integer.parseInt(mText2.group(2)));
+                                }
+                            }
+                        }
+                    }
+
+                }
             }
-        }
-        
+
 //                System.out.println("GENERAL");
-        for (String rel : constRels) {
+            for (String rel : constRels) {
                 pText1 = Pattern.compile(rel + "\\(" + word + "-" + pos + ", ([^-]+)-(\\d+)\\)");
                 mText1 = pText1.matcher(deppar);
                 if (mText1.find()) {
@@ -1277,30 +1353,27 @@ public class ExtractorTIMEXKeywordBasedNE {
                     Matcher mText2 = pText2.matcher(deppar);
                     if (ev.who.positions.isEmpty() || (!ev.who.positions.isEmpty() && !ev.who.positions.contains(Integer.parseInt(word2pos)) && ev.who.positions.get(0) < Integer.parseInt(word2pos))) {
                         ev.core.arrayEl.add(word2);
-                                    ev.core.positions.add(Integer.parseInt(word2pos));
+                        ev.core.positions.add(Integer.parseInt(word2pos));
                         while (mText2.find()) {
-                            if(mText2.group(1).contains("nsubj")){
-                                
-                            
+                            if (mText2.group(1).contains("nsubj")) {
+
 //                System.out.println("GEN SUJ");
-                            }
-                            else{
-                                
+                            } else {
+
 //                System.out.println("GEN NO SUJ");
-                            if (ev.who.positions.isEmpty() || (!ev.who.positions.isEmpty() && !ev.who.positions.contains(Integer.parseInt(mText2.group(3))) && ev.who.positions.get(0) < Integer.parseInt(mText2.group(3)))) {
-                                ev.core.arrayEl.add(mText2.group(2));
-                                ev.core.positions.add(Integer.parseInt(mText2.group(3)));
-                            }
+                                if (ev.who.positions.isEmpty() || (!ev.who.positions.isEmpty() && !ev.who.positions.contains(Integer.parseInt(mText2.group(3))) && ev.who.positions.get(0) < Integer.parseInt(mText2.group(3)))) {
+                                    ev.core.arrayEl.add(mText2.group(2));
+                                    ev.core.positions.add(Integer.parseInt(mText2.group(3)));
+                                }
                             }
                         }
-                        
+
                     }
                 }
-        }
+            }
 
 //        System.out.println(ev.toString());
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             System.out.println(e.toString());
         }
         return ev;
@@ -1331,7 +1404,6 @@ public class ExtractorTIMEXKeywordBasedNE {
 //        System.out.println("\n\n----------------\n");
 //        return tree.toString();
 //    }
-
     private ArrayList<Integer> searchPositionInSentence(CoreMap sentence, Event ev) {
         ArrayList<Integer> pos = new ArrayList<Integer>();
         List<CoreLabel> toks = sentence.get(CoreAnnotations.TokensAnnotation.class);

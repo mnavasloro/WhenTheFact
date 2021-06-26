@@ -26,7 +26,7 @@ import org.apache.commons.io.FileUtils;
  *
  * @author mnavas
  */
-public class readCoresTrain {
+public class readCoresAll {
 
     /**
      * @param args the command line arguments
@@ -36,7 +36,7 @@ public class readCoresTrain {
         ArrayList<String> types = new ArrayList<String>();
 		try {
 			reader = new BufferedReader(new FileReader(
-					".\\src\\main\\resources\\train-type.txt"));
+					".\\src\\main\\resources\\all-type.txt"));
 			String line = reader.readLine();
 			while (line != null) {
 //				System.out.println(line);
@@ -46,14 +46,15 @@ public class readCoresTrain {
 			reader.close();
 
 
-            String input = FileUtils.readFileToString(new File(".\\src\\main\\resources\\train-core.txt"), "UTF-8");
+            String input = FileUtils.readFileToString(new File(".\\src\\main\\resources\\all-core.txt"), "UTF-8");
 
                         
                         eventverbsextractor eve = new eventverbsextractor();
                         HashMap<String, Frame> output = eve.annotate(input, types);
                         
                         for(Frame fr : output.values()){
-                            System.out.println(fr.core + " : " + fr.obj + " - " + ((fr.percProc>=0.5)?"P":"C"));
+//                            System.out.println(fr.core + " : " + fr.obj + " - " + ((fr.percProc>=0.5)?"P":"C"));
+                            System.out.println(fr.core + " : " + fr.passRels);
                         }
                         
          FileOutputStream fileOut =

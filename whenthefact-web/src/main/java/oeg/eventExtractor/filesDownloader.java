@@ -52,14 +52,14 @@ public class filesDownloader {
     
     
     
-    static public File htmlDownloader(String id) {
+    static public File htmlDownloader(String id, String urlS) {
 
         File f = new File(id + ".html");
         
             InputStream in = null;
             try {
                 System.out.println("opening connection");
-                URL url = new URL("https://hudoc.echr.coe.int/app/conversion/docx/html/body?library=ECHR&id=" + id);
+                URL url = new URL(urlS + id);
                 in = url.openStream();
                 FileOutputStream fos = new FileOutputStream(f);
                 System.out.println("reading file...");

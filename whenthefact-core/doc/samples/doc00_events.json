@@ -1,8 +1,0 @@
-{
-  "@context": "http://schema.org",
-  "@type" : "Event", 
-  "@id" : "000", 
-  "name" : "eat", 
-  "startDate" : "2019-12-11T00:00:00+02:00", 
-  "organizer" : "Lewis"
-}

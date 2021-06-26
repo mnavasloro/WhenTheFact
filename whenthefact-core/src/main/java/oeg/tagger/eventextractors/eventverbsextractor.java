@@ -46,7 +46,7 @@ import java.util.regex.Pattern;
 import oeg.eventRepresentation.Frame;
 import oeg.tagger.docHandler.Document;
 import oeg.tagger.docHandler.DocumentPart;
-import oeg.tagger.docHandler.StructureExtractorECHR;
+import oeg.tagger.docHandler.StructureExtractor;
 import oeg.tagger.docHandler.XMLMerger;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -70,7 +70,8 @@ public class eventverbsextractor {
     String posModel;
     String lemmaModel;
     StanfordCoreNLP pipeline;
-    
+    int countp = 0;
+    int countf = 0;
     /* Variables for dependency */
     String modelPath = DependencyParser.DEFAULT_MODEL;
     String taggerPath = "edu/stanford/nlp/models/pos-tagger/english-left3words/english-left3words-distsim.tagger";
@@ -161,7 +162,6 @@ public class eventverbsextractor {
             List<CoreMap> sentences = annotation.get(CoreAnnotations.SentencesAnnotation.class);
             int iterTypes = 0;
             for (CoreMap sentence : sentences) {
-                    
                 
                     for (CoreLabel token : sentence.get(CoreAnnotations.TokensAnnotation.class)) {
                         /* We collect the different tags of each token */
@@ -196,6 +196,8 @@ public class eventverbsextractor {
                 }
                 
                 System.out.println(events + "\n-------");
+                System.out.println("countp " + countp + "\n-------");
+                System.out.println("countf " + countf + "\n-------");
             return events;
 
         } catch (Exception ex) {
@@ -266,6 +268,7 @@ public class eventverbsextractor {
                  frame.passRels.add(mText2.group(1));  
                }
              }frame.obj.add("P");
+             countp++;
         }
         
         
@@ -285,6 +288,8 @@ public class eventverbsextractor {
         
         /* We check the subject-seller */    
         else{
+            
+                    countf++;
         pText1 = Pattern.compile("nsubj[^\\(]*\\(" + word + "-\\d+, ([^-]+)-\\d+\\)");
         mText1 = pText1.matcher(deppar);
         if (mText1.find()) {

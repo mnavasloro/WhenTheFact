@@ -5,15 +5,15 @@
         <servlet-class>oeg.eventExtractor.annotateDoc</servlet-class>
     </servlet>
     <!--servlet>
-        <servlet-name>annotate</servlet-name>
-        <servlet-class>oeg.eventExtractor.annotatePost</servlet-class>
+        <servlet-name>annotateECJ</servlet-name>
+        <servlet-class>oeg.eventExtractor.annotateECJ</servlet-class>
     </servlet-->
     <servlet-mapping>
         <servlet-name>annotate2</servlet-name>
         <url-pattern>/annotate2</url-pattern>
     </servlet-mapping>
     <!--servlet-mapping>
-        <servlet-name>annotate</servlet-name>
-        <url-pattern>/annotate</url-pattern>
+        <servlet-name>annotateECJ</servlet-name>
+        <url-pattern>/annotateECJ</url-pattern>
     </servlet-mapping-->
 </web-app>

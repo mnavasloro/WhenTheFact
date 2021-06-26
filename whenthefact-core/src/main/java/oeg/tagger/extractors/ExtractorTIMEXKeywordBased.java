@@ -32,7 +32,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import oeg.tagger.docHandler.Document;
 import oeg.tagger.docHandler.DocumentPart;
-import oeg.tagger.docHandler.StructureExtractorECHR;
+import oeg.tagger.docHandler.StructureExtractor;
 import oeg.tagger.docHandler.XMLMerger;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -354,7 +354,7 @@ public class ExtractorTIMEXKeywordBased {
             int offset = 0;
             int offsetEvent = "<Event argument=\"core\" type=\"TNfacts\">".length() + "</Event>".length();
 
-            StructureExtractorECHR seECHR = new StructureExtractorECHR();
+            StructureExtractor seECHR = new StructureExtractor();
             Document doc = seECHR.extractFromDocument(wordfile);
             List<DocumentPart> eventRelevantParts = doc.getEventRelevantParts();
 

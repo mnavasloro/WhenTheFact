@@ -1,4 +1,4 @@
-package oeg.eventExtractor;
+package oeg.tagger.main;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,11 +17,6 @@ import oeg.eventFRepresentation.EventF;
 import oeg.tagger.docHandler.HTMLMerger;
 import oeg.tagger.eventextractors.ExtractorTIMEXKeywordBasedNEFrames;
 import static oeg.tagger.extractors.writer.writeFile;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 
@@ -30,7 +25,7 @@ import org.json.JSONObject;
  *
  * @author mnavas
  */
-public class Main {
+public class createExample {
 
     /**
      * @param args the command line arguments
@@ -39,14 +34,9 @@ public class Main {
 
         try {
 
-            String jsonString = "{\"id\":\"62013CJ0249\"}"; // Our test json
-
-
-            JSONObject json = new JSONObject(jsonString);
-            String inputID = (String) json.get("id");
+                       
             
-            
-            String salida = parseAndTag("", inputID);
+            String salida = parseAndTag();
             
             System.out.println(salida);
 
@@ -57,25 +47,15 @@ public class Main {
     }
 
     
-    public static String parseAndTag(String s, String inputID) {
+    public static String parseAndTag() {
 //    public static String parseAndTag(String inputHTML2, String inputID, String inputURL) {
 
-        File ev1 = new File("pretimex1.txt");
-        File ev2 = new File("pretimex2.txt");
-        File ev3 = new File("pretimex3.txt");
-        File ev4 = new File("postimex.txt");
-        
-        
-
-        File fh = filesDownloader.htmlDownloader(inputID, "https://eur-lex.europa.eu/legal-content/En/TXT/HTML/?uri=CELEX:");
-
+                  File fh = new File("62013CJ0249.html");
         String inputHTML2 = "";
 
         try {
             inputHTML2 = IOUtils.toString(new FileInputStream(fh), "UTF-8");
-        } catch (Exception ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
 
 //        System.out.println("Saving files in: " + ev1.getAbsolutePath());
 //        
@@ -93,75 +73,10 @@ public class Main {
         }
         String stylestring = sb.toString();
 
-        String inputHTML = inputHTML2.replaceAll(pattern, "");
-        String txt = inputHTML.replaceAll("(<p class=\\\"count\\\" id=\\\"point\\d+\\\">)\\d+(<\\/p>)", "$1$2");
-                
-        txt = txt.replaceAll("<\\/p>", "\t");
-        
+        String inputHTML = inputHTML2.replaceAll(pattern, "");  
 
-        txt = txt.replaceAll("<\\/p>", "\t");
-        txt = txt.replaceAll("<[^>]*>", "");
-//            txt = txt.replaceAll("&nbsp;", "\t");
-        txt = txt.replaceAll("&[^;]+;", "\t");
-//String txt = Jsoup.parse(inputHTML).text();
-
-        if (!writeFile(inputHTML, ev2.getAbsolutePath())) {
-            System.out.println("ERROR WHILE SAVING IN" + ev2.getAbsolutePath());
-        }
-
-        Date dct = null;
-        try {
-            ExtractorTIMEXKeywordBasedNEFrames etkb= new ExtractorTIMEXKeywordBasedNEFrames("EN");
-            if (etkb == null) {
-//                                etkb = new ExtractorTIMEXKeywordBased(null, null, pathrules, "EN"); // We innitialize the tagger in Spanish
-
-                etkb = new ExtractorTIMEXKeywordBasedNEFrames("EN"); // We innitialize the tagger in Spanish
-//                etkb = new ExtractorTIMEXKeywordBasedNE(null, null, pathrules, "EN", pathser); // We innitialize the tagger in Spanish
-            }
-
-//            String inputURL = "https://cors-anywhere.herokuapp.com/https://hudoc.echr.coe.int/app/conversion/docx/html/body?library=ECHR&id=" + inputID;
-//
-//            String txt = inputHTML.replaceAll("<[^>]*>", "");
-//
-//            File word = filesDownloader.wordDownloader(inputURL, inputID);
-            String output = etkb.annotate(txt, "2012-02-20", fh);
-            
-            
-            //We send it to legalwhen
-            JSONObject json = new JSONObject();
-            json.put("id", inputID);
-            json.put("inputText", output);
-            OkHttpClient client = new OkHttpClient().newBuilder()
-                    .build();
-            MediaType mediaType = MediaType.parse("text/plain;charset=UTF-8");
-            RequestBody body = RequestBody.create(mediaType, output);
-            Request request2 = new Request.Builder()
-                    //  .url("https://legalwhen.oeg-upm.net/namespace/kb/sparql")
-                    .url("http://localhost:9999/legalwhen/namespace/kb/sparql")
-                    .method("POST", body)
-                    .addHeader("Content-Type", "text/plain;charset=UTF-8")
-                    .build();
-            Response response2 = client.newCall(request2).execute();
-            
-            
-
-            // We add the json for the timeline
-            Annotation2JSON t2j = new Annotation2JSON();
-            ArrayList<EventF> events = t2j.getEvents(output);
-            String finaltimeline = generateTimeline(events);
-            
-            // We just maintain the events that can be converted to a timeline
-
-            if (!writeFile(output, ev4.getAbsolutePath())) {
-                System.out.println("ERROR WHILE SAVING IN" + ev4.getAbsolutePath());
-            }
-                System.out.println("CORRECLY SAVED IN " + ev4.getAbsolutePath());
-                
-//            System.out.println(output);
-            
-
-            output = HTMLMerger.prepareHTML(output);
-            
+File ev2 = new File("ev2.txt");
+String output = IOUtils.toString(new FileInputStream(ev2), "UTF-8");
             output = HTMLMerger.mergeHTML(inputHTML, output);
             
             output = output.replaceAll("EVENTTOKENINI", "&#9658;");
@@ -172,9 +87,10 @@ public class Main {
 //            output = output.replaceAll("</Event>", "&rceil;");
             
             System.out.println(output);
-            String out2 = createHighlights(output, events);
-            System.out.println(stylestring + out2);
-            return stylestring + out2 + finaltimeline;
+            return "";
+//            String out2 = createHighlights(output, events);
+//            System.out.println(stylestring + out2);
+//            return stylestring + out2 + finaltimeline;
 //NO            return stylestring + new String(out2.getBytes(Charset.forName("UTF-8")), Charset.forName("Windows-1252"));
 //            return stylestring + new String(out2.getBytes("ISO-8859-1"),"UTF-8");
 

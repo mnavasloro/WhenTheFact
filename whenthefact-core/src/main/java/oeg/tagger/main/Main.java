@@ -4,7 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import oeg.tagger.eventextractors.ExtractorKeywordBased;
+import oeg.tagger.eventextractors.ExtractorTIMEXKeywordBasedNEFrames;
+import oeg.tagger.eventextractors.ExtractorTIMEXKeywordBasedNE;
 import oeg.tagger.docHandler.Document;
 import oeg.tagger.docHandler.StructureExtractorWord;
 import org.apache.commons.io.FileUtils;
@@ -16,7 +17,7 @@ import org.apache.commons.io.FileUtils;
 public class Main {
         public static void main(String[] args) {
           System.out.println("Event Extractor");
-        ExtractorKeywordBased ekb = new ExtractorKeywordBased();
+        ExtractorTIMEXKeywordBasedNEFrames ekb = new ExtractorTIMEXKeywordBasedNEFrames();
 //            String output = cf.annotate("The judge refused the appeal.", "");
 //        File foldertrain = new File("C:\\Users\\mnavas\\DATA\\ERWANA\\testclean\\");
 //        String folderwordtrain = "C:\\Users\\mnavas\\DATA\\ERWANA\\testword\\";
@@ -32,7 +33,7 @@ public class Main {
                 filename = filename.replaceFirst("\\.xml", "\\.docx");
                 
                 File word = new File(filename);
-                String output = ekb.annotate(txt, word, f.getName());
+                String output = ekb.annotate(txt, "", word);//, f.getName());
                 filename = "";
             } catch (Exception e) {
                 e.printStackTrace();

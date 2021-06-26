@@ -1,62 +1,71 @@
-package oeg.eventExtractor;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package oeg.auxiliary;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import static oeg.auxiliary.timelineGeneration.generateTimeline;
 import oeg.eventFRepresentation.Annotation2JSON;
 import oeg.eventFRepresentation.EventF;
 import oeg.tagger.docHandler.HTMLMerger;
+import oeg.tagger.docHandler.LawORDateEN;
+import oeg.tagger.eventextractors.ExtractorEvFrDL;
 import oeg.tagger.eventextractors.ExtractorTIMEXKeywordBasedNEFrames;
 import static oeg.tagger.extractors.writer.writeFile;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 import org.apache.commons.io.IOUtils;
-import org.json.JSONObject;
 
 /**
- * Test of the functionality of the servlets
  *
  * @author mnavas
  */
-public class Main {
+public class testLocalHTML {
 
+    static ExtractorEvFrDL etkb;
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
+        
+       
+        
+        String inputID = "c";
+//        String inputID = "w";
+//        String inputHTML = (String) json.get("htmltext");
+        
 
-        try {
+//        testhtmlout = testhtmlout + "\n\n" + inputHTML;
+//        
+//        if (!writeFile(testhtmlout, "r.html")) {
+//            System.out.println("ERROR WHILE SAVING IN" + "r.html");
+//        }
 
-            String jsonString = "{\"id\":\"62013CJ0249\"}"; // Our test json
 
 
-            JSONObject json = new JSONObject(jsonString);
-            String inputID = (String) json.get("id");
-            
-            
-            String salida = parseAndTag("", inputID);
-            
-            System.out.println(salida);
+        // We call the tagger and return its output
+//        System.out.println("----------\n" + inputHTML);
+        String salida = parseAndTag("", inputID);
+//        String salida = parseAndTag(inputHTML, inputID, inputURL);
 
-        } catch (Exception ex) {
-            System.out.print(ex.toString());
+        if (!writeFile(salida, "r.html")) {
+            System.out.println("ERROR WHILE SAVING IN" + "r.html");
         }
 
     }
 
-    
     public static String parseAndTag(String s, String inputID) {
 //    public static String parseAndTag(String inputHTML2, String inputID, String inputURL) {
 
@@ -64,17 +73,15 @@ public class Main {
         File ev2 = new File("pretimex2.txt");
         File ev3 = new File("pretimex3.txt");
         File ev4 = new File("postimex.txt");
-        
-        
 
-        File fh = filesDownloader.htmlDownloader(inputID, "https://eur-lex.europa.eu/legal-content/En/TXT/HTML/?uri=CELEX:");
+        File fh = new File(inputID +".html");
 
         String inputHTML2 = "";
 
         try {
             inputHTML2 = IOUtils.toString(new FileInputStream(fh), "UTF-8");
         } catch (Exception ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(testLocalHTML.class.getName()).log(Level.SEVERE, null, ex);
         }
 
 //        System.out.println("Saving files in: " + ev1.getAbsolutePath());
@@ -94,12 +101,15 @@ public class Main {
         String stylestring = sb.toString();
 
         String inputHTML = inputHTML2.replaceAll(pattern, "");
+        
+        
+        
+        //TOADD
         String txt = inputHTML.replaceAll("(<p class=\\\"count\\\" id=\\\"point\\d+\\\">)\\d+(<\\/p>)", "$1$2");
                 
-        txt = txt.replaceAll("<\\/p>", "\t");
-        
-
-        txt = txt.replaceAll("<\\/p>", "\t");
+        txt = txt.replaceAll("<\\/p>", "\t\\.\t");
+//        txt = txt.replaceAll("(<a[^>]*>)([^<]+)(<\\/a>)", "LINK2TOKEN");
+        txt = txt.replaceAll("(<a[^>]*>)([^<]*)(<\\/a>)", "$1$3");
         txt = txt.replaceAll("<[^>]*>", "");
 //            txt = txt.replaceAll("&nbsp;", "\t");
         txt = txt.replaceAll("&[^;]+;", "\t");
@@ -109,13 +119,13 @@ public class Main {
             System.out.println("ERROR WHILE SAVING IN" + ev2.getAbsolutePath());
         }
 
+//        File word = new File(inputID +".docx");
         Date dct = null;
         try {
-            ExtractorTIMEXKeywordBasedNEFrames etkb= new ExtractorTIMEXKeywordBasedNEFrames("EN");
             if (etkb == null) {
 //                                etkb = new ExtractorTIMEXKeywordBased(null, null, pathrules, "EN"); // We innitialize the tagger in Spanish
 
-                etkb = new ExtractorTIMEXKeywordBasedNEFrames("EN"); // We innitialize the tagger in Spanish
+                etkb = new ExtractorEvFrDL("EN"); // We innitialize the tagger in Spanish
 //                etkb = new ExtractorTIMEXKeywordBasedNE(null, null, pathrules, "EN", pathser); // We innitialize the tagger in Spanish
             }
 
@@ -124,26 +134,16 @@ public class Main {
 //            String txt = inputHTML.replaceAll("<[^>]*>", "");
 //
 //            File word = filesDownloader.wordDownloader(inputURL, inputID);
-            String output = etkb.annotate(txt, "2012-02-20", fh);
+
+
+            LawORDateEN lawORDate = new LawORDateEN();
+            String txt2 = lawORDate.replaceCite(txt);
+//            String txt2 = txt;
+            String output2 = etkb.annotate(txt2, "2012-02-20", fh);//, word, word.getName());
+            String output = lawORDate.returnCite(output2);
+//            String output = output2;
             
-            
-            //We send it to legalwhen
-            JSONObject json = new JSONObject();
-            json.put("id", inputID);
-            json.put("inputText", output);
-            OkHttpClient client = new OkHttpClient().newBuilder()
-                    .build();
-            MediaType mediaType = MediaType.parse("text/plain;charset=UTF-8");
-            RequestBody body = RequestBody.create(mediaType, output);
-            Request request2 = new Request.Builder()
-                    //  .url("https://legalwhen.oeg-upm.net/namespace/kb/sparql")
-                    .url("http://localhost:9999/legalwhen/namespace/kb/sparql")
-                    .method("POST", body)
-                    .addHeader("Content-Type", "text/plain;charset=UTF-8")
-                    .build();
-            Response response2 = client.newCall(request2).execute();
-            
-            
+            output = output.replaceAll("\\t\\.\\t", "\t");
 
             // We add the json for the timeline
             Annotation2JSON t2j = new Annotation2JSON();
@@ -170,6 +170,9 @@ public class Main {
 //            output = output.replaceAll("EVENTTOKENEND", "&rceil;");
 //            output = output.replaceAll("<Event [^>]+>", "&lceil;");
 //            output = output.replaceAll("</Event>", "&rceil;");
+
+//            //TOADD
+//            output = output.replaceAll("(<p class=\\\"count\\\" id=\\\"point(\\d+)\\\">)", "$1$2");
             
             System.out.println(output);
             String out2 = createHighlights(output, events);
@@ -179,11 +182,10 @@ public class Main {
 //            return stylestring + new String(out2.getBytes("ISO-8859-1"),"UTF-8");
 
         } catch (Exception ex) {
-            System.err.print(ex.toString());
+            System.out.print(ex.toString());
             return "";
         }
     }
-
 
     static public String createHighlights(String input, ArrayList<EventF> events) {
 //        input2 = input2.replaceFirst(Pattern.quote("<?xml version=\"1.0\"?>\n" + "<!DOCTYPE TimeML SYSTEM \"TimeML.dtd\">\n" + "<TimeML>"), "");
@@ -210,7 +212,7 @@ public class Main {
         
         while (m.find()) {
             String auxwhen="";
-            String color = "class=\"highlighter_def\"";
+            String color = "style=\"padding: 6px;border-radius: 3px;background-color: #009AA7;color:#FFFFFF;\"";
             String contetRegex = m.group(3);
             contetRegex = contetRegex.replaceAll("\"", "");
             contetRegex = contetRegex.replaceAll(" ", "\n");
@@ -252,4 +254,5 @@ public class Main {
         return sb.toString();
 //        return input2;
     }
+    
 }

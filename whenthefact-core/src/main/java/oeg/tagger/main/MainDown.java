@@ -1,4 +1,4 @@
-package oeg.eventExtractor;
+package oeg.tagger.main;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,11 +17,6 @@ import oeg.eventFRepresentation.EventF;
 import oeg.tagger.docHandler.HTMLMerger;
 import oeg.tagger.eventextractors.ExtractorTIMEXKeywordBasedNEFrames;
 import static oeg.tagger.extractors.writer.writeFile;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 
@@ -30,7 +25,7 @@ import org.json.JSONObject;
  *
  * @author mnavas
  */
-public class Main {
+public class MainDown {
 
     /**
      * @param args the command line arguments
@@ -67,14 +62,15 @@ public class Main {
         
         
 
-        File fh = filesDownloader.htmlDownloader(inputID, "https://eur-lex.europa.eu/legal-content/En/TXT/HTML/?uri=CELEX:");
+//        File fh = filesDownloader.htmlDownloader(inputID, "https://eur-lex.europa.eu/legal-content/En/TXT/HTML/?uri=CELEX:");
 
+        File fh = new File("62013CJ0249.html");
         String inputHTML2 = "";
 
         try {
             inputHTML2 = IOUtils.toString(new FileInputStream(fh), "UTF-8");
         } catch (Exception ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MainDown.class.getName()).log(Level.SEVERE, null, ex);
         }
 
 //        System.out.println("Saving files in: " + ev1.getAbsolutePath());
@@ -105,19 +101,19 @@ public class Main {
         txt = txt.replaceAll("&[^;]+;", "\t");
 //String txt = Jsoup.parse(inputHTML).text();
 
-        if (!writeFile(inputHTML, ev2.getAbsolutePath())) {
+        if (!writeFile(txt, ev2.getAbsolutePath())) {
             System.out.println("ERROR WHILE SAVING IN" + ev2.getAbsolutePath());
         }
 
         Date dct = null;
         try {
-            ExtractorTIMEXKeywordBasedNEFrames etkb= new ExtractorTIMEXKeywordBasedNEFrames("EN");
-            if (etkb == null) {
+            ExtractorTIMEXKeywordBasedNEFrames etkb;
+//            if (etkb == null) {
 //                                etkb = new ExtractorTIMEXKeywordBased(null, null, pathrules, "EN"); // We innitialize the tagger in Spanish
 
                 etkb = new ExtractorTIMEXKeywordBasedNEFrames("EN"); // We innitialize the tagger in Spanish
 //                etkb = new ExtractorTIMEXKeywordBasedNE(null, null, pathrules, "EN", pathser); // We innitialize the tagger in Spanish
-            }
+//            }
 
 //            String inputURL = "https://cors-anywhere.herokuapp.com/https://hudoc.echr.coe.int/app/conversion/docx/html/body?library=ECHR&id=" + inputID;
 //
@@ -125,25 +121,6 @@ public class Main {
 //
 //            File word = filesDownloader.wordDownloader(inputURL, inputID);
             String output = etkb.annotate(txt, "2012-02-20", fh);
-            
-            
-            //We send it to legalwhen
-            JSONObject json = new JSONObject();
-            json.put("id", inputID);
-            json.put("inputText", output);
-            OkHttpClient client = new OkHttpClient().newBuilder()
-                    .build();
-            MediaType mediaType = MediaType.parse("text/plain;charset=UTF-8");
-            RequestBody body = RequestBody.create(mediaType, output);
-            Request request2 = new Request.Builder()
-                    //  .url("https://legalwhen.oeg-upm.net/namespace/kb/sparql")
-                    .url("http://localhost:9999/legalwhen/namespace/kb/sparql")
-                    .method("POST", body)
-                    .addHeader("Content-Type", "text/plain;charset=UTF-8")
-                    .build();
-            Response response2 = client.newCall(request2).execute();
-            
-            
 
             // We add the json for the timeline
             Annotation2JSON t2j = new Annotation2JSON();

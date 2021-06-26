@@ -78,9 +78,9 @@ public class HTMLMerger {
                     if (baseHTML.substring(i, i + 8).matches("&[^;]+;[\\S\\s]*")) {
                         i = baseHTML.indexOf(";", i);
                         j--;
-                    } else if (eventAnnotatedXML.startsWith("<Event_what argument=\"what\" tid=\"t0\" type=\"procedure\">",j)) {
+                    } else if (eventAnnotatedXML.startsWith("<Event_what argument=\"what\" tid=\"t0\" type=\"procedure\"",j)) {
                      i--;
-                     j = j + "<Event_what argument=\"what\" tid=\"t0\" type=\"procedure\">".length()-1; 
+                     j = j + eventAnnotatedXML.indexOf(">")-1; 
                      flaglastone = 1;
                     } else if (flaglastone==1 && eventAnnotatedXML.startsWith("</Event_what>",j)) {
                      i--;
@@ -125,7 +125,53 @@ public class HTMLMerger {
 //                            i--;
 //                            j--;
 //                        }
-                    } else if (j < eventAnnotatedXML.length() && eventAnnotatedXML.charAt(j) == '<' && eventAnnotatedXML.substring(j + 1, j + 11).equalsIgnoreCase("Event_when")) {
+                    }
+                    
+//                     else if (j <= (eventAnnotatedXML.length()-13) && eventAnnotatedXML.substring(j, j + 10).equalsIgnoreCase("LINK2TOKEN")) {
+//                        
+////                System.out.println("EMOS ENTRAO en " + j + ": " + eventAnnotatedXML.substring(j, j + 13));
+//                        i = baseHTML.indexOf("</a>", i) + 3;
+//                        j = j + 9;
+////                    } else if (j < eventAnnotatedXML.length() && eventAnnotatedXML.charAt(j) == '<' && eventAnnotatedXML.substring(j + 1, j + 6).equalsIgnoreCase("TIMEX")) {
+////                        int j1 = eventAnnotatedXML.indexOf(">", j) + 1;
+////                        int j2 = eventAnnotatedXML.indexOf("</TIMEX3>", j) + "</TIMEX3>".length();
+////                        int j3 = eventAnnotatedXML.indexOf("</TIMEX3>", j);
+////                        int lengtnew = j3 - j1;
+////                        // in TIMEX3
+////                        String intimex = eventAnnotatedXML.substring(j1, j3);
+////                        if (!baseHTML.substring(i, i + lengtnew).equalsIgnoreCase(intimex)) {
+////                            int lengthint = intimex.length();
+////                            int k = 0;
+////                            int k2 = 0;
+////                            while (k < lengthint) {
+////                                while (baseHTML.charAt(i + k2) != intimex.charAt(k)) {
+////                                    k2++;
+////                                }
+////                                k++;
+////                                k2++;
+////                            }
+////                            baseHTML = baseHTML.substring(0, i) + eventAnnotatedXML.substring(j, j2) + baseHTML.substring(i + k2);
+////
+////                            i = i + j2 - j;
+////                            j = j2 + 1;
+////                        } else {
+////
+////                            baseHTML = baseHTML.substring(0, i) + eventAnnotatedXML.substring(j, j2) + baseHTML.substring(i + lengtnew);
+////                            i = i + j2 - j;
+////                            j = j2;
+////
+////                        }
+////                        if (baseHTML.charAt(i) == '<') {
+////                            i--;
+////                            j--;
+////                        }
+//                    }
+                    
+                    
+                    
+                    
+                    
+                    else if (j < eventAnnotatedXML.length() && eventAnnotatedXML.charAt(j) == '<' && eventAnnotatedXML.substring(j + 1, j + 11).equalsIgnoreCase("Event_when")) {
                         int j1 = eventAnnotatedXML.indexOf(">", j) + 1;
                         int j2 = eventAnnotatedXML.indexOf("</Event_when>", j) + "</Event_when>".length();
                         int j3 = eventAnnotatedXML.indexOf("</Event_when>", j);
@@ -269,7 +315,7 @@ public class HTMLMerger {
                 return stylestring + baseHTML;
             }
         } catch (Exception e) {
-//            System.out.println(e.toString());
+            System.out.println(e.toString());
         }
 
         return null;
@@ -295,7 +341,7 @@ public class HTMLMerger {
 
                 String output = eventAnnotatedXML;
                 output = output.replaceAll("<Event [^>]+>", "EVENTTOKENINI");
-                output = output.replaceAll("</Event>", "EVENTTOKENEND");
+                output = output.replaceAll("(\\t\\.)?</Event>", "EVENTTOKENEND");
 
                 String pattern = "(<Event_what argument=\"what\"[^>]+>)(.*?)(<\\/Event_what>)";
                 String pattern2 = "(.*)(<Event_[^>]+>.*?<\\/Event_[^>]+>)(.*)";
@@ -330,7 +376,7 @@ public class HTMLMerger {
                 
                 
                 
-                pattern = "(<Event_what argument=\"what\" tid=\"t0\" type=\"procedure\">)(.*?)(<\\/Event_what>)";
+                pattern = "(<Event_what argument=\"what\" tid=\"t0\" type=\"procedure\"[^>]*>)(.*?)(<\\/Event_what>)";
 //                pattern2 = "(<[^>]*>)";
 //                sb = new StringBuffer(output.length());
                 
@@ -344,7 +390,7 @@ public class HTMLMerger {
 
                     if (inner.contains("<") && inner.contains(">")) {
 
-                       String auxst = inner.replaceAll("(<[^>]*>)", "</Event_what>$1<Event_what argument=\"what\" tid=\"t0\" type=\"procedure\">");
+                       String auxst = inner.replaceAll("(<[^>]*>)", "</Event_what>$1" + m.group(1));
                     output = output.replace(inner, auxst);
 //                    System.out.println("INSIDE " + inner);
 //                        String auxst = inner;
@@ -362,7 +408,7 @@ public class HTMLMerger {
 
 //                        System.out.println("NNNN " + inner);
                         
-                       String auxst = inner.replaceAll("(\\t\\t+)", "</Event_what>$1<Event_what argument=\"what\" tid=\"t0\" type=\"procedure\">");
+                       String auxst = inner.replaceAll("(\\t\\t+)\\.", "</Event_what>$1" + m.group(1));
                     
 //                       System.out.println("INXMSKMSIDE " + auxst);
                        

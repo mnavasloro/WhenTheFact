@@ -2,73 +2,83 @@
 <!-- saved from url=(0047)http://lkg.lynx-project.eu/res/BOE-A-2011-16175 -->
 <html class="gr__lkg_lynx-project_eu">
 
-<head>
-    <meta http-equiv="Content-Type" content="charset=utf-8">
-    <title>WhenTheFact</title><!-- Favicon-->
-	<link rel="shortcut icon" href="img/logowtftrans.png">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <head>
+        <meta http-equiv="Content-Type" content="charset=utf-8">
+        <title>WhenTheFact</title><!-- Favicon-->
+        <link rel="shortcut icon" href="img/logowtftrans.png">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- CSS (Stylesheets) @coredamnwork -->
-    <link href="style/css/lynxStyle.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <!-- CSS Pre-existent -->
-    <link href="./files/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
-    <link rel="stylesheet" href="./help/style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+        <!-- CSS (Stylesheets) @coredamnwork -->
+        <link href="style/css/lynxStyle.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+        <!-- CSS Pre-existent -->
+        <link href="./files/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+        <link rel="stylesheet" href="./help/style.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+        <script src="./js/sweetalert2.min.js"></script>
 
-    <!-- CSS Help -->
-    <link href="./help/style.css" rel="stylesheet">
+        <!-- CSS Help -->
+        <link href="./help/style.css" rel="stylesheet">
 
-    <!-- flatly, journal, cerulean -->
-    <!--<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.css" /> -->
-    <link rel="stylesheet" href="./files/ladda-themeless.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <!-- flatly, journal, cerulean -->
+        <!--<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.css" /> -->
+        <link rel="stylesheet" href="./files/ladda-themeless.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
-    <!-- SCRIPTS  -->
-    <!--script type="text/javascript" src="https://ff.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js" charset="UTF-8"></script-->
-    <!--script src="./files/popper.min.js.descarga"></script-->
-    <script src="./files/jquery.min.js.descarga"></script>
-    <script src="./files/bootstrap.min.js.descarga"></script>
-    <script src="./files/leaflet.js.descarga"></script>
-    <script src="./files/bootbox.min.js.descarga"></script>
-    <script src="./files/spin.min.js.descarga"></script>
-    <script type="text/javascript" src="./files/cookieconsent.min.js.descarga"></script>
+        <!-- SCRIPTS  -->
+        <!--script type="text/javascript" src="https://ff.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js" charset="UTF-8"></script-->
+        <!--script src="./files/popper.min.js.descarga"></script-->
+        <script src="./files/jquery.min.js.descarga"></script>
+        <script src="./files/bootstrap.min.js.descarga"></script>
+        <script src="./files/leaflet.js.descarga"></script>
+        <script src="./files/bootbox.min.js.descarga"></script>
+        <script src="./files/spin.min.js.descarga"></script>
+        <script type="text/javascript" src="./files/cookieconsent.min.js.descarga"></script>
 
-    <script src="./files/ladda.min.js.descarga"></script>
+        <script src="./files/ladda.min.js.descarga"></script>
 
-    <!-- My Scripts @coredamnwork -->
-    <script src="./js/timeline.js"></script>
+        <!-- My Scripts @coredamnwork -->
+        <script src="./js/timeline.js"></script>
 
-    <!-- Buttons functionlities -->
+        <!-- Buttons functionlities -->
 
 
-    <script>
-        var id = "001-173800";
-        function getECHRDoc() {
-            $('#myModal2').modal('show');
-            var x = document.getElementById("searchDoc").value;
-            id = getIDviaRegex(x);
-            console.log('id: ' + id)
+        <script>
+            window.id = "001-173800";
+            window.sourcesel = "ECHR";
+            function getECHRDoc() {
+                $('#myModal2').modal('show');
+                var x = document.getElementById("searchDoc").value;
+                id = getIDviaRegex(x);
+                console.log('id: ' + id)
 
-            x = encodeURI(x);
-            console.log(x)
-            var request = makeHttpObject();
-            console.log("https://cors-anywhere.herokuapp.com/https://hudoc.echr.coe.int/app/conversion/docx/html/body?library=ECHR&id=" + id)
-            request.open("GET", "https://cors-anywhere.herokuapp.com/https://hudoc.echr.coe.int/app/conversion/docx/html/body?library=ECHR&id=" + id, true);
+                x = encodeURI(x);
+                console.log(x)
+                /*var request = makeHttpObject();
+                //https://nordicapis.com/10-free-to-use-cors-proxies/
+                //console.log("https://thingproxy.freeboard.io/fetch/https://hudoc.echr.coe.int/app/conversion/docx/html/body?library=ECHR&id=" + id)
+                //request.open("GET", "https://thingproxy.freeboard.io/fetch/https://hudoc.echr.coe.int/app/conversion/docx/html/body?library=ECHR&id=" + id, true);
+                //request.open("GET", "https://cors-anywhere.herokuapp.com/https://hudoc.echr.coe.int/app/conversion/docx/html/body?library=ECHR&id=" + id, true);
+                request.open("GET", "https://hudoc.echr.coe.int/app/conversion/docx/html/body?library=ECHR&id=" + id, true);
 
-            request.send(null);
-            request.onreadystatechange = function () {
+                request.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+                request.send(null);
+                request.onreadystatechange = function () {
                     //alert(request.responseText);
-                    if (request.readyState == 4) {
+                    if (request.readyState == 4 && request.status == 200) {
                         $('#myModal2').modal('hide');
                         console.log(request.responseText)
                         document.getElementById("texto").innerHTML = request.responseText;
+                    } else if (request.readyState == 4 && request.status != 200) {
+                        $('#myModal2').modal('hide');
+                        console.log(request.responseText)
+                        alert("Document retrieval failed, please check the ID and the source");
                     }
                 };
 
 
-                var request2 = makeHttpObject();
+                var request2 = makeHttpObject();*/
                 //console.log("https://cors-anywhere.herokuapp.com/" + x2)
                 //request2.open("GET", "https://cors-anywhere.herokuapp.com/" + x2, true);
 
@@ -109,62 +119,171 @@
                 try {
                     return result[1];
                 } catch (error) {
+                    alert("Document retrieval failed, please check the ID and the source");
                 }
 
                 throw new Error("Could not find id; incorrect ECHR-HUDOC URL.");
             }
 
-        </script>
-
-
-        <script>
-            function annotateTIME() {
-                var wf = "https://hudoc.echr.coe.int/app/conversion/docx/?library=ECHR&id=" + id + "&filename=" + id + ".docx";
-                var xhttp;
-                var auxvarn = document.getElementById("texto").innerHTML
-                auxvarn = auxvarn.replace('\r\n', '');
-                auxvarn = auxvarn.replace('\n', '');
-                auxvarn = auxvarn.replace('\r', '');
-                var textrec;
-
-
+            function getDoc() {
                 try {
-                    xhttp = new XMLHttpRequest();
+                    if (document.getElementById("sourcedocs").value == "ECHR") {
+                        console.log('sourcesel ' + document.getElementById("sourcedocs").value)
+                        console.log('id ' + id)
+                        sourcesel = "ECHR";
+                        getECHRDoc();
+                    } else {
+                        console.log('sourcesel ' + document.getElementById("sourcedocs").value)
+                        console.log('id ' + id)
+                        sourcesel = "ECJ";
+                        $('#myModal2').modal('show');
+                        var x = document.getElementById("searchDoc").value;
+
+                        id = getIDECJviaRegex(x);
+                        console.log('ECJid: ' + id)
+
+                        x = encodeURI(x);
+                        console.log(x)
+                        /*var request = makeHttpObject();
+                        //https://nordicapis.com/10-free-to-use-cors-proxies/
+                        //console.log("https://thingproxy.freeboard.io/fetch/https://hudoc.echr.coe.int/app/conversion/docx/html/body?library=ECHR&id=" + id)
+                        //request.open("GET", "https://thingproxy.freeboard.io/fetch/https://hudoc.echr.coe.int/app/conversion/docx/html/body?library=ECHR&id=" + id, true);
+                        //request.open("GET", "https://cors-anywhere.herokuapp.com/https://eur-lex.europa.eu/legal-content/En/TXT/HTML/?uri=CELEX:" + id, true);
+                        request.open("GET", "https://eur-lex.europa.eu/legal-content/En/TXT/HTML/?uri=CELEX:" + id, true);
 
 
-                    console.log("id: " + encodeURIComponent(id));
+                        request.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+                        request.send(null);
+                        request.onreadystatechange = function () {
+                            //alert(request.responseText);
+                            if (request.readyState == 4 && request.status == 200) {
+                                $('#myModal2').modal('hide');
+                                console.log(request.responseText)
+                                document.getElementById("texto").innerHTML = request.responseText;
+                            } else if (request.readyState == 4 && request.status != 200) {
+                                $('#myModal2').modal('hide');
+                                console.log(request.responseText)
+                                alert("Document retrieval failed, please check the ID and the source");
+                            }
+                        };
 
-                    var data = {
-                        "id": id,
-                        "wordfile": wf
-                    };
 
-                    var jsonreq = JSON.stringify(data);
+                        var request2 = makeHttpObject();*/
+                    }
+                } catch (exception) {
+                    $('#myModal2').modal('hide');
+                    alert("Document retrieval failed, please check the ID and the source");
+                }
+                annotateTIME();
+            }
+
+            function getIDECJviaRegex(str) {
+                const regex = /(.*)/;
+                result = str.match(regex);
+                console.log("result2 - " + result[1]);
+                try {
+                    return result[1];
+                } catch (error) {
+                }
+
+                throw new Error("Could not find id; incorrect ECJ-HUDOC URL.");
+            }
+
+            function annotateTIME() {
+                if (sourcesel == "ECHR") {
+                    var wf = "https://hudoc.echr.coe.int/app/conversion/docx/?library=ECHR&id=" + id + "&filename=" + id + ".docx";
+                    var xhttp;
+                    var auxvarn = document.getElementById("texto").innerHTML
+                    auxvarn = auxvarn.replace('\r\n', '');
+                    auxvarn = auxvarn.replace('\n', '');
+                    auxvarn = auxvarn.replace('\r', '');
+                    var textrec;
+
+
+                    try {
+                        xhttp = new XMLHttpRequest();
+
+
+                        console.log("id: " + encodeURIComponent(id));
+
+                        var data = {
+                            "id": id,
+                            "wordfile": wf
+                        };
+
+                        var jsonreq = JSON.stringify(data);
 
 
 
 //var params = "inputID=" + encodeURIComponent(id);// + "&inputURL=" + encodeURIComponent(x2);
-$('#myModal2').modal('show');
-xhttp.open('POST', 'annotate2', true);
-xhttp.setRequestHeader("Content-type", "application/json;charset=utf-8");
-xhttp.send(jsonreq);
-xhttp.onreadystatechange = function () {
-    if (this.readyState == 4 && this.status == 200) {
-$('#myModal2').modal('hide');
-                            //We divide the response: new text and timeline
-                            var res = xhttp.responseText.split("<div class=\"timeline\">");
-                            document.getElementById("texto").innerHTML = "<html>" + res[0] + "</html>";
-                            document.getElementById("svg").innerHTML = "<div class=\"timeline\">" + res[1];
-                            // MARIA: todo annadir timeline a su panel y cambiar html
-                            // Typical action to be performed when the document is ready:
-                            //document.getElementById("embedding").innerHTML = xhttp.responseText;
-                            //document.getElementById("embedding-div").style.display = "inline-block";
-                        }
-                    };
+                        $('#myModal2').modal('show');
+                        xhttp.open('POST', 'annotate2', true);
+                        xhttp.setRequestHeader("Content-type", "application/json;charset=utf-8");
+                        xhttp.send(jsonreq);
+                        xhttp.onreadystatechange = function () {
+                            if (this.readyState == 4 && this.status == 200) {
+                                $('#myModal2').modal('hide');
+                                //We divide the response: new text and timeline
+                                var res = xhttp.responseText.split("<div class=\"timeline\">");
+                                document.getElementById("texto").innerHTML = "<html>" + res[0] + "</html>";
+                                document.getElementById("svg").innerHTML = "<div class=\"timeline\">" + res[1];
+                            } else if (this.readyState == 4 && this.status != 200) {
+                                $('#myModal2').modal('hide');
+                                console.log(request.responseText)
+                                alert("Document retrieval failed, please check the ID and the source");
+                            }
+                        };
 
-                } catch (exception) {
-                    $('#myModal2').modal('hide');
-                    alert("Request failed" + textrec);
+                    } catch (exception) {
+                        $('#myModal2').modal('hide');
+                        alert("The request failed, please check the ID and the source");
+                    }
+                } else {
+                    var xhttp;
+                    var auxvarn = document.getElementById("texto").innerHTML
+                    auxvarn = auxvarn.replace('\r\n', '');
+                    auxvarn = auxvarn.replace('\n', '');
+                    auxvarn = auxvarn.replace('\r', '');
+                    var textrec;
+
+
+                    try {
+                        xhttp = new XMLHttpRequest();
+
+
+                        console.log("id: " + encodeURIComponent(id));
+
+                        var data = {
+                            "id": id,
+                        };
+
+                        var jsonreq = JSON.stringify(data);
+
+
+
+//var params = "inputID=" + encodeURIComponent(id);// + "&inputURL=" + encodeURIComponent(x2);
+                        $('#myModal2').modal('show');
+                        xhttp.open('POST', 'annotate2', true);
+                        xhttp.setRequestHeader("Content-type", "application/json;charset=utf-8");
+                        xhttp.send(jsonreq);
+                        xhttp.onreadystatechange = function () {
+                            if (this.readyState == 4 && this.status == 200) {
+                                $('#myModal2').modal('hide');
+                                //We divide the response: new text and timeline
+                                var res = xhttp.responseText.split("<div class=\"timeline\">");
+                                document.getElementById("texto").innerHTML = "<html>" + res[0] + "</html>";
+                                document.getElementById("svg").innerHTML = "<div class=\"timeline\">" + res[1];
+                            } else if (this.readyState == 4 && this.status != 200) {
+                                $('#myModal2').modal('hide');
+                                console.log(request.responseText)
+                                alert("Document retrieval failed, please check the ID and the source");
+                            }
+                        };
+
+                    } catch (exception) {
+                        $('#myModal2').modal('hide');
+                        alert("Request failed" + textrec);
+                    }
                 }
             }
         </script>
@@ -323,196 +442,196 @@ $('#myModal2').modal('hide');
 =====
 DEMO
 =====
-*/
+            */
 
-@media (min-width: 768px) {
+            @media (min-width: 768px) {
 
-    html {
-        font-size: 62.5%;
-    }
-}
+                html {
+                    font-size: 62.5%;
+                }
+            }
 
-@media (max-width: 767px) {
+            @media (max-width: 767px) {
 
-    html {
-        font-size: 55%;
-    }
-}
+                html {
+                    font-size: 55%;
+                }
+            }
 
-body {
-    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Open Sans, Ubuntu, Fira Sans, Helvetica Neue, sans-serif;
-    font-size: 1.6rem;
-    color: #222;
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Open Sans, Ubuntu, Fira Sans, Helvetica Neue, sans-serif;
+                font-size: 1.6rem;
+                color: #222;
 
-    background-color: #f0f0f0;
-    margin: 0;
-    -webkit-overflow-scrolling: touch;
-    overflow-y: scroll;
+                background-color: #f0f0f0;
+                margin: 0;
+                -webkit-overflow-scrolling: touch;
+                overflow-y: scroll;
 
-    display: flex;
-    flex-direction: column;
-}
+                display: flex;
+                flex-direction: column;
+            }
 
-p {
-    margin-top: 0;
-    margin-bottom: 1.5rem;
-    line-height: 1.5;
-}
+            p {
+                margin-top: 0;
+                margin-bottom: 1.5rem;
+                line-height: 1.5;
+            }
 
-p:last-child {
-    margin-bottom: 0;
-}
+            p:last-child {
+                margin-bottom: 0;
+            }
 
-.page {
-    max-width: 800px;
-    padding: 10rem 2rem 3rem;
-    margin-left: auto;
-    margin-right: auto;
-    order: 1;
-}
+            .page {
+                max-width: 800px;
+                padding: 10rem 2rem 3rem;
+                margin-left: auto;
+                margin-right: auto;
+                order: 1;
+            }
 
             /*
 =====
 LinkedIn
 =====
-*/
+            */
 
-.linkedin {
-    background-color: #fff;
-    text-align: center;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-.linkedin__container {
-    max-width: 1000px;
-    padding: 10px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.linkedin__text {
-    margin-top: 0;
-    margin-bottom: 0;
-}
-
-.linkedin__link {
-    color: #ff5c5c;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-body {
-    font-family: "Lato", sans-serif;
-
-
-
-
-
-}
-
-.sidebar {
-    height: 100%;
-    width: 0;
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    left: 0;
-    background-color: #111;
-    overflow-x: hidden;
-    transition: 0.5s;
-    padding-top: 60px;
-}
-
-.sidebar a {
-    padding: 8px 8px 8px 32px;
-    text-decoration: none;
-    display: block;
-    transition: 0.3s;
-}
-
-.sidebar a:hover {
-
-
-    color: #f1f1f1;
-
-
-
-}
-
-.sidebar .closebtn {
-    position: absolute;
-    top: 0;
-    right: 25px;
-    font-size: 36px;
-    margin-left: 50px;
-    color: #337ab7!important;
-}
-
-#main {
-    transition: margin-left .5s;
-    padding: 16px;
-}
-
-/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
-@media screen and (max-height: 450px) {
-    .sidebar {
-        padding-top: 15px;
-    }
-
-
-    .sidebar a {
-        font-size: 18px;
-    }
-}
-</style>
-
-<script>
-    function w3_open() {
-        if(document.getElementById("mySidebar").style.display == "none"){
-        document.getElementById("mainshrinker").style.marginLeft = "22%";
-                //	document.getElementById("topContentContainer").style.display = "inherit";
-                //document.getElementById("topContentContainer").style.marginLeft = "25%";
-                //document.getElementById("topContentContainer").width = "75%";
-
-                document.getElementById("mySidebar").style.width = "25%";
-                document.getElementById("mySidebar").style.display = "block";
-                document.getElementById("mainshrinker").className = "col-md-11";
-                document.getElementById("mySidebar").style.resize = "horizontal";
-            } else{
-                w3_close();
+            .linkedin {
+                background-color: #fff;
+                text-align: center;
             }
+
+
+
+
+
+
+
+
+
+
+
+
+
+            .linkedin__container {
+                max-width: 1000px;
+                padding: 10px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .linkedin__text {
+                margin-top: 0;
+                margin-bottom: 0;
+            }
+
+            .linkedin__link {
+                color: #ff5c5c;
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            body {
+                font-family: "Lato", sans-serif;
+
+
+
+
+
+            }
+
+            .sidebar {
+                height: 100%;
+                width: 0;
+                position: fixed;
+                z-index: 1;
+                top: 0;
+                left: 0;
+                background-color: #111;
+                overflow-x: hidden;
+                transition: 0.5s;
+                padding-top: 60px;
+            }
+
+            .sidebar a {
+                padding: 8px 8px 8px 32px;
+                text-decoration: none;
+                display: block;
+                transition: 0.3s;
+            }
+
+            .sidebar a:hover {
+
+
+                color: #f1f1f1;
+
+
+
+            }
+
+            .sidebar .closebtn {
+                position: absolute;
+                top: 0;
+                right: 25px;
+                font-size: 36px;
+                margin-left: 50px;
+                color: #337ab7!important;
+            }
+
+            #main {
+                transition: margin-left .5s;
+                padding: 16px;
+            }
+
+            /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+            @media screen and (max-height: 450px) {
+                .sidebar {
+                    padding-top: 15px;
+                }
+
+
+                .sidebar a {
+                    font-size: 18px;
+                }
+            }
+        </style>
+
+        <script>
+            function w3_open() {
+                if (document.getElementById("mySidebar").style.display == "none") {
+                    document.getElementById("mainshrinker").style.marginLeft = "22%";
+                    //	document.getElementById("topContentContainer").style.display = "inherit";
+                    //document.getElementById("topContentContainer").style.marginLeft = "25%";
+                    //document.getElementById("topContentContainer").width = "75%";
+
+                    document.getElementById("mySidebar").style.width = "25%";
+                    document.getElementById("mySidebar").style.display = "block";
+                    document.getElementById("mainshrinker").className = "col-md-11";
+                    document.getElementById("mySidebar").style.resize = "horizontal";
+                } else {
+                    w3_close();
+                }
 
             }
 
@@ -573,7 +692,7 @@ body {
             }
 
             .modal-content {
-                    width: 100%;
+                width: 100%;
             }
 
             .modal-header, h4, .close {
@@ -581,8 +700,8 @@ body {
                 color: gray!important;
                 text-align: center;
                 padding: 0px;
-                    padding: 1rem 1rem;
-    margin: -1rem 0rem 0rem auto;
+                padding: 1rem 1rem;
+                margin: -1rem 0rem 0rem auto;
             }
             .modal-footer {
                 background-color: #f9f9f9;
@@ -605,6 +724,10 @@ body {
 
 
     <body data-gr-c-s-loaded="true">
+        <!-- PureCookie -->
+        <!--link rel="stylesheet" type="text/css" href="css/purecookie.css" async />
+        <script src="js/purecookie.js" async></script-->
+        <!--            -->
         <div id="main">
 
 
@@ -618,74 +741,82 @@ body {
                         <div id="lynxLogoTop">
                             <a href="#" target="_self">
                                 <img src="img/logowtftexto.png" style="max-width:200px;
-    max-height:60px;margin: -10px 0 0 0;
-    width:auto;
-    height:auto;" alt="logoWhenTheFact" />
-                                 <!--LOGO-->
+                                     max-height:60px;margin: -10px 0 0 0;
+                                     width:auto;
+                                     height:auto;" alt="logoWhenTheFact" />
+                                <!--LOGO-->
                             </a>
                         </div>
 
 
-                        <div class="col-sm-4 btn-sm input-group"><span class="icon glyphicon input-group-addon glyphicon-search" style="vertical-align:middle; position:unset" onclick="getECHRDoc()"></span> <input id="searchDoc" type="text" value="http://hudoc.echr.coe.int/eng?i=001-173800" class="search-field form-control"
-                            placeholder="Search" style="vertical-align:middle; position:none"></div>
+                        <div class="col-sm-4 btn-sm input-group" style="height: 34px;"><span class="icon glyphicon input-group-addon glyphicon-search" style="vertical-align:middle; position:unset;" onclick="getDoc()"></span> <input id="searchDoc" type="text" value="http://hudoc.echr.coe.int/eng?i=001-173800" class="search-field form-control"
+                                                                                                                                                                                                        placeholder="Search" style="vertical-align:middle; position:none;"></div>
 
 
-                            <script>
-                                var input = document.getElementById("searchDoc");
-                                input.addEventListener("keyup", function (event) {
-                                    if (event.keyCode === 13) {
-                                        event.preventDefault();
-                                        getECHRDoc();
-                                    }
-                                });
-                            </script>
+                        <script>
+                            var input = document.getElementById("searchDoc");
+                            input.addEventListener("keyup", function (event) {
+                                if (event.keyCode === 13) {
+                                    //event.preventDefault();
 
-                            <div class="horizontalgap" style="width:20%"></div>
-                            <!-- Timeline functionality button -->
+                                    getDoc();
+                                }
+                            });
+                        </script>
 
 
-                            <a id="helpbutton" class="col-sm-2 btn btn-primary btn-sm ladda-button buttonsCustomColor" role="button" data-toggle="modal" data-target="#myModal">
-                                <!--Prev functionality onclick="testtimex();" -->
-                                <span class="ladda-label icon_h" style="color: white;">
-                                    <img src="img/help.png" alt="helpIcon" />&nbsp;&nbsp;&nbsp;Help
-                                </span>
-                            </a>
+                        <div class="col-sm-2 ladda-label icon_h" style="margin: 10px; color:white;font-size: 14px;flex: 1 1 15%; vertical-align:middle; position:none"> <label for="cars">Source: </label>
 
-                            <a id="btntimex" class="col-sm-2 btn btn-primary btn-sm ladda-button buttonsCustomColor" role="button" onclick="annotateTIME()">
-                                <!--Prev functionality onclick="testtimex();" -->
-                                <span class="ladda-label icon_h" style="color: white;">
-                                    <img src="img/Time.png" alt="timeIcon" />&nbsp;&nbsp;&nbsp;Events
-                                </span>
-                            </a>
+                            <select id="sourcedocs" style="color: #555;">
+                                <option value="ECHR" selected>ECHR</option>
+                                <option value="ECJ">ECJ</option>
+                            </select></div>
+                        <div class="horizontalgap" style="width:20%"></div>
+                        <!-- Timeline functionality button -->
 
-                            <!-- Terminology functionality button -->
-                            <a class="col-sm-2 btn btn-primary btn-sm ladda-button buttonsCustomColor" onclick="w3_open()" style="color: white;"><span class="ladda-label icon_h"><img src="img/timeline-icon.png" alt="timelineIcon" style="width:1;height:1;" />&nbsp;&nbsp;&nbsp;Timeline</span></a>
 
-                        </nav>
+                        <a id="helpbutton" class="col-sm-2 btn btn-primary btn-sm ladda-button buttonsCustomColor" role="button" data-toggle="modal" data-target="#myModal">
+                            <!--Prev functionality onclick="testtimex();" -->
+                            <span class="ladda-label icon_h" style="color: white;">
+                                <img src="img/help.png" alt="helpIcon" />&nbsp;&nbsp;&nbsp;Help
+                            </span>
+                        </a>
 
-                    </div>
-                </div>
+                        <a id="btntimex" class="col-sm-2 btn btn-primary btn-sm ladda-button buttonsCustomColor" role="button" onclick="annotateTIME()">
+                            <!--Prev functionality onclick="testtimex();" -->
+                            <span class="ladda-label icon_h" style="color: white;">
+                                <img src="img/Time.png" alt="timeIcon" />&nbsp;&nbsp;&nbsp;Events
+                            </span>
+                        </a>
 
-                <div id="mySidebar" class="sidebar" style="display:none;">
-                    <a class="w3-bar-item w3-button w3-large" onclick="w3_close()" style="color: #337ab7!important;">Close</a>
+                        <!-- Terminology functionality button -->
+                        <a class="col-sm-2 btn btn-primary btn-sm ladda-button buttonsCustomColor" onclick="w3_open()" style="color: white;"><span class="ladda-label icon_h"><img src="img/timeline-icon.png" alt="timelineIcon" style="width:1;height:1;" />&nbsp;&nbsp;&nbsp;Timeline</span></a>
 
-                    <div id="svg">
-                        <div style="color:gray;margin:15px;"><p>Please search for a document and annotate it in order to get a timeline. Click below for more information. <a data-toggle="modal" data-target="#myModal" style="font-weight: bold;color: #337ab7!important;">How to annotate a document?</a></p></div>
-                    </div>
+                    </nav>
 
                 </div>
+            </div>
 
-                <div class="container" id="idcontenedor">
-                    <div> <p style="margin-bottom:40px;"></p>  </div>
-                    <div id="mainshrinker" class="col-md-12">
-                        <div id="mainContent">
-                            <div class="panel panel-info" style="padding: 25px; padding-top: 50px; padding-top: 40px;">
-<div class="modal fade" id="myModal2" role="dialog" style="z-index: 100000;">
+            <div id="mySidebar" class="sidebar" style="display:none;">
+                <a class="w3-bar-item w3-button w3-large" onclick="w3_close()" style="color: #337ab7!important;">Close</a>
 
-  <img src="img/spinner.gif" alt="Loading" style="z-index: 100001;"/>
-</div>
-                                <div id="texto">
-                                    <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br>
+                <div id="svg">
+                    <div style="color:gray;margin:15px;"><p>Please search for a document and annotate it in order to get a timeline. Click below for more information. <a data-toggle="modal" data-target="#myModal" style="font-weight: bold;color: #337ab7!important;">How to annotate a document?</a></p></div>
+                </div>
+
+            </div>
+
+            <div class="container" id="idcontenedor">
+                <div> <p style="margin-bottom:40px;"></p>  </div>
+                <div id="mainshrinker" class="col-md-12">
+                    <div id="mainContent">
+                        <div class="panel panel-info" style="padding: 25px; padding-top: 50px; padding-top: 40px;">
+                            <div class="modal fade" id="myModal2" role="dialog" style="z-index: 100000;">
+
+                                <img src="img/spinner.gif" alt="Loading" style="z-index: 100001;"/>
+                            </div>
+                            <div id="texto">
+                                <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br>
                             </div>
                         </div>
                     </div>
@@ -702,150 +833,157 @@ body {
                     <div class="modal fade" id="myModal" role="dialog" style="z-index: 100000;">
                         <div class="modal-dialog" style="min-width:90rem;" style="z-index: 100001;">
 
-                          <!-- Modal content-->
-                          <div class="modal-content" style="min-width:90rem;">
-                            <div class="modal-header" style="min-width:90rem;">
-                              <button type="button" class="close" data-dismiss="modal" style="width: 5rem;">&times;</button>
-                          </div>
-                          <div class="modal-body" >
-                              <div id="help-car" class="carousel">
-                                <div class="slide-container">
+                            <!-- Modal content-->
+                            <div class="modal-content" style="min-width:90rem;">
+                                <div class="modal-header" style="min-width:90rem;">
+                                    <button type="button" class="close" data-dismiss="modal" style="width: 5rem;">&times;</button>
+                                </div>
+                                <div class="modal-body" >
+                                    <div id="help-car" class="carousel">
+                                        <div class="slide-container">
 
-                                    <!--  Slider  -->
-<div class="slide">
-                                        <div class="visual-content-container">
-                                            <h1 stryle="margin-top:15;">Welcome to</h1>  <h1 style="font-size: 7rem;">WhenTheFact</h1>  
-                                            <h2>a tool to detect relevant events in legal texts <br>and organize them in a timeline<br><br></h2>  
+                                            <!--  Slider  -->
+                                            <div class="slide">
+                                                <div class="visual-content-container">
+                                                    <h1 stryle="margin-top:15;">Welcome to</h1>  <h1 style="font-size: 7rem;">WhenTheFact</h1>  
+                                                    <h2>a tool to detect relevant events in legal texts <br>and organize them in a timeline<br><br></h2>  
                                                     <div><img src="./help/introtimeline.gif" style="width: 45rem;" alt="" /></div> 
-                                        </div>
-                                        
-                                            
-                                            <div class="helper-content-container">
-                                            <div class="helper-content" style="font-size: 2rem;">
-                                                <br><br>Please follow the next steps in order to retrieve <br> and process a document from the European Court of Human Rights.
+                                                </div>
+
+
+                                                <div class="helper-content-container">
+                                                    <div class="helper-content" style="font-size: 2rem;">
+                                                        <br><br>Please follow the next steps in order to retrieve <br> and process a document from the European Court of Human Rights.
                                                     </div>
                                                 </div>
                                             </div>  
 
 
-                                    <div class="slide">
-                                        <div class="visual-content-container">
-                                            <img src="./help/step1.gif" alt="" />              
-                                        </div>
-                                        <div class="helper-content-container">
-                                            <div class="helper-content">
-                                                <h2 class="slide-title">Step 1</h2>
-                                                Please go to the HUDOC database (<a href="https://hudoc.echr.coe.int/">https://hudoc.echr.coe.int/<a>)<br>
-                                                    and search for <a href="https://hudoc.echr.coe.int/eng#{%22languageisocode%22:[%22ENG%22],%22documentcollectionid2%22:[%22JUDGMENTS%22]}">judgments in English<a>.
-                                                    </div>
-                                                </div>
-                                            </div>   
-
                                             <div class="slide">
                                                 <div class="visual-content-container">
-                                                    <img src="./help/step2.gif" alt="" />              
+                                                    <img src="./help/step1.gif" alt="" />              
                                                 </div>
                                                 <div class="helper-content-container">
                                                     <div class="helper-content">
-                                                        <h2 class="slide-title">Step 2</h2>
-                                                        Access to the jdugment you are interested in and copy its Document URL,<br>
-                                                        that should look like "http://hudoc.echr.coe.int/eng?i=XXX-XXXXXX"
-                                                    </div>
-                                                </div>
-                                            </div>   
+                                                        <h2 class="slide-title">Step 1</h2>
+                                                        Please go to the HUDOC database (<a href="https://hudoc.echr.coe.int/">https://hudoc.echr.coe.int/<a>)<br>
+                                                                and search for <a href="https://hudoc.echr.coe.int/eng#{%22languageisocode%22:[%22ENG%22],%22documentcollectionid2%22:[%22JUDGMENTS%22]}">judgments in English<a>.
+                                                                        </div>
+                                                                        </div>
+                                                                        </div>   
 
-                                            <div class="slide">
-                                                <div class="visual-content-container">
-                                                    <img src="./help/step3.gif" alt="" />             
-                                                </div>
-                                                <div class="helper-content-container">
-                                                    <div class="helper-content">
-                                                        <h2 class="slide-title">Step 3</h2>
-                                                        Paste it in the search bar of this webpage and then click<br>
-                                                        the search button or press enter.
-                                                    </div>
-                                                </div>
-                                            </div>         
+                                                                        <div class="slide">
+                                                                            <div class="visual-content-container">
+                                                                                <img src="./help/step2.gif" alt="" />              
+                                                                            </div>
+                                                                            <div class="helper-content-container">
+                                                                                <div class="helper-content">
+                                                                                    <h2 class="slide-title">Step 2</h2>
+                                                                                    Access to the jdugment you are interested in and copy its Document URL,<br>
+                                                                                    that should look like "http://hudoc.echr.coe.int/eng?i=XXX-XXXXXX"
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>   
 
-                                            <div class="slide">
-                                                <div class="visual-content-container">
-                                                    <img src="./help/step4.gif" alt="" />              
-                                                </div>
-                                                <div class="helper-content-container">
-                                                    <div class="helper-content">
-                                                        <h2 class="slide-title">Step 4</h2>
-                                                        Once the website shows the text of your target judgment, click on "Events" in order to have<br> the events and relevant dates related annotated in the text. This step might take some time.
-                                                    </div>
-                                                </div>
-                                            </div>         
+                                                                        <div class="slide">
+                                                                            <div class="visual-content-container">
+                                                                                <img src="./help/step3.gif" alt="" />             
+                                                                            </div>
+                                                                            <div class="helper-content-container">
+                                                                                <div class="helper-content">
+                                                                                    <h2 class="slide-title">Step 3</h2>
+                                                                                    Paste it in the search bar of this webpage and then click<br>
+                                                                                    the search button or press enter.
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>         
 
-
-                                            <div class="slide">
-                                                <div class="visual-content-container">
-                                                    <img src="./help/step5.gif" alt="" />             
-                                                </div>
-                                                <div class="helper-content-container">
-                                                    <div class="helper-content">
-                                                        <h2 class="slide-title">Step 5</h2>
-                                                        When the annotations appear in the screen click on "Timeline" <br> to see the timeline associated to the dated events in the text.
-                                                    </div>
-                                                </div>
-                                            </div> 
-
-
-                                            <div class="slide">
-                                                <div class="visual-content-container">
-                                                    <img src="./help/step6.gif" alt="" />              
-                                                </div>
-                                                <div class="helper-content-container">
-                                                    <div class="helper-content">
-                                                        <h2 class="slide-title">Step 6</h2>
-                                                        You can click on each of the events in the timeline <br> in order to go to their mention in the document.
-                                                    </div>
-                                                </div>
-                                            </div> 
+                                                                        <div class="slide">
+                                                                            <div class="visual-content-container">
+                                                                                <img src="./help/step4.gif" alt="" />              
+                                                                            </div>
+                                                                            <div class="helper-content-container">
+                                                                                <div class="helper-content">
+                                                                                    <h2 class="slide-title">Step 4</h2>
+                                                                                    Once the website shows the text of your target judgment, click on "Events" in order to have<br> the events and relevant dates related annotated in the text. This step might take some time.
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>         
 
 
-                                        </div>
+                                                                        <div class="slide">
+                                                                            <div class="visual-content-container">
+                                                                                <img src="./help/step5.gif" alt="" />             
+                                                                            </div>
+                                                                            <div class="helper-content-container">
+                                                                                <div class="helper-content">
+                                                                                    <h2 class="slide-title">Step 5</h2>
+                                                                                    When the annotations appear in the screen click on "Timeline" <br> to see the timeline associated to the dated events in the text.
+                                                                                </div>
+                                                                            </div>
+                                                                        </div> 
 
-                                        <div class="controls">
-                                            <button class="button button-nav previous" title="Previous Slide">Back</button>
-                                            <div class="dynamic-toggles"></div>
-                                            <button class="button button-nav button-primary next" title="Next step">Next</button>
-                                            <button class="button primary button-primary complete" title="Got It!">Got it!</button>
 
-                                        </div>
-                                    </div>
-                                </div>
+                                                                        <div class="slide">
+                                                                            <div class="visual-content-container">
+                                                                                <img src="./help/step6.gif" alt="" />              
+                                                                            </div>
+                                                                            <div class="helper-content-container">
+                                                                                <div class="helper-content">
+                                                                                    <h2 class="slide-title">Step 6</h2>
+                                                                                    You can click on each of the events in the timeline <br> in order to go to their mention in the document.
+                                                                                </div>
+                                                                            </div>
+                                                                        </div> 
 
-                            </div>
-                        </div>
-                    </div>
-<script  src="./help/script.js"></script>
-<script type="text/javascript">
-    $(window).on('load',function(){
-        $('#myModal').modal('show');
-    });
-</script>
-                    <hr />
-                    <center id="idfooter">
-					
-                        <p><small>Done by <a href="https://marianavas.oeg-upm.net/en/about-me/">María Navas-Loro</a>, from a collaboration with Erwin Filtz, Cristiana Santos, Axel Polleres and Sabrina Kirrane</small></p>
-						
-						<div class="logo">
-								<a href="https://www.oeg-upm.net/"><img src="img/oeg.png" height="55px" alt="" hspace="10"></a>        
-								<a href="https://www.fi.upm.es/?id=inicio&idioma=english"><img src="img/fi.png" height="55px" alt="" hspace="10"></a>
-								<a href="https://www.upm.es/internacional"><img src="img/upm.png" height="55px" alt="" hspace="10"></a>
-							</div>
-                        <!--                    <p class="muted credit"><small>Contents in this web are offered under a <a rel="license" href="http://purl.org/NET/rdflicense/cc-by4.0">Creative Commons Attribution 4.0 Unported License</a></small></p> -->
-                        <!-- <p><small>latest version: <span id="version"></span></small></p> -->
-                    </center>
-                </div>
-            </div>
 
-            <!-- <div>Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" 			    title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" 			    title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div> -->
+                                                                        </div>
 
-        </div>
-    </body>
+                                                                        <div class="controls">
+                                                                            <button class="button button-nav previous" title="Previous Slide">Back</button>
+                                                                            <div class="dynamic-toggles"></div>
+                                                                            <button class="button button-nav button-primary next" title="Next step">Next</button>
+                                                                            <button class="button primary button-primary complete" title="Got It!">Got it!</button>
 
-    </html>
+                                                                        </div>
+                                                                        </div>
+                                                                        </div>
+
+                                                                        </div>
+                                                                        </div>
+                                                                        </div>
+                                                                        <script  src="./help/script.js"></script>
+                                                                        <script type="text/javascript">
+                    $(window).on('load', function () {
+                        if (!sessionStorage.getItem("runOnce")) {
+
+                            cookieConsent();
+
+
+                        }
+                        $('#myModal').modal('show');
+
+                    });
+                                                                        </script>
+                                                                        <hr />
+                                                                        <center id="idfooter">
+
+                                                                            <p><small>Done by <a href="https://marianavas.oeg-upm.net/en/about-me/">María Navas-Loro</a>, evolved from a previous <a rel="license" href="https://ebooks.iospress.nl/volumearticle/56160">publication</a></small></p>
+
+                                                                            <div class="logo">
+                                                                                <a href="https://www.oeg-upm.net/"><img src="img/oeg.png" height="55px" alt="" hspace="10"></a>        
+                                                                                <a href="https://www.fi.upm.es/?id=inicio&idioma=english"><img src="img/fi.png" height="55px" alt="" hspace="10"></a>
+                                                                                <a href="https://www.upm.es/internacional"><img src="img/upm.png" height="55px" alt="" hspace="10"></a>
+                                                                            </div>
+                                                                            <!--                    <p class="muted credit"><small>Contents in this web are offered under a <a rel="license" href="http://purl.org/NET/rdflicense/cc-by4.0">Creative Commons Attribution 4.0 Unported License</a></small></p> -->
+                                                                            <!-- <p><small>latest version: <span id="version"></span></small></p> -->
+                                                                        </center>
+                                                                        </div>
+                                                                        </div>
+
+                                                                        <!-- <div>Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" 			    title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" 			    title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div> -->
+
+                                                                        </div>
+                                                                        </body>
+
+                                                                        </html>

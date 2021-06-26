@@ -43,9 +43,9 @@ public class StructureExtractorWord {
         try {
             InputStream is = new ByteArrayInputStream(data);
             XWPFDocument wdoc = new XWPFDocument(is);
-            if (StructureExtractorECHR.isECHR(wdoc))
+            if (StructureExtractor.isECHR(wdoc))
             {
-                Document doc = StructureExtractorECHR.getECHR(wdoc);
+                Document doc = StructureExtractor.getECHR(wdoc);
                 list.add(doc);
                 return list;
             }

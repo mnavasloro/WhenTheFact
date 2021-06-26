@@ -7,8 +7,9 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import oeg.tagger.eventextractors.ExtractorKeywordBased;
-import oeg.tagger.eventextractors.ExtractorTIMEXKeywordBased;
+
+import oeg.tagger.eventextractors.ExtractorTIMEXKeywordBasedNEFrames;
+import oeg.tagger.eventextractors.ExtractorTIMEXKeywordBasedNE;
 import oeg.tagger.main.auxFunctions;
 import oeg.tagger.docHandler.Document;
 import oeg.tagger.docHandler.StructureExtractorWord;
@@ -21,7 +22,7 @@ import org.apache.commons.io.FileUtils;
 public class AnnotadorMainTest {
         public static void main(String[] args) {
           System.out.println("Event Extractor");
-        ExtractorTIMEXKeywordBased ekb = new ExtractorTIMEXKeywordBased();
+        ExtractorTIMEXKeywordBasedNE ekb = new ExtractorTIMEXKeywordBasedNE();
 //            String output = cf.annotate("The judge refused the appeal.", "");
 //        File foldertrain = new File("C:\\Users\\mnavas\\DATA\\ERWANA\\testclean\\");
 //        String folderwordtrain = "C:\\Users\\mnavas\\DATA\\ERWANA\\testword\\";
